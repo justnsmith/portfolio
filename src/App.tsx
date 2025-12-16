@@ -7,6 +7,7 @@ import Experience from "./components/Experience";
 import Projects from "./components/Projects";
 import ProjectsArchive from "./pages/ProjectsArchive";
 import CustomMemoryAllocator from "./pages/projects/CustomMemoryAllocator";
+import FinalExam from "./pages/FinalExam";
 import "./styles/global.css";
 
 // Hook to track mouse position
@@ -160,6 +161,7 @@ export default function App() {
                 />
                 <Route path="projects-archive" element={<ProjectsArchive />} />
                 <Route path="projects/custom-memory-allocator" element={<CustomMemoryAllocator />} />
+                <Route path="ics414-finalexam" element={<FinalExam />} />
             </Routes>
         </Router>
     );
