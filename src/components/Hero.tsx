@@ -145,7 +145,7 @@ export default function Hero({ isContactModalOpen, setIsContactModalOpen }: Hero
                 submitting: false,
                 success: false,
                 error: true,
-                message: "Failed to send message. Please try again later."
+                message: `Failed to send message. Please try again later. ${error}`
             });
         }
     };
@@ -244,7 +244,7 @@ export default function Hero({ isContactModalOpen, setIsContactModalOpen }: Hero
 
                     // Find the section with the highest intersection ratio
                     let maxRatio = 0;
-                    let currentSection = activeSection;
+                    let currentSection = "";
 
                     Object.keys(sectionIntersections).forEach((id) => {
                         if (sectionIntersections[id] > maxRatio) {
@@ -254,7 +254,7 @@ export default function Hero({ isContactModalOpen, setIsContactModalOpen }: Hero
                     });
 
                     // Only update if we have a meaningful intersection
-                    if (maxRatio > 0) {
+                    if (maxRatio > 0 && currentSection) {
                         setActiveSection(currentSection);
                     }
                 });
@@ -310,11 +310,10 @@ export default function Hero({ isContactModalOpen, setIsContactModalOpen }: Hero
 
                     {/* Dropdown Menu with Animation */}
                     <div
-                        className={`absolute right-4 top-14 mt-2 w-48 bg-gray-800 border border-indigo-500 rounded-md shadow-lg shadow-indigo-500/20 overflow-hidden transition-all duration-300 origin-top-right ${
-                            isMenuOpen
-                                ? 'opacity-100 scale-100 translate-y-0'
-                                : 'opacity-0 scale-95 -translate-y-2 pointer-events-none'
-                        }`}
+                        className={`absolute right-4 top-14 mt-2 w-48 bg-gray-800 border border-indigo-500 rounded-md shadow-lg shadow-indigo-500/20 overflow-hidden transition-all duration-300 origin-top-right ${isMenuOpen
+                            ? 'opacity-100 scale-100 translate-y-0'
+                            : 'opacity-0 scale-95 -translate-y-2 pointer-events-none'
+                            }`}
                     >
                         <div className="py-2">
                             {sectionIds.map((id, index) => (
@@ -322,11 +321,10 @@ export default function Hero({ isContactModalOpen, setIsContactModalOpen }: Hero
                                     key={id}
                                     href={`#${id}`}
                                     onClick={(e) => handleNavigationClick(id, e)}
-                                    className={`block px-4 py-2 text-sm transition-all duration-300 hover:bg-gray-700 ${
-                                        activeSection === id
-                                            ? "text-indigo-400 border-l-2 border-indigo-500 pl-3"
-                                            : "text-gray-300 hover:text-white"
-                                    }`}
+                                    className={`block px-4 py-2 text-sm transition-all duration-300 hover:bg-gray-700 ${activeSection === id
+                                        ? "text-indigo-400 border-l-2 border-indigo-500 pl-3"
+                                        : "text-gray-300 hover:text-white"
+                                        }`}
                                     style={{
                                         transitionDelay: isMenuOpen ? `${index * 50}ms` : '0ms'
                                     }}
@@ -341,9 +339,8 @@ export default function Hero({ isContactModalOpen, setIsContactModalOpen }: Hero
 
             <section
                 id="hero-section"
-                className={`relative flex flex-col items-center px-6 sm:px-12 pt-20 bg-transparent text-white text-center ${
-                    contentHeight > windowHeight ? 'h-auto pb-16' : 'min-h-screen'
-                }`}
+                className={`relative flex flex-col items-center px-6 sm:px-12 pt-20 bg-transparent text-white text-center ${contentHeight > windowHeight ? 'h-auto pb-16' : 'min-h-screen'
+                    }`}
                 style={{
                     transform: `scale(${scaleFactor})`,
                     transformOrigin: 'top center',
@@ -397,16 +394,14 @@ export default function Hero({ isContactModalOpen, setIsContactModalOpen }: Hero
                                 key={id}
                                 href={`#${id}`}
                                 onClick={(e) => handleNavigationClick(id, e)}
-                                className={`relative text-sm font-medium transition-all duration-300 hover:text-white group ${
-                                    activeSection === id
-                                        ? "text-white scale-110"
-                                        : "text-gray-400"
-                                }`}
+                                className={`relative text-sm font-medium transition-all duration-300 hover:text-white group ${activeSection === id
+                                    ? "text-white scale-110"
+                                    : "text-gray-400"
+                                    }`}
                             >
                                 {id.charAt(0).toUpperCase() + id.slice(1)}
-                                <span className={`absolute left-0 bottom-0 w-full h-0.5 bg-indigo-500 transform origin-left transition-transform duration-300 ${
-                                    activeSection === id ? 'scale-x-100' : 'scale-x-0'
-                                } group-hover:scale-x-100`}></span>
+                                <span className={`absolute left-0 bottom-0 w-full h-0.5 bg-indigo-500 transform origin-left transition-transform duration-300 ${activeSection === id ? 'scale-x-100' : 'scale-x-0'
+                                    } group-hover:scale-x-100`}></span>
                             </a>
                         ))}
                     </div>
@@ -475,11 +470,10 @@ export default function Hero({ isContactModalOpen, setIsContactModalOpen }: Hero
                                     <div className="relative">
                                         <label
                                             htmlFor="name"
-                                            className={`absolute left-3 transition-all duration-200 ${
-                                                focusedField === 'name' || formData.name
-                                                    ? '-top-2 text-xs text-indigo-400 bg-gray-800 px-1 z-10'
-                                                    : 'top-2 text-gray-400'
-                                            }`}
+                                            className={`absolute left-3 transition-all duration-200 ${focusedField === 'name' || formData.name
+                                                ? '-top-2 text-xs text-indigo-400 bg-gray-800 px-1 z-10'
+                                                : 'top-2 text-gray-400'
+                                                }`}
                                         >
                                             Name
                                         </label>
@@ -499,11 +493,10 @@ export default function Hero({ isContactModalOpen, setIsContactModalOpen }: Hero
                                     <div className="relative">
                                         <label
                                             htmlFor="email"
-                                            className={`absolute left-3 transition-all duration-200 ${
-                                                focusedField === 'email' || formData.email
-                                                    ? '-top-2 text-xs text-indigo-400 bg-gray-800 px-1 z-10'
-                                                    : 'top-2 text-gray-400'
-                                            }`}
+                                            className={`absolute left-3 transition-all duration-200 ${focusedField === 'email' || formData.email
+                                                ? '-top-2 text-xs text-indigo-400 bg-gray-800 px-1 z-10'
+                                                : 'top-2 text-gray-400'
+                                                }`}
                                         >
                                             Email
                                         </label>
@@ -523,11 +516,10 @@ export default function Hero({ isContactModalOpen, setIsContactModalOpen }: Hero
                                     <div className="relative">
                                         <label
                                             htmlFor="message"
-                                            className={`absolute left-3 transition-all duration-200 ${
-                                                focusedField === 'message' || formData.message
-                                                    ? '-top-2 text-xs text-indigo-400 bg-gray-800 px-1 z-10'
-                                                    : 'top-2 text-gray-400'
-                                            }`}
+                                            className={`absolute left-3 transition-all duration-200 ${focusedField === 'message' || formData.message
+                                                ? '-top-2 text-xs text-indigo-400 bg-gray-800 px-1 z-10'
+                                                : 'top-2 text-gray-400'
+                                                }`}
                                         >
                                             Message
                                         </label>
@@ -553,9 +545,8 @@ export default function Hero({ isContactModalOpen, setIsContactModalOpen }: Hero
                                     <button
                                         type="submit"
                                         disabled={formStatus.submitting}
-                                        className={`w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-300 flex items-center justify-center ${
-                                            formStatus.submitting ? "opacity-80 cursor-not-allowed" : ""
-                                        }`}
+                                        className={`w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-300 flex items-center justify-center ${formStatus.submitting ? "opacity-80 cursor-not-allowed" : ""
+                                            }`}
                                     >
                                         {formStatus.submitting ? (
                                             <>

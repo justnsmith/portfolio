@@ -103,8 +103,8 @@ export default function TechStack() {
                             <div
                                 key={name}
                                 className={`flex flex-col items-center space-y-3 transform transition-all duration-500 ${isInView
-                                        ? "opacity-100 translate-y-0"
-                                        : "opacity-0 translate-y-8"
+                                    ? "opacity-100 translate-y-0"
+                                    : "opacity-0 translate-y-8"
                                     }`}
                                 style={{
                                     transitionDelay: `${index * 100}ms`,
@@ -115,8 +115,8 @@ export default function TechStack() {
                             >
                                 <div
                                     className={`relative w-20 h-20 rounded-xl flex items-center justify-center transition-all duration-500 ${isActive || isHovered
-                                            ? "bg-gray-800 scale-110 shadow-lg shadow-indigo-800/20"
-                                            : "bg-gray-900"
+                                        ? "bg-gray-800 scale-110 shadow-lg shadow-indigo-800/20"
+                                        : "bg-gray-900"
                                         } cursor-pointer overflow-hidden group`}
                                     style={{
                                         boxShadow: isActive

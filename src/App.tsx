@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import Hero from "./components/Hero";
 import About from "./components/About";
@@ -120,28 +120,28 @@ export default function App() {
     const isLargeScreen = useIsLargeScreen();
     const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
-    const handleScroll = (e: WheelEvent) => {
-        if (isLargeScreen && leftRef.current && rightScrollRef.current) {
-            const heroRect = leftRef.current.getBoundingClientRect();
-            const isMouseOverHero =
-                mousePos.y >= heroRect.top && mousePos.y <= heroRect.bottom;
+    const handleScroll = useCallback(
+        (e: WheelEvent) => {
+            if (isLargeScreen && leftRef.current && rightScrollRef.current) {
+                const heroRect = leftRef.current.getBoundingClientRect();
+                const isMouseOverHero =
+                    mousePos.y >= heroRect.top && mousePos.y <= heroRect.bottom;
 
-            if (isMouseOverHero) {
-                e.preventDefault();
-                const aboutSection = rightScrollRef.current;
-                if (aboutSection) {
-                    aboutSection.scrollTop += e.deltaY;
+                if (isMouseOverHero) {
+                    e.preventDefault();
+                    rightScrollRef.current.scrollTop += e.deltaY;
                 }
             }
-        }
-    };
+        },
+        [isLargeScreen, mousePos.y]
+    );
 
     useEffect(() => {
-        if (isLargeScreen) {
-            window.addEventListener("wheel", handleScroll, { passive: false });
-            return () => window.removeEventListener("wheel", handleScroll);
-        }
-    }, [isLargeScreen, mousePos]);
+        if (!isLargeScreen) return;
+
+        window.addEventListener("wheel", handleScroll, { passive: false });
+        return () => window.removeEventListener("wheel", handleScroll);
+    }, [isLargeScreen, handleScroll]);
 
     return (
         <Router>

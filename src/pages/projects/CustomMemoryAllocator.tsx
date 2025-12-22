@@ -113,12 +113,13 @@ export default function EnhancedMemoryAllocator() {
                 );
                 break;
             case "first-fit":
-            default:
+            default: {
                 // Sort blocks by address to ensure we're selecting blocks in order
                 // This makes it truly "first fit" in terms of memory layout
                 const sortedByAddress = [...freeBlocks].sort((a, b) => a.address - b.address);
                 fittingFreeBlock = sortedByAddress[0];
                 break;
+            }
         }
 
         if (fittingFreeBlock) {
