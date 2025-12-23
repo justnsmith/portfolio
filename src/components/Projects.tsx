@@ -1,74 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getFeaturedProjects } from '../data/projects';
 
 export default function Projects() {
     const navigate = useNavigate();
-    const [hoveredProject, setHoveredProject] = useState<number | null>(null);
+    const [hoveredProject, setHoveredProject] = useState<string | null>(null);
     const [isInView, setIsInView] = useState<boolean>(false);
     const sectionRef = useRef<HTMLDivElement>(null);
 
-    const projects = [
-        {
-            id: 1,
-            title: "Image Processing Service",
-            date: "April 2025",
-            tech: ["AWS S3", "Docker", "Go", "PostgreSQL", "Redis", "Typescript", "TailwindCSS"],
-            description: "A full-stack image processing application with advanced backend services for secure storage, efficient processing, and dependable data management.",
-            bullets: [
-                "Implemented secure user authentication with JWT token-based authentication, email verification, and password reset functionality",
-                "Designed scalable storage solution using S3 bucket integration, Redis caching, and PostgreSQL metadata management",
-                "Built backend image processing capabilities including resize, crop, and filter application using Go imaging libraries",
-                "Created a responsive React frontend with TypeScript and Tailwind CSS for a user-friendly interface",
-                "Developed complete API endpoints for user and image management with proper authentication and authorization"
-            ],
-            url: "https://image-processing-service-nk16.onrender.com"
-        },
-        {
-            id: 2,
-            title: "Custom Memory Allocator + Visualizer",
-            date: "April 2025",
-            tech: ["C", "Typescript", "TailwindCSS"],
-            description: "A custom memory allocator designed to replace standard memory management functions (malloc, free, realloc). It includes a visualizer to analyze memory fragmentation, allocation strategies, and overall memory usage.",
-            bullets: [
-                "Engineered a custom memory allocator to handle memory allocation and deallocation, replacing standard functions like malloc, free, and realloc",
-                "Developed an interactive visualizer to demonstrate memory fragmentation and visualize various allocation strategies in real time",
-                "Created a user-friendly interface for easy monitoring of memory usage and performance",
-                "Optimized memory utilization and system performance through advanced data structures and algorithms",
-                "Conducted rigorous testing to ensure the reliability, correctness, and stability of the allocator"
-            ],
-            url: "projects/custom-memory-allocator"
-        },
-        {
-            id: 3,
-            title: "Study Buddy",
-            date: "December 2024",
-            tech: ["React", "PostgreSQL", "Vercel"],
-            description: "A full-stack web application connecting students for study sessions with authentication, user management, and calendar features.",
-            bullets: [
-                "Developed a full-stack web application to connect students for study sessions",
-                "Implemented authentication and user management features including email verification and password reset",
-                "Designed and developed user-friendly interfaces for joining or creating study groups",
-                "Deployed the application using Vercel for fast and efficient hosting",
-                "Collaborated on creating a calendar feature to help users manage their joined study sessions"
-            ],
-            githubUrl: "https://thesoftwaredevelopers.github.io"
-        },
-        {
-            id: 4,
-            title: "Bank Database",
-            date: "July 2024",
-            tech: ["C", "Makefile", "Vim"],
-            description: "A banking system for managing customer records using linked lists and text file storage with robust error handling.",
-            bullets: [
-                "Developed a banking system to manage customer records using linked lists and text file storage",
-                "Implemented essential banking functions such as adding, deleting, and modifying accounts",
-                "Designed an intuitive text-based user interface for ease of interaction",
-                "Added error handling to ensure robust operation under various edge cases",
-                "Created automated tests to validate banking operations and ensure system stability"
-            ],
-            githubUrl: "https://github.com/justnsmith/ICS212/tree/main/project1"
-        }
-    ];
+    const projects = getFeaturedProjects();
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -92,20 +32,16 @@ export default function Projects() {
         };
     }, []);
 
-    const navigateToArchive = () => {
-        navigate('projects-archive');
-    };
-
-    const navigateToProject = (url: string) => {
-        if (url.startsWith('http')) {
-            window.open(url, '_blank');
-        } else {
-            navigate(url);
+    const handleProjectClick = (projectId: string, url?: string, githubUrl?: string) => {
+        if (url) {
+            if (url.startsWith('http')) {
+                window.open(url, '_blank');
+            } else {
+                navigate(`/projects/${projectId}`);
+            }
+        } else if (githubUrl) {
+            window.open(githubUrl, '_blank');
         }
-    };
-
-    const navigateToGitHub = (url: string) => {
-        window.open(url, '_blank');
     };
 
     return (
@@ -134,20 +70,19 @@ export default function Projects() {
                         <div
                             key={project.id}
                             className={`relative border border-gray-800 rounded-md overflow-hidden
-                                      bg-gray-900/30 backdrop-blur-sm
+                                      bg-gray-900/30 backdrop-blur-sm cursor-pointer
                                       hover:bg-gray-800/50 hover:border-indigo-500/50 hover:shadow-lg hover:shadow-indigo-500/10 hover:scale-[1.005]
                                       ${isInView ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}
                                       ${hoveredProject === project.id ? 'bg-gray-800/50 border-indigo-500/50 shadow-lg shadow-indigo-500/10 scale-[1.005]' : ''}`}
                             style={{
                                 transitionDelay: `${index * 100}ms`,
-                                // Separate transitions for appearance animation and hover effects
                                 transition: hoveredProject === project.id || hoveredProject === null
                                     ? 'transform 200ms ease-in-out, background-color 200ms ease-in-out, border-color 200ms ease-in-out, box-shadow 200ms ease-in-out'
                                     : 'opacity 700ms, transform 700ms'
                             }}
                             onMouseEnter={() => setHoveredProject(project.id)}
                             onMouseLeave={() => setHoveredProject(null)}
-                            onClick={() => project.url ? navigateToProject(project.url ?? '') : navigateToGitHub(project.githubUrl ?? '')}
+                            onClick={() => handleProjectClick(project.id, project.url, project.githubUrl)}
                         >
                             <div
                                 className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-indigo-500 transform origin-left"
@@ -209,7 +144,7 @@ export default function Projects() {
                 <div className={`flex justify-center mt-12 transition-all duration-700 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
                     style={{ transitionDelay: '400ms' }}>
                     <button
-                        onClick={navigateToArchive}
+                        onClick={() => navigate('/projects-archive')}
                         className="relative px-6 py-3 bg-gray-800 border border-gray-700 rounded-md
                                   text-gray-300 font-medium overflow-hidden
                                   hover:text-white hover:border-indigo-500 hover:shadow-md hover:shadow-indigo-500/20 focus:outline-none"
