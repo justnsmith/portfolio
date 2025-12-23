@@ -1,27 +1,27 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { ArrowRight, Trash2, RotateCcw, Plus, Github } from "lucide-react";
 import PageLayout from "../../components/layout/PageLayout";
 
-export default function CustomMemoryAllocator() {
-    const INITIAL_HEAP_SIZE = 640000;  // 640 KB
-    const HEADER_SIZE = 24;            // Header size for each block
-    const MIN_BLOCK_SIZE = 48;         // Minimum size for a split block to be viable
-    const INITIAL_ADDRESS = 1000;      // Start address of the heap
-    const MIN_ALLOC_SIZE = 16;         // Minimum allocation size
-    const MAX_ALLOC_SIZE = 512;        // Maximum allocation size
+export default function EnhancedMemoryAllocator() {
+    const INITIAL_HEAP_SIZE = 640000; // 640KB heap
+    const HEADER_SIZE = 24;           // Header size for each block
+    const MIN_BLOCK_SIZE = 48;        // Minimum size for a split block to be viable
+    const INITIAL_ADDRESS = 1000;     // Start address for the heap
+    const MIN_ALLOC_SIZE = 16;        // Minimum allocation size
+    const MAX_ALLOC_SIZE = 512;       // Maximum allocation size
 
     const [blocks, setBlocks] = useState<Array<{
-        id: number;                    // Unique identifier for the block
-        address: number;               // Memory address of the block
-        requestedSize: number;         // Size requested by the user
-        dataSize: number;              // Actual size of the data in the block
-        headerSize: number;            // Size of the header
-        totalSize: number;             // Total size of the block (header + data)
-        free: boolean;                 // Indicates if the block is free or allocated
-        next: number | null;           // Pointer to the next block
-        coalescing?: boolean;          // Optional property for coalescing
-        markedForRemoval?: boolean;    // Optional property for marking removal
-        splitting?: boolean;           // Optional property for splitting animation
+        id: number;                 // Unique identifier for the block
+        address: number;            // Memory address of the block
+        requestedSize: number;      // Size requested by the user
+        dataSize: number;           // Actual size of the data in the block
+        headerSize: number;         // Size of the header
+        totalSize: number;          // Total size of the block (header + data)
+        free: boolean;              // Indicates if the block is free or allocated
+        next: number | null;        // Pointer to the next block
+        coalescing?: boolean;       // Optional property for coalescing
+        markedForRemoval?: boolean; // Optional property for marking removal
+        splitting?: boolean;        // Optional property for splitting animation
     }>>([]);
 
     const [allocSize, setAllocSize] = useState(64);
@@ -232,22 +232,22 @@ export default function CustomMemoryAllocator() {
         }
     };
 
-    const findBlockById = (blockId: number, blocksList: typeof blocks) => {
+    const findBlockById = useCallback((blockId: number, blocksList: typeof blocks) => {
         return blocksList.find((block) => block.id === blockId);
-    };
+    }, []);
 
-    const findBlockIndexById = (blockId: number, blocksList: typeof blocks) => {
+    const findBlockIndexById = useCallback((blockId: number, blocksList: typeof blocks) => {
         return blocksList.findIndex((block) => block.id === blockId);
-    };
+    }, []);
 
-    const findNextBlock = (block: typeof blocks[number], blocksList: typeof blocks) => {
+    const findNextBlock = useCallback((block: typeof blocks[number], blocksList: typeof blocks) => {
         if (!block.next) return null;
         return blocksList.find((b) => b.address === block.next) || null;
-    };
+    }, []);
 
-    const findPreviousBlock = (block: typeof blocks[number], blocksList: typeof blocks) => {
+    const findPreviousBlock = useCallback((block: typeof blocks[number], blocksList: typeof blocks) => {
         return blocksList.find((b) => b.next === block.address);
-    };
+    }, []);
 
     const startCoalescing = (freedBlockId: number, currentBlocks: typeof blocks) => {
         setIsCoalescing(true);
@@ -396,7 +396,7 @@ export default function CustomMemoryAllocator() {
         return () => {
             if (timeoutId) clearTimeout(timeoutId);
         };
-    }, [isCoalescing, currentStepIndex, coalescingSteps]);
+    }, [isCoalescing, currentStepIndex, coalescingSteps, findBlockById, findBlockIndexById]);
 
     const resetMemory = () => {
         if (blockOperationsDisabled) return;
