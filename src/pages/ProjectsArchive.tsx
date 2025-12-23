@@ -1,10 +1,9 @@
 import { useNavigate } from 'react-router-dom';
+import PageLayout from '../components/layout/PageLayout';
 import { projects } from '../data/projects';
-import { useMousePosition } from '../hooks';
 
 export default function ProjectsArchive() {
     const navigate = useNavigate();
-    const mousePos = useMousePosition();
 
     const handleProjectClick = (projectId: string, url?: string, githubUrl?: string) => {
         if (url) {
@@ -19,39 +18,10 @@ export default function ProjectsArchive() {
     };
 
     return (
-        <div className="relative min-h-screen text-white bg-gray-900">
-            {/* Mouse follow effect */}
-            <div
-                className="pointer-events-none fixed inset-0 z-0 transition-all duration-200"
-                style={{
-                    background: `radial-gradient(200px at ${mousePos.x}px ${mousePos.y}px, rgba(99, 102, 241, 0.1), transparent 80%)`,
-                }}
-            />
-
-            <div className="max-w-5xl mx-auto p-6 sm:p-8 md:p-12 relative z-10">
-                <div className="mb-6 flex flex-col gap-2">
-                    {/* Back button */}
-                    <button
-                        onClick={() => navigate('/')}
-                        className="flex items-center text-indigo-400 hover:text-indigo-300 transition-colors"
-                    >
-                        <svg
-                            className="w-5 h-5 mr-2 transition-transform"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                        </svg>
-                        <span className="font-medium">
-                            Justin Smith
-                        </span>
-                    </button>
-
-                    {/* Title */}
-                    <h1 className="text-4xl font-bold text-white">All Projects</h1>
-                </div>
+        <PageLayout>
+            <div className="space-y-6">
+                {/* Title */}
+                <h1 className="text-4xl font-bold text-white">All Projects</h1>
 
                 {/* Column Headers */}
                 <div className="grid grid-cols-12 py-3 text-sm font-medium text-white">
@@ -118,6 +88,6 @@ export default function ProjectsArchive() {
                     ))}
                 </div>
             </div>
-        </div>
+        </PageLayout>
     );
 }
