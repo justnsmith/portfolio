@@ -1,88 +1,22 @@
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { projects } from '../data/projects';
+import { useMousePosition } from '../hooks/useMousePosition';
 
 export default function ProjectsArchive() {
     const navigate = useNavigate();
+    const mousePos = useMousePosition();
 
-    // Projects data
-    const projects = [
-        {
-            year: 2025,
-            title: "Image Processing Service",
-            technologies: ["AWS S3", "Docker", "Go", "PostgreSQL", "Redis", "Typescript", "TailwindCSS"],
-            link: "https://github.com/justnsmith/image-processing-service",
-            isInternal: false,
-            madeFor: "Personal"
-        },
-        {
-            year: 2025,
-            title: "Custom Memory Allocator + Visualizer",
-            technologies: ["C", "Memory Management", "Web Assembly"],
-            link: "projects/custom-memory-allocator",
-            isInternal: true,
-            madeFor: "Personal"
-        },
-        {
-            year: 2025,
-            title: "Portfolio Website",
-            technologies: ["React", "Tailwind CSS", "Vite"],
-            link: "https://github.com/justnsmith/justnsmith.github.io",
-            isInternal: false,
-            madeFor: "Personal",
-        },
-        {
-            year: 2025,
-            title: "Puzzle Game",
-            technologies: ["C++"],
-            link: "https://github.com/justnsmith/puzzlegame",
-            isInternal: false,
-            madeFor: "Personal"
-        },
-        {
-            year: 2024,
-            title: "Study Buddy",
-            technologies: ["React", "PostgreSQL", "Vercel"],
-            link: "https://thesoftwaredevelopers.github.io",
-            isInternal: false,
-            madeFor: "College"
-        },
-        {
-            year: 2024,
-            title: "Polynesian Navigation Route Planner",
-            technologies: ["Java", "Performance Optimization"],
-            link: "https://github.com/justnsmith/ics311-assignment5",
-            isInternal: false,
-            madeFor: "College"
-        },
-        {
-            year: 2024,
-            title: "Data Encryption",
-            technologies: ["Java", "Cryptography"],
-            link: "https://github.com/justnsmith/ics311-assignment7",
-            isInternal: false,
-            madeFor: "College"
-        },
-        {
-            year: 2024,
-            title: "Bank Database",
-            technologies: ["C", "Makefile", "Vim"],
-            link: "https://github.com/justnsmith/ICS212/tree/main/project1",
-            isInternal: false,
-            madeFor: "College"
+    const handleProjectClick = (projectId: string, url?: string, githubUrl?: string) => {
+        if (url) {
+            if (url.startsWith('http')) {
+                window.open(url, '_blank');
+            } else {
+                navigate(`/projects/${projectId}`);
+            }
+        } else if (githubUrl) {
+            window.open(githubUrl, '_blank');
         }
-    ];
-
-    // For the mouse follow effect
-    const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-
-    useEffect(() => {
-        const updateMousePosition = (e: MouseEvent) => {
-            setMousePos({ x: e.clientX, y: e.clientY });
-        };
-
-        window.addEventListener("mousemove", updateMousePosition);
-        return () => window.removeEventListener("mousemove", updateMousePosition);
-    }, []);
+    };
 
     return (
         <div className="relative min-h-screen text-white bg-gray-900">
@@ -94,19 +28,7 @@ export default function ProjectsArchive() {
                 }}
             />
 
-            {/* Add text selection highlighting style */}
-            <style>{`
-                ::selection {
-                    background-color: rgba(34, 211, 238, 0.3);
-                    color: white;
-                }
-                ::-moz-selection {
-                    background-color: rgba(34, 211, 238, 0.3);
-                    color: white;
-                }
-            `}</style>
-
-            <div className="max-w-5xl mx-auto p-6 sm:p-8 md:p-12">
+            <div className="max-w-5xl mx-auto p-6 sm:p-8 md:p-12 relative z-10">
                 <div className="mb-6 flex flex-col gap-2">
                     {/* Back button */}
                     <button
@@ -144,10 +66,11 @@ export default function ProjectsArchive() {
 
                 {/* Projects table */}
                 <div>
-                    {projects.map((project, index) => (
+                    {projects.map((project) => (
                         <div
-                            key={index}
+                            key={project.id}
                             className="grid grid-cols-12 border-b border-gray-800 py-4 hover:bg-gray-800/20 transition-colors cursor-pointer text-sm"
+                            onClick={() => handleProjectClick(project.id, project.url, project.githubUrl)}
                         >
                             {/* Year */}
                             <div className="col-span-1 text-gray-400 flex items-center">
@@ -166,7 +89,7 @@ export default function ProjectsArchive() {
 
                             {/* Built With */}
                             <div className="col-span-4 pl-2 pr-4 flex flex-wrap gap-1 items-center">
-                                {project.technologies.map((tech, techIndex) => (
+                                {project.tech.map((tech, techIndex) => (
                                     <span
                                         key={techIndex}
                                         className="px-2 py-0.5 border border-cyan-900/30 bg-cyan-900/10 text-cyan-400 rounded-md text-xs"
@@ -178,18 +101,8 @@ export default function ProjectsArchive() {
 
                             {/* Link */}
                             <div className="col-span-2 text-left pl-2 flex items-center justify-start text-gray-400 hover:text-cyan-400 transition-colors">
-                                <span
-                                    className="mr-1 text-xs cursor-pointer"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        if (project.isInternal) {
-                                            navigate(`/${project.link}`);
-                                        } else {
-                                            window.open(project.link, '_blank');
-                                        }
-                                    }}
-                                >
-                                    {project.isInternal ? 'View Details' : 'View Repo'}
+                                <span className="mr-1 text-xs cursor-pointer">
+                                    {project.url && !project.url.startsWith('http') ? 'View Details' : 'View Repo'}
                                 </span>
                                 <svg
                                     className="w-3 h-3"
