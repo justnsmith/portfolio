@@ -1,18 +1,36 @@
-/* global.css */
+@import "tailwindcss";
 
-/* Global font size */
+/* Smooth scrolling */
 html {
+    scroll-behavior: smooth;
     font-size: 20px;
-    /* Adjust as per your preference */
+}
+
+/* Hide scrollbar for all browsers */
+::-webkit-scrollbar {
+    display: none;
+}
+
+html {
+    scrollbar-width: none;
 }
 
 body {
+    -ms-overflow-style: none;
     font-family: 'Helvetica', sans-serif;
     margin: 0;
     padding: 0;
     background-color: #1f2937;
-    /* Dark background for contrast */
     color: white;
 }
 
-/* Other global styles can go here */
+/* Text selection styling */
+::selection {
+    background-color: rgba(34, 211, 238, 0.3);
+    color: white;
+}
+
+::-moz-selection {
+    background-color: rgba(34, 211, 238, 0.3);
+    color: white;
+}
