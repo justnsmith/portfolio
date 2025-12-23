@@ -1,8 +1,4 @@
-interface NavigationLinksProps {
-    sectionIds: string[];
-    activeSection: string;
-    onNavigate: (id: string) => void;
-}
+import { NavigationLinksProps } from '../../types';
 
 export default function NavigationLinks({ sectionIds, activeSection, onNavigate }: NavigationLinksProps) {
     return (

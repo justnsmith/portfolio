@@ -2,11 +2,7 @@ import { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faPaperPlane, faSpinner, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { useContactForm } from "../../hooks";
-
-interface ContactModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-}
+import { ContactModalProps } from '../../types';
 
 export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     const {

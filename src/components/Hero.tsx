@@ -5,13 +5,10 @@ import MobileMenu from "./ui/MobileMenu";
 import NavigationLinks from "./ui/NavigationLinks";
 import ContactModal from "./ui/ContactModal";
 import { useActiveSection } from "../hooks";
+import { HeroProps } from "../types";
 
 const words = ["Software Engineer", "Backend Developer"];
 const sectionIds = ["about", "tech", "experience", "projects"];
-
-interface HeroProps {
-    isMobileView: boolean;
-}
 
 export default function Hero({ isMobileView }: HeroProps) {
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
@@ -110,9 +107,8 @@ export default function Hero({ isMobileView }: HeroProps) {
 
             <section
                 id="hero-section"
-                className={`relative flex flex-col items-center px-6 sm:px-12 pt-20 bg-transparent text-white text-center ${
-                    contentHeight > windowHeight ? 'h-auto pb-16' : 'min-h-screen'
-                }`}
+                className={`relative flex flex-col items-center px-6 sm:px-12 pt-20 bg-transparent text-white text-center ${contentHeight > windowHeight ? 'h-auto pb-16' : 'min-h-screen'
+                    }`}
                 style={{
                     transform: `scale(${scaleFactor})`,
                     transformOrigin: 'top center',
@@ -152,9 +148,8 @@ export default function Hero({ isMobileView }: HeroProps) {
                     </a>
                     <button
                         onClick={handleContactClick}
-                        className={`border-2 border-indigo-500 text-gray-300 hover:bg-indigo-500 hover:text-white font-semibold py-2 px-6 rounded-lg transition-all hover:shadow-lg hover:shadow-indigo-500/20 transform hover:-translate-y-0.5 ${
-                            contactAnimation ? `animate-${contactAnimation}` : ""
-                        }`}
+                        className={`border-2 border-indigo-500 text-gray-300 hover:bg-indigo-500 hover:text-white font-semibold py-2 px-6 rounded-lg transition-all hover:shadow-lg hover:shadow-indigo-500/20 transform hover:-translate-y-0.5 ${contactAnimation ? `animate-${contactAnimation}` : ""
+                            }`}
                     >
                         Contact Me
                     </button>

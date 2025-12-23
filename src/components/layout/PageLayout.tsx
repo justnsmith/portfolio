@@ -1,11 +1,6 @@
-import { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMousePosition } from "../../hooks";
-
-interface PageLayoutProps {
-    children: ReactNode;
-    maxWidth?: string;
-}
+import { PageLayoutProps } from "../../types";
 
 export default function PageLayout({ children, maxWidth = "max-w-5xl" }: PageLayoutProps) {
     const navigate = useNavigate();

@@ -1,14 +1,7 @@
 import { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
-
-interface MobileMenuProps {
-    isOpen: boolean;
-    setIsOpen: (isOpen: boolean) => void;
-    activeSection: string;
-    sectionIds: string[];
-    onNavigate: (id: string) => void;
-}
+import { MobileMenuProps } from '../../types';
 
 export default function MobileMenu({
     isOpen,
