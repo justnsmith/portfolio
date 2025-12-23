@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { projects } from '../data/projects';
-import { useMousePosition } from '../hooks/useMousePosition';
+import { useMousePosition } from '../hooks';
 
 export default function ProjectsArchive() {
     const navigate = useNavigate();
