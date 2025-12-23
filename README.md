@@ -1,6 +1,6 @@
 # Justin Smith's Developer Portfolio
 
-I'm a third-year Computer Science student at the University of Hawaii at Manoa, focused on backend development. This portfolio highlights my technical skills, backend projects, and academic work that reflects my experience building efficient, maintainable systems.
+I'm a fourth-year Computer Science student at the University of Hawaii at Manoa, focused on backend development. This portfolio highlights my technical skills, backend projects, and academic work that reflects my experience building efficient, maintainable systems.
 
 ## Table of Contents
 1. [About Me](#about-me)
@@ -9,7 +9,7 @@ I'm a third-year Computer Science student at the University of Hawaii at Manoa, 
 5. [Goals](#goals)
 
 ## About Me
-* Third-year Computer Science major at UH Manoa
+* Fourth-year Computer Science major at UH Manoa
 * Focus: Backend development – performance, architecture, data flow
 * Languages: C, C++, Go, Python, Java, TypeScript
 * Tools: Git, Linux, Docker, PostgreSQL, Node.js, Express
@@ -25,9 +25,9 @@ I enjoy building backend systems that are reliable, testable, and efficient unde
 | `/projects-archive/` | Archived list of all projects I've worked on (school and personal) |
 
 ## Contact
-* GitHub: [github.com/jstnsmth](https://github.com/justnsmith)
-* LinkedIn: [linkedin.com/in/jstinsmith](https://linkedin.com/in/justnsmith)
-* Portfolio: [jstnsmth.github.io](https://justnsmith.com)
+* GitHub: [github.com/justnsmith](https://github.com/justnsmith)
+* LinkedIn: [linkedin.com/in/justnsmith](https://linkedin.com/in/justnsmith)
+* Portfolio: [justnsmith.com](https://justnsmith.com)
 * Email: justnwsmith@gmail.com
 
 ## Goals
