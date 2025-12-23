@@ -1,4 +1,17 @@
-import { Project } from '@types';
+export interface Project {
+    id: string;
+    year: number;
+    title: string;
+    date: string;
+    tech: string[];
+    description: string;
+    bullets: string[];
+    url?: string;
+    internalUrl?: string;
+    githubUrl?: string;
+    madeFor: string;
+    featured?: boolean;
+}
 
 export const projects: Project[] = [
     {
@@ -34,6 +47,7 @@ export const projects: Project[] = [
             "Optimized memory utilization and system performance through advanced data structures and algorithms",
             "Conducted rigorous testing to ensure the reliability, correctness, and stability of the allocator"
         ],
+        internalUrl: "/projects/custom-memory-allocator",  // Dedicated page in the app
         githubUrl: "https://github.com/justnsmith/custom-allocator-c",
         madeFor: "Personal",
         featured: true

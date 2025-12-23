@@ -32,15 +32,18 @@ export default function Projects() {
         };
     }, []);
 
-    const handleProjectClick = (projectId: string, url?: string, githubUrl?: string) => {
-        if (url) {
-            if (url.startsWith('http')) {
-                window.open(url, '_blank');
+    const handleProjectClick = (project: typeof projects[number]) => {
+        // Priority: internalUrl > url > githubUrl
+        if (project.internalUrl) {
+            navigate(project.internalUrl);
+        } else if (project.url) {
+            if (project.url.startsWith('http')) {
+                window.open(project.url, '_blank');
             } else {
-                navigate(`/projects/${projectId}`);
+                navigate(`/projects/${project.id}`);
             }
-        } else if (githubUrl) {
-            window.open(githubUrl, '_blank');
+        } else if (project.githubUrl) {
+            window.open(project.githubUrl, '_blank');
         }
     };
 
@@ -82,7 +85,7 @@ export default function Projects() {
                             }}
                             onMouseEnter={() => setHoveredProject(project.id)}
                             onMouseLeave={() => setHoveredProject(null)}
-                            onClick={() => handleProjectClick(project.id, project.url, project.githubUrl)}
+                            onClick={() => handleProjectClick(project)}
                         >
                             <div
                                 className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-indigo-500 transform origin-left"

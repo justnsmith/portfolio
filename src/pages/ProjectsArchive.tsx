@@ -5,15 +5,15 @@ import { projects } from '@data/projects';
 export default function ProjectsArchive() {
     const navigate = useNavigate();
 
-    const handleProjectClick = (projectId: string, url?: string, githubUrl?: string) => {
-        if (url) {
-            if (url.startsWith('http')) {
-                window.open(url, '_blank');
+    const handleProjectClick = (project: typeof projects[number]) => {
+        if (project.githubUrl) {
+            window.open(project.githubUrl, '_blank');
+        } else if (project.url) {
+            if (project.url.startsWith('http')) {
+                window.open(project.url, '_blank');
             } else {
-                navigate(`/projects/${projectId}`);
+                navigate(`/projects/${project.id}`);
             }
-        } else if (githubUrl) {
-            window.open(githubUrl, '_blank');
         }
     };
 
@@ -40,7 +40,7 @@ export default function ProjectsArchive() {
                         <div
                             key={project.id}
                             className="grid grid-cols-12 border-b border-gray-800 py-4 hover:bg-gray-800/20 transition-colors cursor-pointer text-sm"
-                            onClick={() => handleProjectClick(project.id, project.url, project.githubUrl)}
+                            onClick={() => handleProjectClick(project)}
                         >
                             {/* Year */}
                             <div className="col-span-1 text-gray-400 flex items-center">
@@ -72,7 +72,7 @@ export default function ProjectsArchive() {
                             {/* Link */}
                             <div className="col-span-2 text-left pl-2 flex items-center justify-start text-gray-400 hover:text-cyan-400 transition-colors">
                                 <span className="mr-1 text-xs cursor-pointer">
-                                    {project.url && !project.url.startsWith('http') ? 'View Details' : 'View Repo'}
+                                    View Repo
                                 </span>
                                 <svg
                                     className="w-3 h-3"
