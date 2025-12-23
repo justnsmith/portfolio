@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getFeaturedProjects } from '../data/projects';
+import { getFeaturedProjects } from '@data/projects';
 
 export default function Projects() {
     const navigate = useNavigate();

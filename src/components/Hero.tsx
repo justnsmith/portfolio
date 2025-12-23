@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub, faLinkedin, faGoogle } from "@fortawesome/free-brands-svg-icons";
-import MobileMenu from "./ui/MobileMenu";
-import NavigationLinks from "./ui/NavigationLinks";
-import ContactModal from "./ui/ContactModal";
-import { useActiveSection } from "../hooks";
-import { HeroProps } from "../types";
+import MobileMenu from "@ui/MobileMenu";
+import NavigationLinks from "@ui/NavigationLinks";
+import ContactModal from "@ui/ContactModal";
+import { useActiveSection } from "@hooks";
+import { HeroProps } from "@types";
 
 const words = ["Software Engineer", "Backend Developer"];
 const sectionIds = ["about", "tech", "experience", "projects"];

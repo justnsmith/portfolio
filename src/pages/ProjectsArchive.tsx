@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import PageLayout from '../components/layout/PageLayout';
-import { projects } from '../data/projects';
+import PageLayout from '@components/layout/PageLayout';
+import { projects } from '@data/projects';
 
 export default function ProjectsArchive() {
     const navigate = useNavigate();

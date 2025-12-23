@@ -1,10 +1,10 @@
 import { useRef, useEffect, useCallback } from "react";
-import { useMousePosition, useIsLargeScreen } from "../../hooks";
-import Hero from "../Hero";
-import About from "../About";
-import TechStack from "../TechStack";
-import Experience from "../Experience";
-import Projects from "../Projects";
+import { useMousePosition, useIsLargeScreen } from "@hooks";
+import Hero from "@components/Hero";
+import About from "@components/About";
+import TechStack from "@components/TechStack";
+import Experience from "@components/Experience";
+import Projects from "@components/Projects";
 
 export default function MainLayout() {
     const leftRef = useRef<HTMLDivElement>(null);

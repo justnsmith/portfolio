@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { ArrowRight, Trash2, RotateCcw, Plus, Github } from "lucide-react";
-import PageLayout from "../../components/layout/PageLayout";
+import PageLayout from "@components/layout/PageLayout";
 
 export default function EnhancedMemoryAllocator() {
     const INITIAL_HEAP_SIZE = 640000; // 640KB heap

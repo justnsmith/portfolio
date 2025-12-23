@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { useMousePosition } from "../../hooks";
-import { PageLayoutProps } from "../../types";
+import { useMousePosition } from "@hooks";
+import { PageLayoutProps } from "@types";
 
 export default function PageLayout({ children, maxWidth = "max-w-5xl" }: PageLayoutProps) {
     const navigate = useNavigate();
