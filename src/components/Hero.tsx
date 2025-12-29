@@ -7,43 +7,15 @@ import ContactModal from "@ui/ContactModal";
 import { useActiveSection } from "@hooks";
 import { HeroProps } from "@types";
 
-const words = ["Software Engineer", "Backend Developer"];
 const sectionIds = ["about", "tech", "experience", "projects"];
 
 export default function Hero({ isMobileView }: HeroProps) {
-    const [currentWordIndex, setCurrentWordIndex] = useState(0);
-    const [displayText, setDisplayText] = useState("");
-    const [isDeleting, setIsDeleting] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isContactModalOpen, setIsContactModalOpen] = useState(false);
-    const [contactAnimation, setContactAnimation] = useState("");
     const [contentHeight, setContentHeight] = useState(0);
     const [windowHeight, setWindowHeight] = useState(0);
 
     const activeSection = useActiveSection(sectionIds);
-
-    // Typing animation effect
-    useEffect(() => {
-        const currentWord = words[currentWordIndex];
-        const speed = isDeleting ? 50 : 100;
-
-        const timeout = setTimeout(() => {
-            setDisplayText((prev) =>
-                isDeleting
-                    ? currentWord.substring(0, prev.length - 1)
-                    : currentWord.substring(0, prev.length + 1)
-            );
-
-            if (!isDeleting && displayText === currentWord) {
-                setTimeout(() => setIsDeleting(true), 1200);
-            } else if (isDeleting && displayText === "") {
-                setIsDeleting(false);
-                setCurrentWordIndex((prev) => (prev + 1) % words.length);
-            }
-        }, speed);
-
-        return () => clearTimeout(timeout);
-    }, [displayText, isDeleting, currentWordIndex]);
 
     // Check window size and update content information
     useEffect(() => {
@@ -68,11 +40,7 @@ export default function Hero({ isMobileView }: HeroProps) {
     }, [isMobileView]);
 
     const handleContactClick = () => {
-        setContactAnimation("pulse");
-        setTimeout(() => {
-            setIsContactModalOpen(true);
-            setContactAnimation("");
-        }, 300);
+        setIsContactModalOpen(true);
     };
 
     const handleNavigationClick = (id: string) => {
@@ -116,24 +84,23 @@ export default function Hero({ isMobileView }: HeroProps) {
                     paddingTop: isMobileView ? '64px' : '80px'
                 }}
             >
-                {/* Profile Image */}
+                {/* Profile Image - Larger */}
                 <img
                     src="/profile.jpeg"
                     alt="Profile"
-                    className="w-36 h-36 mb-6 rounded-full border-2 border-indigo-500 shadow-md"
+                    className="w-44 h-44 mb-6 rounded-full border-2 border-indigo-500 shadow-md"
                 />
 
                 {/* Name */}
                 <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-4">Justin Smith</h1>
 
-                {/* Animated Role */}
-                <p className="text-indigo-400 text-xl md:text-2xl font-mono mb-6 h-12">
-                    {displayText}
-                    <span className="animate-pulse">|</span>
+                {/* Static Role */}
+                <p className="text-indigo-400 text-xl md:text-2xl font-mono mb-6">
+                    Software Engineer & Backend Developer
                 </p>
 
-                {/* Description */}
-                <p className="text-gray-400 max-w-lg mb-6">
+                {/* Description - More spacing above */}
+                <p className="text-gray-400 max-w-lg mb-6 mt-4">
                     I build efficient, scalable systems and am interested in low-level programming and optimizing performance.
                 </p>
 
@@ -148,20 +115,21 @@ export default function Hero({ isMobileView }: HeroProps) {
                     </a>
                     <button
                         onClick={handleContactClick}
-                        className={`border-2 border-indigo-500 text-gray-300 hover:bg-indigo-500 hover:text-white font-semibold py-2 px-6 rounded-lg transition-all hover:shadow-lg hover:shadow-indigo-500/20 transform hover:-translate-y-0.5 ${contactAnimation ? `animate-${contactAnimation}` : ""
-                            }`}
+                        className="border-2 border-indigo-500 text-gray-300 hover:bg-indigo-500 hover:text-white font-semibold py-2 px-6 rounded-lg transition-all hover:shadow-lg hover:shadow-indigo-500/20 transform hover:-translate-y-0.5"
                     >
                         Contact Me
                     </button>
                 </div>
 
-                {/* Desktop Navigation Links */}
+                {/* Desktop Navigation Links - Centered in remaining space */}
                 {!isMobileView && (
-                    <NavigationLinks
-                        sectionIds={sectionIds}
-                        activeSection={activeSection}
-                        onNavigate={handleNavigationClick}
-                    />
+                    <div className="flex-1 flex items-center justify-center">
+                        <NavigationLinks
+                            sectionIds={sectionIds}
+                            activeSection={activeSection}
+                            onNavigate={handleNavigationClick}
+                        />
+                    </div>
                 )}
 
                 {/* Social Icons */}
@@ -192,19 +160,6 @@ export default function Hero({ isMobileView }: HeroProps) {
                 isOpen={isContactModalOpen}
                 onClose={() => setIsContactModalOpen(false)}
             />
-
-            {/* CSS Animation for Pulse Effect */}
-            <style>{`
-                @keyframes pulse {
-                    0% { transform: scale(1); }
-                    50% { transform: scale(1.05); }
-                    100% { transform: scale(1); }
-                }
-
-                .animate-pulse {
-                    animation: pulse 0.3s ease-in-out;
-                }
-            `}</style>
         </>
     );
 }
