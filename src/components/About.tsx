@@ -14,10 +14,9 @@ export default function About() {
                     </h2>
                     <div className="h-px bg-gradient-to-r from-transparent via-indigo-500 to-transparent flex-grow"></div>
                 </div>
-
                 <div className="space-y-8 text-gray-400">
                     <p>
-                        I'm a third-year Computer Science student at the{' '}
+                        I'm a senior Computer Science student at the{' '}
                         <a
                             href="https://manoa.hawaii.edu"
                             target="_blank"
@@ -26,13 +25,10 @@ export default function About() {
                         >
                             University of Hawaiʻi at Mānoa
                         </a>
-                        , with a strong interest in backend development and lower-level systems. I enjoy building systems that work efficiently behind the scenes, whether it's a database-powered app, a network protocol project, or a tool that interacts closely with the operating system.
+                        , graduating in Spring 2026. I'm mainly focused on backend and systems work, and I like building things that sit below the surface and move data around efficiently.
                     </p>
                     <p>
-                        I've lived in Hawaiʻi for over 15 years and have come to value the balance between focused work and an active, curious life. When I'm not coding, you’ll likely find me running long distances, playing tennis, practicing piano, or reading. I’m also driven by a desire to understand how things work at a deeper level, from exploring memory management in C to seeing how compilers turn code into machine instructions.
-                    </p>
-                    <p>
-                        I'm always learning, always building, and always looking for ways to grow both technically and creatively.
+                        I'm based in Oʻahu, Hawaiʻi, and I’ve lived here most of my life. Outside of school and coding, I run long distances, lift, play tennis, and spend time learning things out of curiosity. I’m drawn to understanding how systems work at a deeper level, from memory management in C++ to why certain design decisions actually matter.
                     </p>
                 </div>
             </div>
