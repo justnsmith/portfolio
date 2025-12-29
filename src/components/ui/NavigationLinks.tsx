@@ -17,7 +17,7 @@ export default function NavigationLinks({ sectionIds, activeSection, onNavigate 
                     <span
                         className={`absolute left-0 bottom-0 w-full h-0.5 bg-indigo-500 transform origin-left transition-transform duration-300 ${
                             activeSection === id ? 'scale-x-100' : 'scale-x-0'
-                        } group-hover:scale-x-100`}
+                        }`}
                     />
                 </button>
             ))}
