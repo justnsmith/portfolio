@@ -57,7 +57,7 @@ export default function Projects() {
                 <div className="flex items-center mb-12">
                     <div className="h-px bg-gradient-to-r from-transparent via-indigo-500 to-transparent flex-grow"></div>
                     <h2 className="text-2xl font-bold text-white mx-4 flex items-center">
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-500 animate-pulse">
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-500">
                             Projects
                         </span>
                     </h2>
@@ -87,14 +87,6 @@ export default function Projects() {
                             onMouseLeave={() => setHoveredProject(null)}
                             onClick={() => handleProjectClick(project)}
                         >
-                            <div
-                                className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-indigo-500 transform origin-left"
-                                style={{
-                                    transform: hoveredProject === project.id ? 'scaleX(1)' : 'scaleX(0)',
-                                    transition: 'transform 200ms ease-in-out'
-                                }}
-                            ></div>
-
                             <div className="p-6">
                                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-4">
                                     <h3 className="text-xl font-medium text-white group-hover:text-cyan-300 transition-colors duration-200">
