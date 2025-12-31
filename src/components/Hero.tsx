@@ -3,15 +3,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub, faLinkedin, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import MobileMenu from "@ui/MobileMenu";
 import NavigationLinks from "@ui/NavigationLinks";
-import ContactModal from "@ui/ContactModal";
 import { useActiveSection } from "@hooks";
 import { HeroProps } from "@types";
 
 const sectionIds = ["about", "tech", "experience", "projects"];
 
-export default function Hero({ isMobileView }: HeroProps) {
+interface HeroPropsExtended extends HeroProps {
+    onContactClick: () => void;
+}
+
+export default function Hero({ isMobileView, onContactClick }: HeroPropsExtended) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [isContactModalOpen, setIsContactModalOpen] = useState(false);
     const [contentHeight, setContentHeight] = useState(0);
     const [windowHeight, setWindowHeight] = useState(0);
 
@@ -38,10 +40,6 @@ export default function Hero({ isMobileView }: HeroProps) {
             setIsMenuOpen(false);
         }
     }, [isMobileView]);
-
-    const handleContactClick = () => {
-        setIsContactModalOpen(true);
-    };
 
     const handleNavigationClick = (id: string) => {
         const section = document.getElementById(id);
@@ -114,7 +112,7 @@ export default function Hero({ isMobileView }: HeroProps) {
                         View Resume
                     </a>
                     <button
-                        onClick={handleContactClick}
+                        onClick={onContactClick}
                         className="border-2 border-indigo-500 text-gray-300 hover:bg-indigo-500 hover:text-white font-semibold py-2 px-6 rounded-lg transition-all hover:shadow-lg hover:shadow-indigo-500/20 transform hover:-translate-y-0.5"
                     >
                         Contact Me
@@ -154,12 +152,6 @@ export default function Hero({ isMobileView }: HeroProps) {
                     </a>
                 </div>
             </section>
-
-            {/* Contact Form Modal */}
-            <ContactModal
-                isOpen={isContactModalOpen}
-                onClose={() => setIsContactModalOpen(false)}
-            />
         </>
     );
 }
