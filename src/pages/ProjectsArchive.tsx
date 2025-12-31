@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PageLayout from '@components/layout/PageLayout';
 import { projects } from '@data/projects';
 
 export default function ProjectsArchive() {
     const navigate = useNavigate();
+    const [hoveredProject, setHoveredProject] = useState<string | null>(null);
 
     const handleProjectClick = (project: typeof projects[number]) => {
         if (project.githubUrl) {
@@ -19,73 +21,89 @@ export default function ProjectsArchive() {
 
     return (
         <PageLayout>
-            <div className="space-y-6">
-                {/* Title */}
-                <h1 className="text-4xl font-bold text-white">All Projects</h1>
-
-                {/* Column Headers */}
-                <div className="grid grid-cols-12 py-3 text-sm font-medium text-white">
-                    <div className="col-span-1">Year</div>
-                    <div className="col-span-3 pl-2">Project</div>
-                    <div className="col-span-2 pl-2">Made for</div>
-                    <div className="col-span-4 pl-2">Built with</div>
-                    <div className="col-span-2 text-left pl-2">Link</div>
+            <div className="max-w-7xl mx-auto space-y-8 px-4">
+                {/* Header */}
+                <div className="space-y-3">
+                    <h1 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-500">
+                        All Projects
+                    </h1>
+                    <p className="text-gray-400">
+                        A complete archive of my work and contributions
+                    </p>
                 </div>
 
-                <div className="border-b border-gray-800 my-2"></div>
+                {/* Table Container */}
+                <div className="w-full">
+                    {/* Column Headers */}
+                    <div className="grid grid-cols-12 gap-4 px-3 pt-6 pb-2 text-xs font-semibold tracking-wide text-gray-500 border-b border-gray-700">
+                        <div className="col-span-1">Year</div>
+                        <div className="col-span-3">Project</div>
+                        <div className="col-span-2">Made For</div>
+                        <div className="col-span-4">Built With</div>
+                        <div className="col-span-2 text-right">Link</div>
+                    </div>
 
-                {/* Projects table */}
-                <div>
-                    {projects.map((project) => (
-                        <div
-                            key={project.id}
-                            className="grid grid-cols-12 border-b border-gray-800 py-4 hover:bg-gray-800/20 transition-colors cursor-pointer text-sm"
-                            onClick={() => handleProjectClick(project)}
-                        >
-                            {/* Year */}
-                            <div className="col-span-1 text-gray-400 flex items-center">
-                                {project.year}
-                            </div>
+                    {/* Projects rows */}
+                    <div className="mt-2">
+                        {projects.map((project) => (
+                            <div
+                                key={project.id}
+                                className={`relative group grid grid-cols-12 gap-4 px-3 py-5 border-b border-gray-800/50 cursor-pointer transition-colors duration-200
+                                    hover:bg-gray-800/30
+                                    ${hoveredProject === project.id ? 'bg-gray-800/30' : ''}`}
+                                onMouseEnter={() => setHoveredProject(project.id)}
+                                onMouseLeave={() => setHoveredProject(null)}
+                                onClick={() => handleProjectClick(project)}
+                            >
+                                {/* Year - Stays Cyan */}
+                                <div className="col-span-1 text-cyan-400/80 font-mono text-sm flex items-center">
+                                    {project.year}
+                                </div>
 
-                            {/* Project Title */}
-                            <div className="col-span-3 pl-2 pr-4 flex items-center text-white font-semibold">
-                                {project.title}
-                            </div>
-
-                            {/* Made for */}
-                            <div className="col-span-2 pl-2 pr-4 font-medium text-gray-400 flex items-center">
-                                {project.madeFor}
-                            </div>
-
-                            {/* Built With */}
-                            <div className="col-span-4 pl-2 pr-4 flex flex-wrap gap-1 items-center">
-                                {project.tech.map((tech, techIndex) => (
+                                {/* Project Title - Now hovers to White instead of Aqua */}
+                                <div className="col-span-3 flex items-center">
                                     <span
-                                        key={techIndex}
-                                        className="px-2 py-0.5 border border-cyan-900/30 bg-cyan-900/10 text-cyan-400 rounded-md text-xs"
+                                        className={`text-sm font-medium transition-colors duration-200 ${hoveredProject === project.id
+                                                ? 'text-white'
+                                                : 'text-gray-300'
+                                            }`}
                                     >
-                                        {tech}
+                                        {project.title}
                                     </span>
-                                ))}
-                            </div>
+                                </div>
 
-                            {/* Link */}
-                            <div className="col-span-2 text-left pl-2 flex items-center justify-start text-gray-400 hover:text-cyan-400 transition-colors">
-                                <span className="mr-1 text-xs cursor-pointer">
-                                    View Repo
-                                </span>
-                                <svg
-                                    className="w-3 h-3"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                                </svg>
+                                {/* Made for */}
+                                <div className="col-span-2 flex items-center text-sm text-gray-500">
+                                    {project.madeFor}
+                                </div>
+
+                                {/* Built With - Readable tags */}
+                                <div className="col-span-4 flex flex-wrap items-center gap-2">
+                                    {project.tech.map((tech, techIndex) => (
+                                        <span
+                                            key={techIndex}
+                                            className="px-2 py-0.5 text-xs text-gray-400 border border-gray-800 rounded bg-gray-900/50 group-hover:border-gray-700 transition-colors"
+                                        >
+                                            {tech}
+                                        </span>
+                                    ))}
+                                </div>
+
+                                {/* Link */}
+                                <div className="col-span-2 flex items-center justify-end">
+                                    <span
+                                        className={`inline-flex items-center gap-1.5 text-xs font-medium transition-colors ${hoveredProject === project.id ? 'text-indigo-400' : 'text-gray-600'
+                                            }`}
+                                    >
+                                        <span className="hidden sm:inline">View Project</span>
+                                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                        </svg>
+                                    </span>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             </div>
         </PageLayout>
