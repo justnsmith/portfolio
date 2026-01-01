@@ -87,6 +87,26 @@ export default function Projects() {
                             onMouseLeave={() => setHoveredProject(null)}
                             onClick={() => handleProjectClick(project)}
                         >
+                            {/* Project Image */}
+                            {project.image && (
+                                <div className="relative h-48 overflow-hidden bg-gray-800/50">
+                                    <img
+                                        src={project.image}
+                                        alt={project.title}
+                                        className="w-full h-full object-cover object-top transition-transform duration-300"
+                                        style={{
+                                            transform: hoveredProject === project.id ? 'scale(1.05)' : 'scale(1)'
+                                        }}
+                                        onError={(e) => {
+                                            // Hide image if it fails to load
+                                            e.currentTarget.style.display = 'none';
+                                        }}
+                                    />
+                                    {/* Gradient overlay for better text contrast */}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/20 to-transparent opacity-60"></div>
+                                </div>
+                            )}
+
                             <div className="p-6">
                                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-4">
                                     <h3 className="text-xl font-medium text-white group-hover:text-cyan-300 transition-colors duration-200">

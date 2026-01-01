@@ -11,9 +11,50 @@ export interface Project {
     githubUrl?: string;
     madeFor: string;
     featured?: boolean;
+    image?: string;
 }
 
 export const projects: Project[] = [
+    {
+        id: "pantry-pals",
+        year: 2025,
+        title: "Pantry Pals",
+        date: "December 2025",
+        tech: ["Next.js", "PostgreSQL", "Prisma", "TypeScript", "Vercel"],
+        description: "A collaborative full-stack pantry management application helping users track ingredients, manage shopping lists, and discover recipes. Led backend architecture for a team of 9 developers.",
+        bullets: [
+            "Led backend development for a team of 9, architecting the PostgreSQL database schema and implementing Prisma ORM for type-safe data access",
+            "Engineered secure user authentication system with JWT token-based sessions, including email verification and password reset functionality",
+            "Designed and implemented RESTful API endpoints for pantry inventory, shopping lists, and recipe management with proper authorization middleware",
+            "Established CI/CD pipeline with GitHub Actions and deployed to Vercel with automated database migrations",
+            "Implemented real-time data synchronization for shared pantry lists, enabling seamless collaboration between household members",
+            "Optimized database queries and implemented caching strategies to handle concurrent user operations efficiently"
+        ],
+        url: "https://pantry-pals.vercel.app",
+        githubUrl: "https://github.com/pantry-pals",
+        madeFor: "College",
+        featured: true,
+        image: "/projects/pantry-pals.png"
+    },
+    {
+        id: "rubiks-cube-solver",
+        year: 2025,
+        title: "Rubik's Cube Solver",
+        date: "October 2025",
+        tech: ["C++"],
+        description: "An interactive Rubik's Cube solver implementing the beginner's method algorithm with a colorful terminal-based visualization and complete solving capability.",
+        bullets: [
+            "Implemented the beginner's method solving algorithm with functions for each phase: white cross, white corners, middle layer, yellow cross, and final positioning",
+            "Designed object-oriented architecture with encapsulated Cube and Side classes to manage state and rotations efficiently",
+            "Created colorful ANSI terminal visualization to display the cube's current state with proper color-coding for each face",
+            "Developed 16 distinct move operations (left, right, middle, top, bottom rotations) with inverse move logic for algorithm execution",
+            "Built scramble generation function with random move sequences to create solvable cube configurations for testing",
+            "Implemented comprehensive piece-finding algorithms to locate edges and corners during solving phases"
+        ],
+        githubUrl: "https://github.com/justnsmith/rubiks-cube-solver",
+        madeFor: "Personal",
+        featured: false,
+    },
     {
         id: "image-processing-service",
         year: 2025,
@@ -31,7 +72,8 @@ export const projects: Project[] = [
         url: "https://image-processing-service-nk16.onrender.com",
         githubUrl: "https://github.com/justnsmith/image-processing-service",
         madeFor: "Personal",
-        featured: true
+        featured: true,
+        image: "/projects/image-processing-service.png"
     },
     {
         id: "custom-memory-allocator",
@@ -47,10 +89,11 @@ export const projects: Project[] = [
             "Optimized memory utilization and system performance through advanced data structures and algorithms",
             "Conducted rigorous testing to ensure the reliability, correctness, and stability of the allocator"
         ],
-        internalUrl: "/projects/custom-memory-allocator",  // Dedicated page in the app
+        internalUrl: "/projects/custom-memory-allocator",
         githubUrl: "https://github.com/justnsmith/custom-allocator-c",
         madeFor: "Personal",
-        featured: true
+        featured: true,
+        image: "/projects/memory-allocator.png"
     },
     {
         id: "portfolio-website",
@@ -67,7 +110,7 @@ export const projects: Project[] = [
         ],
         githubUrl: "https://github.com/justnsmith/justnsmith.github.io",
         madeFor: "Personal",
-        featured: false
+        featured: false,
     },
     {
         id: "puzzle-game",
@@ -84,7 +127,7 @@ export const projects: Project[] = [
         ],
         githubUrl: "https://github.com/justnsmith/puzzlegame",
         madeFor: "Personal",
-        featured: false
+        featured: false,
     },
     {
         id: "study-buddy",
@@ -102,14 +145,15 @@ export const projects: Project[] = [
         ],
         githubUrl: "https://thesoftwaredevelopers.github.io",
         madeFor: "College",
-        featured: true
+        featured: true,
+        image: "/projects/study-buddy.png"
     },
     {
         id: "polynesian-navigation",
         year: 2024,
         title: "Polynesian Navigation Route Planner",
         date: "November 2024",
-        tech: ["Java", "Performance Optimization"],
+        tech: ["Java"],
         description: "Route planning algorithm for Polynesian navigation.",
         bullets: [
             "Implemented graph algorithms for route optimization",
@@ -126,7 +170,7 @@ export const projects: Project[] = [
         year: 2024,
         title: "Data Encryption",
         date: "November 2024",
-        tech: ["Java", "Cryptography"],
+        tech: ["Java"],
         description: "Implementation of various encryption algorithms.",
         bullets: [
             "Implemented multiple encryption algorithms",
@@ -143,7 +187,7 @@ export const projects: Project[] = [
         year: 2024,
         title: "Bank Database",
         date: "July 2024",
-        tech: ["C", "Makefile", "Vim"],
+        tech: ["C"],
         description: "A banking system for managing customer records using linked lists and text file storage with robust error handling.",
         bullets: [
             "Developed a banking system to manage customer records using linked lists and text file storage",
@@ -154,7 +198,7 @@ export const projects: Project[] = [
         ],
         githubUrl: "https://github.com/justnsmith/ICS212/tree/main/project1",
         madeFor: "College",
-        featured: true
+        featured: false,
     }
 ];
 

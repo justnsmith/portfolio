@@ -65,8 +65,8 @@ export default function ProjectsArchive() {
                                     <div className="flex items-start justify-between gap-3">
                                         <span
                                             className={`text-base font-medium transition-colors duration-200 ${hoveredProject === project.id
-                                                ? 'text-white'
-                                                : 'text-gray-300'
+                                                    ? 'text-white'
+                                                    : 'text-gray-300'
                                                 }`}
                                         >
                                             {project.title}
@@ -113,8 +113,8 @@ export default function ProjectsArchive() {
                                     <div className="col-span-3 flex items-center">
                                         <span
                                             className={`text-sm font-medium transition-colors duration-200 ${hoveredProject === project.id
-                                                ? 'text-white'
-                                                : 'text-gray-300'
+                                                    ? 'text-white'
+                                                    : 'text-gray-300'
                                                 }`}
                                         >
                                             {project.title}
