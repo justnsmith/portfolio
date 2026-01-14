@@ -33,7 +33,8 @@ export const projects: Project[] = [
             "Automated cluster setup, configuration, and orchestration with shell scripts and docker-compose"
         ],
         madeFor: "Personal",
-        featured: false,
+        featured: true,
+        image: "/projects/kv-store.png"
     },
     {
         id: "pantry-pals",
@@ -165,7 +166,7 @@ export const projects: Project[] = [
         ],
         githubUrl: "https://thesoftwaredevelopers.github.io",
         madeFor: "College",
-        featured: true,
+        featured: false,
         image: "/projects/study-buddy.png"
     },
     {
