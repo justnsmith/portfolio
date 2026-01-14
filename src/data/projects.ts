@@ -16,6 +16,26 @@ export interface Project {
 
 export const projects: Project[] = [
     {
+        id: "key-value-store",
+        year: 2026,
+        title: "Key-Value Store",
+        date: "January 2026",
+        tech: ["C++", "Go", "Docker", "AWS", "Terraform"],
+        description: "A high-performance distributed key-value store featuring an LSM-tree storage engine, crash-safe durability, and multi-node cloud deployment.",
+        bullets: [
+            "Built a high-concurrency LSM-tree storage engine with Write-Ahead Logging for durability and crash recovery",
+            "Implemented SSTables with Bloom filters for fast point lookups and efficient range scans",
+            "Designed an LRU cache and multi-threaded background compaction to sustain high write throughput",
+            "Developed a concurrent TCP server using a custom binary protocol for CRUD and scan operations",
+            "Built a Go CLI client for remote interaction with the server",
+            "Wrote a benchmarking suite achieving 1.1M ops/sec on 100B values while maintaining thread safety and integrity",
+            "Containerized the full system with Docker and deployed a multi-node cluster to AWS EC2 using Terraform",
+            "Automated cluster setup, configuration, and orchestration with shell scripts and docker-compose"
+        ],
+        madeFor: "Personal",
+        featured: false,
+    },
+    {
         id: "pantry-pals",
         year: 2025,
         title: "Pantry Pals",
