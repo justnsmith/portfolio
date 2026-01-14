@@ -32,6 +32,7 @@ export const projects: Project[] = [
             "Containerized the full system with Docker and deployed a multi-node cluster to AWS EC2 using Terraform",
             "Automated cluster setup, configuration, and orchestration with shell scripts and docker-compose"
         ],
+        githubUrl: "https://github.com/justnsmith/kv-store",
         madeFor: "Personal",
         featured: true,
         image: "/projects/kv-store.png"
@@ -77,26 +78,6 @@ export const projects: Project[] = [
         featured: false,
     },
     {
-        id: "image-processing-service",
-        year: 2025,
-        title: "Image Processing Service",
-        date: "April 2025",
-        tech: ["AWS S3", "Docker", "Go", "PostgreSQL", "Redis", "Typescript", "TailwindCSS"],
-        description: "A full-stack image processing application with advanced backend services for secure storage, efficient processing, and dependable data management.",
-        bullets: [
-            "Implemented secure user authentication with JWT token-based authentication, email verification, and password reset functionality",
-            "Designed scalable storage solution using S3 bucket integration, Redis caching, and PostgreSQL metadata management",
-            "Built backend image processing capabilities including resize, crop, and filter application using Go imaging libraries",
-            "Created a responsive React frontend with TypeScript and Tailwind CSS for a user-friendly interface",
-            "Developed complete API endpoints for user and image management with proper authentication and authorization"
-        ],
-        url: "https://image-processing-service-nk16.onrender.com",
-        githubUrl: "https://github.com/justnsmith/image-processing-service",
-        madeFor: "Personal",
-        featured: true,
-        image: "/projects/image-processing-service.png"
-    },
-    {
         id: "custom-memory-allocator",
         year: 2025,
         title: "Custom Memory Allocator + Visualizer",
@@ -115,6 +96,26 @@ export const projects: Project[] = [
         madeFor: "Personal",
         featured: true,
         image: "/projects/memory-allocator.png"
+    },
+    {
+        id: "image-processing-service",
+        year: 2025,
+        title: "Image Processing Service",
+        date: "April 2025",
+        tech: ["AWS S3", "Docker", "Go", "PostgreSQL", "Redis", "Typescript", "TailwindCSS"],
+        description: "A full-stack image processing application with advanced backend services for secure storage, efficient processing, and dependable data management.",
+        bullets: [
+            "Implemented secure user authentication with JWT token-based authentication, email verification, and password reset functionality",
+            "Designed scalable storage solution using S3 bucket integration, Redis caching, and PostgreSQL metadata management",
+            "Built backend image processing capabilities including resize, crop, and filter application using Go imaging libraries",
+            "Created a responsive React frontend with TypeScript and Tailwind CSS for a user-friendly interface",
+            "Developed complete API endpoints for user and image management with proper authentication and authorization"
+        ],
+        url: "https://image-processing-service-nk16.onrender.com",
+        githubUrl: "https://github.com/justnsmith/image-processing-service",
+        madeFor: "Personal",
+        featured: true,
+        image: "/projects/image-processing-service.png"
     },
     {
         id: "portfolio-website",
