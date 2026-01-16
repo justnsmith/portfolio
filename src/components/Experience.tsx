@@ -50,36 +50,32 @@ export default function Experience() {
                                     <h4 className="text-md font-medium text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400 mb-3">
                                         SQLPlus Research – University of Hawaiʻi
                                     </h4>
-
                                     <p className="text-gray-300 mb-4 leading-relaxed">
-                                        Working with Dr. Yifan Wang on database systems research at the
-                                        intersection of query optimization and AI. Contributing to an
-                                        in-progress PostgreSQL extension exploring language-aware SQL
-                                        operators and their impact on query execution.
+                                        Main contributor under faculty guidance, building a custom PostgreSQL
+                                        extension that adds SQL operators for natural language condition matching.
+                                        Focused on improving query accuracy while minimizing runtime and API costs.
                                     </p>
 
                                     <ul className="space-y-2 mb-4">
                                         <li className="flex items-start gap-2 text-sm text-gray-400">
                                             <span className="text-indigo-400 mt-1">▸</span>
                                             <span>
-                                                Developing experimental PostgreSQL operators to support
-                                                natural-language-style query interactions within the planner
-                                                and executor
+                                                Designing and evaluating BM25, pre-filtering, embedding-based
+                                                retrieval, and LLM pipelines to reduce latency and external API usage
                                             </span>
                                         </li>
                                         <li className="flex items-start gap-2 text-sm text-gray-400">
                                             <span className="text-indigo-400 mt-1">▸</span>
                                             <span>
-                                                Prototyping asynchronous execution paths to study query
-                                                latency, throughput, and blocking behavior
+                                                Achieved 98.4% accuracy across 1,000 natural-language SQL queries
+                                                with total runtime of 92.45s
                                             </span>
                                         </li>
                                         <li className="flex items-start gap-2 text-sm text-gray-400">
                                             <span className="text-indigo-400 mt-1">▸</span>
                                             <span>
-                                                Investigating retrieval and caching strategies to compare
-                                                model-generated outputs against ground-truth datasets and
-                                                reduce reliance on real-time LLM inference
+                                                Implementing data retrieval and validation pipelines to verify
+                                                operator correctness before porting to C++
                                             </span>
                                         </li>
                                     </ul>
@@ -87,9 +83,6 @@ export default function Experience() {
                                     <div className="flex flex-wrap gap-2">
                                         <span className="px-3 py-1 bg-cyan-500/10 text-cyan-300 rounded-full text-xs font-medium border border-cyan-500/20">
                                             Database Systems
-                                        </span>
-                                        <span className="px-3 py-1 bg-indigo-500/10 text-indigo-300 rounded-full text-xs font-medium border border-indigo-500/20">
-                                            PostgreSQL Internals
                                         </span>
                                         <span className="px-3 py-1 bg-indigo-500/10 text-indigo-300 rounded-full text-xs font-medium border border-indigo-500/20">
                                             Query Optimization
