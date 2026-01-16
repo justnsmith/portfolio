@@ -82,14 +82,14 @@ export const projects: Project[] = [
         year: 2025,
         title: "Custom Memory Allocator + Visualizer",
         date: "April 2025",
-        tech: ["C", "Typescript", "TailwindCSS"],
-        description: "A custom memory allocator designed to replace standard memory management functions (malloc, free, realloc). It includes a visualizer to analyze memory fragmentation, allocation strategies, and overall memory usage.",
+        tech: ["C", "TypeScript", "TailwindCSS"],
+        description: "A high-performance custom heap allocator in C with multiple allocation strategies, integrity checks, and a real-time visualizer for analyzing fragmentation, memory efficiency, and allocation behavior.",
         bullets: [
-            "Engineered a custom memory allocator to handle memory allocation and deallocation, replacing standard functions like malloc, free, and realloc",
-            "Developed an interactive visualizer to demonstrate memory fragmentation and visualize various allocation strategies in real time",
-            "Created a user-friendly interface for easy monitoring of memory usage and performance",
-            "Optimized memory utilization and system performance through advanced data structures and algorithms",
-            "Conducted rigorous testing to ensure the reliability, correctness, and stability of the allocator"
+            "Implemented a custom heap allocator supporting First-Fit, Best-Fit, and Worst-Fit strategies, achieving 96M ops/sec with <1% fragmentation on a fixed-size, single-threaded heap",
+            "Designed an explicit free-list with 24-byte block headers, alignment, and coalescing, reaching 84% memory efficiency",
+            "Built a benchmarking framework to measure allocation speed, fragmentation, and memory overhead",
+            "Added heap integrity checks to detect double-free, use-after-free, and memory corruption across 30+ edge cases",
+            "Developed an interactive visualizer in TypeScript and TailwindCSS to analyze heap behavior and fragmentation in real time"
         ],
         internalUrl: "/projects/custom-memory-allocator",
         githubUrl: "https://github.com/justnsmith/custom-allocator-c",
