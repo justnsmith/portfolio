@@ -18,7 +18,7 @@ export const projects: Project[] = [
     {
         id: "key-value-store",
         year: 2026,
-        title: "Key-Value Store",
+        title: "Distributed Key-Value Storage",
         date: "January 2026",
         tech: ["C++", "Go", "Docker", "AWS", "Terraform"],
         description: "A high-performance distributed key-value store featuring an LSM-tree storage engine, crash-safe durability, and multi-node cloud deployment.",
