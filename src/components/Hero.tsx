@@ -64,7 +64,7 @@ export default function Hero({ isMobileView, onContactClick }: HeroPropsExtended
 
             <section
                 id="hero-section"
-                className={`relative flex flex-col items-center px-8 sm:px-14 bg-transparent text-white text-center ${contentHeight > windowHeight ? 'h-auto pb-16' : 'min-h-screen'}`}
+                className="relative flex flex-col items-center px-8 sm:px-14 bg-transparent text-white text-center min-h-screen"
                 style={{
                     transform: `scale(${scaleFactor})`,
                     transformOrigin: 'top center',

@@ -26,10 +26,10 @@ export default function About() {
                         >
                             University of Hawaiʻi at Mānoa
                         </a>
-                        , graduating in Spring 2026. I'm mainly focused on backend and systems work, and I like building things that sit below the surface and move data around efficiently.
+                        , graduating Spring 2026 and looking for backend or systems engineering roles. I build things that operate close to the metal — storage engines, memory allocators, distributed systems — and I care about the tradeoffs that make them fast, correct, and reliable.
                     </p>
                     <p>
-                        I'm based in Oʻahu, Hawaiʻi, and I've lived here most of my life. Outside of school and coding, I run long distances, lift, play tennis, and spend time learning things out of curiosity. I'm drawn to understanding how systems work at a deeper level — from memory management in C++ to why certain design decisions actually matter.
+                        Currently I'm contributing to GPU-accelerated LLM inference research in collaboration with Carnegie Mellon University, and interning at U.S. Indo-Pacific Command under active Secret Clearance. Outside of that, I'm based in Oʻahu and spend my time running long distances, lifting, and playing tennis.
                     </p>
                 </div>
             </div>

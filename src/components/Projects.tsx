@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getFeaturedProjects } from '@data/projects';
 import SectionHeading from '@components/ui/SectionHeading';
+import { SiGithub } from 'react-icons/si';
 
 export default function Projects() {
     const navigate = useNavigate();
@@ -54,8 +55,10 @@ export default function Projects() {
                                     isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                                 }`}
                                 style={{
-                                    transition: 'opacity 0.5s ease, transform 0.3s ease, border-color 0.2s ease, background 0.2s ease',
-                                    transitionDelay: isInView ? `${index * 80}ms` : '0ms',
+                                    transition: isInView
+                                        ? 'opacity 0.5s ease, border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease'
+                                        : 'none',
+                                    transitionDelay: isInView ? `${index * 80}ms, 0ms, 0ms, 0ms` : '0ms',
                                     background: isHovered ? 'rgba(34, 211, 238, 0.03)' : 'rgba(255,255,255,0.025)',
                                     border: '1px solid',
                                     borderColor: isHovered ? 'var(--border-accent)' : 'var(--border)',
@@ -102,16 +105,32 @@ export default function Projects() {
                                         >
                                             {project.title}
                                         </h3>
-                                        <span
-                                            className="shrink-0 text-xs"
-                                            style={{
-                                                fontFamily: 'var(--font-mono)',
-                                                color: 'var(--accent)',
-                                                opacity: 0.7,
-                                            }}
-                                        >
-                                            {project.date}
-                                        </span>
+                                        <div className="flex items-center gap-3 shrink-0">
+                                            {project.githubUrl && (
+                                                <a
+                                                    href={project.githubUrl}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    onClick={e => e.stopPropagation()}
+                                                    style={{ color: 'var(--text-muted)', transition: 'color 0.2s ease' }}
+                                                    onMouseEnter={e => (e.currentTarget.style.color = 'var(--text-primary)')}
+                                                    onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-muted)')}
+                                                    aria-label="View on GitHub"
+                                                >
+                                                    <SiGithub size={15} />
+                                                </a>
+                                            )}
+                                            <span
+                                                className="text-xs"
+                                                style={{
+                                                    fontFamily: 'var(--font-mono)',
+                                                    color: 'var(--accent)',
+                                                    opacity: 0.7,
+                                                }}
+                                            >
+                                                {project.date}
+                                            </span>
+                                        </div>
                                     </div>
 
                                     {/* Tech tags */}
