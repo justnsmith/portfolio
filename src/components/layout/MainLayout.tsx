@@ -7,6 +7,7 @@ import Experience from "@components/Experience";
 import Projects from "@components/Projects";
 import ContactModal from "@components/ui/ContactModal";
 import CustomScrollbar from "@components/ui/CustomScrollbar";
+import MobileProgressBar from "@components/ui/MobileProgressBar";
 
 export default function MainLayout() {
     const leftRef = useRef<HTMLDivElement>(null);
@@ -75,6 +76,7 @@ export default function MainLayout() {
                     </div>
                 ) : (
                     <div className="flex flex-col min-h-screen z-10 pb-24" style={{ backgroundColor: 'var(--bg-base)' }}>
+                        <MobileProgressBar />
                         <Hero isMobileView={true} onContactClick={() => setIsContactModalOpen(true)} />
                         <About />
                         <TechStack />

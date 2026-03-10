@@ -71,11 +71,10 @@ export default function MobileMenu({
                             <button
                                 key={id}
                                 onClick={() => handleNavClick(id)}
-                                className="flex items-center gap-3 w-full px-4 py-2.5 text-left transition-all duration-150"
+                                className="flex items-center w-full px-4 py-2.5 text-left transition-all duration-150"
                                 style={{
                                     transitionDelay: isOpen ? `${index * 30}ms` : '0ms',
-                                    background: isActive ? 'rgba(34, 211, 238, 0.06)' : 'transparent',
-                                    color: isActive ? 'var(--text-primary)' : 'var(--text-secondary)',
+                                    background: 'transparent',
                                 }}
                                 onMouseEnter={e => {
                                     if (!isActive) (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.04)';
@@ -84,13 +83,12 @@ export default function MobileMenu({
                                     if (!isActive) (e.currentTarget as HTMLElement).style.background = 'transparent';
                                 }}
                             >
-                                <span
-                                    className="text-xs"
-                                    style={{ fontFamily: 'var(--font-mono)', color: isActive ? 'var(--accent)' : 'var(--text-muted)' }}
-                                >
-                                    {String(index + 1).padStart(2, '0')}
-                                </span>
-                                <span style={{ fontFamily: 'var(--font-body)', fontSize: '0.875rem', fontWeight: isActive ? 500 : 400 }}>
+                                <span style={{
+                                    fontFamily: 'var(--font-display)',
+                                    fontSize: '0.875rem',
+                                    fontWeight: isActive ? 500 : 400,
+                                    color: isActive ? 'var(--accent)' : 'var(--text-secondary)',
+                                }}>
                                     {labels[id] ?? id.charAt(0).toUpperCase() + id.slice(1)}
                                 </span>
                             </button>
