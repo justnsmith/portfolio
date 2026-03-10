@@ -111,7 +111,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                             style={{
                                 background: 'rgba(255,255,255,0.05)',
                                 border: '1px solid var(--border)',
-                                color: 'var(--text-muted)'
+                                color: 'var(--text-muted)',
                             }}
                             aria-label="Close modal"
                             onMouseEnter={e => {
@@ -123,7 +123,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                                 (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)';
                             }}
                         >
-                            <FontAwesomeIcon icon={faTimes} className="w-3.5 h-3.5" />
+                            <FontAwesomeIcon icon={faTimes} style={{ fontSize: '0.875rem', display: 'block' }} />
                         </button>
                     </div>
 
@@ -170,19 +170,40 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                                                 {field.charAt(0).toUpperCase() + field.slice(1)}
                                             </label>
                                             {field === 'message' ? (
-                                                <textarea
-                                                    id={field}
-                                                    name={field}
-                                                    value={formData[field]}
-                                                    onChange={handleInputChange}
-                                                    onFocus={() => handleFieldFocus(field)}
-                                                    onBlur={handleFieldBlur}
-                                                    rows={5}
-                                                    style={{ ...inputStyle, resize: 'none' }}
-                                                    required
-                                                    onFocusCapture={e => (e.currentTarget.style.borderColor = 'var(--border-accent)')}
-                                                    onBlurCapture={e => (e.currentTarget.style.borderColor = 'var(--border)')}
-                                                />
+                                                <div className="relative">
+                                                    <textarea
+                                                        id={field}
+                                                        name={field}
+                                                        value={formData[field]}
+                                                        onChange={handleInputChange}
+                                                        onFocus={() => handleFieldFocus(field)}
+                                                        onBlur={handleFieldBlur}
+                                                        rows={5}
+                                                        maxLength={500}
+                                                        style={{ ...inputStyle, resize: 'none', paddingBottom: '24px' }}
+                                                        required
+                                                        onFocusCapture={e => (e.currentTarget.style.borderColor = 'var(--border-accent)')}
+                                                        onBlurCapture={e => (e.currentTarget.style.borderColor = 'var(--border)')}
+                                                    />
+                                                    {formData.message.length > 0 && (
+                                                        <span
+                                                            style={{
+                                                                position: 'absolute',
+                                                                bottom: '8px',
+                                                                right: '10px',
+                                                                fontSize: '0.7rem',
+                                                                fontFamily: 'var(--font-mono)',
+                                                                color: formData.message.length >= 450
+                                                                    ? formData.message.length >= 500 ? '#f87171' : '#fbbf24'
+                                                                    : 'var(--text-muted)',
+                                                                pointerEvents: 'none',
+                                                                transition: 'color 0.2s ease',
+                                                            }}
+                                                        >
+                                                            {formData.message.length}/500
+                                                        </span>
+                                                    )}
+                                                </div>
                                             ) : (
                                                 <input
                                                     type={field === 'email' ? 'email' : 'text'}

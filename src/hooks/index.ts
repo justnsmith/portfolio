@@ -107,12 +107,18 @@ export function useContactForm() {
         e.preventDefault();
 
         if (!formData.name || !formData.email || !formData.message) {
-            setFormStatus({
-                submitting: false,
-                success: false,
-                error: true,
-                message: "Please fill out all fields"
-            });
+            setFormStatus({ submitting: false, success: false, error: true, message: "Please fill out all fields." });
+            return;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formData.email)) {
+            setFormStatus({ submitting: false, success: false, error: true, message: "Please enter a valid email address." });
+            return;
+        }
+
+        if (formData.message.length > 500) {
+            setFormStatus({ submitting: false, success: false, error: true, message: "Message must be 500 characters or less." });
             return;
         }
 
