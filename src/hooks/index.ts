@@ -124,24 +124,19 @@ export function useContactForm() {
                 message: "Sending message..."
             });
 
-            const response = await fetch("https://api.web3forms.com/submit", {
+            const response = await fetch("/api/contact", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Accept: "application/json"
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY,
                     name: formData.name,
                     email: formData.email,
                     message: formData.message,
-                    subject: `New contact from ${formData.name} via portfolio`
                 })
             });
 
             const result = await response.json();
 
-            if (result.success) {
+            if (response.ok && result.success) {
                 setFormStatus({
                     submitting: false,
                     success: true,
