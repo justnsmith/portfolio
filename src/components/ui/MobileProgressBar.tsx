@@ -1,18 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 export default function MobileProgressBar() {
-    const [progress, setProgress] = useState(0);
+    const fillRef = useRef<HTMLDivElement>(null);
+    const dotRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        const onScroll = () => {
+        const update = () => {
             const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
             const max = scrollHeight - clientHeight;
-            setProgress(max > 0 ? scrollTop / max : 0);
+            const pct = max > 0 ? (scrollTop / max) * 100 : 0;
+            if (fillRef.current) fillRef.current.style.width = `${pct}%`;
+            if (dotRef.current) dotRef.current.style.left = `${pct}%`;
         };
 
-        window.addEventListener('scroll', onScroll, { passive: true });
-        onScroll();
-        return () => window.removeEventListener('scroll', onScroll);
+        window.addEventListener('scroll', update, { passive: true });
+        update();
+        return () => window.removeEventListener('scroll', update);
     }, []);
 
     return (
@@ -27,32 +30,29 @@ export default function MobileProgressBar() {
                 zIndex: 100,
             }}
         >
-            {/* Filled progress */}
             <div
+                ref={fillRef}
                 style={{
                     height: '100%',
-                    width: `${progress * 100}%`,
+                    width: '0%',
                     background: 'linear-gradient(to right, rgba(34,211,238,0.3), var(--accent))',
                     boxShadow: '0 0 6px 1px rgba(34,211,238,0.25)',
-                    transition: 'width 0.08s linear',
-                    willChange: 'width',
                     borderRadius: '0 99px 99px 0',
+                    willChange: 'width',
                 }}
             />
-
-            {/* Glowing tip dot */}
             <div
+                ref={dotRef}
                 style={{
                     position: 'absolute',
                     top: '50%',
-                    left: `${progress * 100}%`,
+                    left: '0%',
                     transform: 'translate(-50%, -50%)',
                     width: '8px',
                     height: '8px',
                     borderRadius: '50%',
                     background: 'var(--accent)',
                     boxShadow: '0 0 10px 3px rgba(34,211,238,0.7), 0 0 4px 1px rgba(34,211,238,0.9)',
-                    transition: 'left 0.08s linear',
                     willChange: 'left',
                     pointerEvents: 'none',
                 }}
