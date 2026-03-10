@@ -1,36 +1,66 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap');
 
-/* Smooth scrolling */
+/* ─── CSS Variables ─────────────────────────────── */
+:root {
+    --accent:         #22d3ee;   /* cyan-400  */
+    --accent-soft:    rgba(34, 211, 238, 0.12);
+    --accent-indigo:  #6366f1;   /* indigo-500 */
+    --bg-base:        #0d1117;
+    --bg-surface:     #111827;
+    --bg-elevated:    #1a2030;
+    --text-primary:   #f0f4f8;
+    --text-secondary: #8b9ab0;
+    --text-muted:     #4a5568;
+    --border:         rgba(255, 255, 255, 0.06);
+    --border-accent:  rgba(34, 211, 238, 0.2);
+    --font-display:   'Outfit', -apple-system, sans-serif;
+    --font-body:      'DM Sans', -apple-system, sans-serif;
+    --font-mono:      'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+}
+
+/* ─── Base ──────────────────────────────────────── */
 html {
     scroll-behavior: smooth;
-    font-size: 20px;
+    font-size: 16px;
 }
 
-/* Hide scrollbar for all browsers */
-::-webkit-scrollbar {
-    display: none;
-}
-
-html {
-    scrollbar-width: none;
-}
+::-webkit-scrollbar { display: none; }
+html { scrollbar-width: none; }
 
 body {
     -ms-overflow-style: none;
-    font-family: 'Helvetica', sans-serif;
+    font-family: var(--font-body);
     margin: 0;
     padding: 0;
-    background-color: #1f2937;
-    color: white;
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-/* Text selection styling */
+/* ─── Selection ─────────────────────────────────── */
 ::selection {
-    background-color: rgba(34, 211, 238, 0.3);
+    background-color: rgba(34, 211, 238, 0.2);
+    color: white;
+}
+::-moz-selection {
+    background-color: rgba(34, 211, 238, 0.2);
     color: white;
 }
 
-::-moz-selection {
-    background-color: rgba(34, 211, 238, 0.3);
-    color: white;
+/* ─── Typography helpers ────────────────────────── */
+.font-display { font-family: var(--font-display); }
+.font-mono    { font-family: var(--font-mono); }
+
+/* ─── Subtle noise overlay (applied via pseudo-element on body) */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-size: 256px 256px;
 }

@@ -19,7 +19,6 @@ export default function Hero({ isMobileView, onContactClick }: HeroPropsExtended
 
     const activeSection = useActiveSection(sectionIds);
 
-    // Check window size and update content information
     useEffect(() => {
         const updateSizes = () => {
             setWindowHeight(window.innerHeight);
@@ -28,27 +27,20 @@ export default function Hero({ isMobileView, onContactClick }: HeroPropsExtended
                 setContentHeight(heroSection.scrollHeight);
             }
         };
-
         updateSizes();
         window.addEventListener('resize', updateSizes);
         return () => window.removeEventListener('resize', updateSizes);
     }, []);
 
-    // Close menu when switching from mobile to desktop
     useEffect(() => {
-        if (!isMobileView) {
-            setIsMenuOpen(false);
-        }
+        if (!isMobileView) setIsMenuOpen(false);
     }, [isMobileView]);
 
     const handleNavigationClick = (id: string) => {
         const section = document.getElementById(id);
-        if (section) {
-            section.scrollIntoView({ behavior: "smooth" });
-        }
+        if (section) section.scrollIntoView({ behavior: "smooth" });
     };
 
-    // Determine the scaling factor needed
     const calculatedScaleFactor = () => {
         if (contentHeight > windowHeight && windowHeight > 0) {
             return isMobileView ? 1 : Math.min(0.95, windowHeight / contentHeight);
@@ -60,7 +52,6 @@ export default function Hero({ isMobileView, onContactClick }: HeroPropsExtended
 
     return (
         <>
-            {/* Mobile Menu */}
             {isMobileView && (
                 <MobileMenu
                     isOpen={isMenuOpen}
@@ -73,55 +64,139 @@ export default function Hero({ isMobileView, onContactClick }: HeroPropsExtended
 
             <section
                 id="hero-section"
-                className={`relative flex flex-col items-center px-6 sm:px-12 pt-20 bg-transparent text-white text-center ${contentHeight > windowHeight ? 'h-auto pb-16' : 'min-h-screen'
-                    }`}
+                className={`relative flex flex-col items-center px-8 sm:px-14 bg-transparent text-white text-center ${contentHeight > windowHeight ? 'h-auto pb-16' : 'min-h-screen'}`}
                 style={{
                     transform: `scale(${scaleFactor})`,
                     transformOrigin: 'top center',
                     marginBottom: scaleFactor < 1 ? `${(1 - scaleFactor) * -100}vh` : '0',
-                    paddingTop: isMobileView ? '64px' : '80px'
+                    paddingTop: isMobileView ? '64px' : '0',
+                    justifyContent: isMobileView ? 'flex-start' : 'center',
                 }}
             >
-                {/* Profile Image - Larger */}
-                <img
-                    src="/profile.jpeg"
-                    alt="Profile"
-                    className="w-44 h-44 mb-6 rounded-full border-2 border-indigo-500 shadow-md"
-                />
+                {/* Profile Image */}
+                <div className="relative mb-8">
+                    <div
+                        className="absolute inset-0 rounded-full blur-xl opacity-30"
+                        style={{ background: 'radial-gradient(circle, var(--accent), var(--accent-indigo))', transform: 'scale(1.3)' }}
+                    />
+                    <img
+                        src="/profile.jpeg"
+                        alt="Profile"
+                        className="relative w-44 h-44 rounded-full object-cover"
+                        style={{
+                            border: '1.5px solid rgba(34, 211, 238, 0.35)',
+                            boxShadow: '0 0 0 4px rgba(34, 211, 238, 0.06), 0 8px 32px rgba(0,0,0,0.5)'
+                        }}
+                    />
+                </div>
+
+                {/* Status badge */}
+                <div
+                    className="flex items-center gap-2 mb-6 px-3 py-1.5 rounded-full text-xs"
+                    style={{
+                        background: 'rgba(34, 211, 238, 0.07)',
+                        border: '1px solid rgba(34, 211, 238, 0.2)',
+                        fontFamily: 'var(--font-mono)',
+                        color: 'var(--accent)',
+                        letterSpacing: '0.08em'
+                    }}
+                >
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    Available for opportunities
+                </div>
 
                 {/* Name */}
-                <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-4">Justin Smith</h1>
+                <h1
+                    className="leading-none mb-3 tracking-tight"
+                    style={{
+                        fontFamily: 'var(--font-display)',
+                        fontSize: 'clamp(2.4rem, 5vw, 3.2rem)',
+                        fontWeight: 700,
+                        color: 'var(--text-primary)',
+                        letterSpacing: '-0.02em'
+                    }}
+                >
+                    Justin Smith
+                </h1>
 
-                {/* Static Role */}
-                <p className="text-indigo-400 text-xl md:text-2xl font-mono mb-6">
-                    Software Engineer & Backend Developer
+                {/* Role */}
+                <p
+                    className="mb-6"
+                    style={{
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '0.8rem',
+                        color: 'var(--accent)',
+                        letterSpacing: '0.18em',
+                        textTransform: 'uppercase'
+                    }}
+                >
+                    Software Engineer / Backend & Systems
                 </p>
 
-                {/* Description - More spacing above */}
-                <p className="text-gray-400 max-w-lg mb-6 mt-4">
-                    I build efficient, scalable systems and am interested in low-level programming and optimizing performance.
+                {/* Description */}
+                <p
+                    className="max-w-sm mb-8"
+                    style={{
+                        fontSize: '0.925rem',
+                        lineHeight: '1.75',
+                        color: 'var(--text-secondary)'
+                    }}
+                >
+                    I build efficient, scalable systems — focused on low-level programming and performance-critical infrastructure.
                 </p>
 
-                {/* Buttons */}
-                <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                {/* CTA Buttons */}
+                <div className="flex flex-col sm:flex-row gap-3 mb-10">
                     <a
                         href="/resume.pdf"
                         target="_blank"
-                        className="bg-indigo-600 text-gray-300 hover:bg-indigo-700 hover:text-white font-semibold py-2 px-6 rounded-lg transition-all hover:shadow-lg hover:shadow-indigo-600/20 transform hover:-translate-y-0.5"
+                        className="group relative overflow-hidden font-medium py-2.5 px-7 rounded-lg text-sm transition-all duration-200"
+                        style={{
+                            background: 'var(--accent)',
+                            color: '#0d1117',
+                            fontFamily: 'var(--font-body)',
+                            fontWeight: 600,
+                            letterSpacing: '0.01em',
+                            boxShadow: '0 0 20px rgba(34, 211, 238, 0.2)'
+                        }}
+                        onMouseEnter={e => {
+                            (e.currentTarget as HTMLElement).style.boxShadow = '0 0 28px rgba(34, 211, 238, 0.35)';
+                            (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)';
+                        }}
+                        onMouseLeave={e => {
+                            (e.currentTarget as HTMLElement).style.boxShadow = '0 0 20px rgba(34, 211, 238, 0.2)';
+                            (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
+                        }}
                     >
                         View Resume
                     </a>
                     <button
                         onClick={onContactClick}
-                        className="border-2 border-indigo-500 text-gray-300 hover:bg-indigo-500 hover:text-white font-semibold py-2 px-6 rounded-lg transition-all hover:shadow-lg hover:shadow-indigo-500/20 transform hover:-translate-y-0.5"
+                        className="font-medium py-2.5 px-7 rounded-lg text-sm transition-all duration-200"
+                        style={{
+                            background: 'transparent',
+                            color: 'var(--text-primary)',
+                            border: '1px solid var(--border)',
+                            fontFamily: 'var(--font-body)',
+                            fontWeight: 500,
+                            letterSpacing: '0.01em'
+                        }}
+                        onMouseEnter={e => {
+                            (e.currentTarget as HTMLElement).style.borderColor = 'rgba(34, 211, 238, 0.4)';
+                            (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)';
+                        }}
+                        onMouseLeave={e => {
+                            (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)';
+                            (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
+                        }}
                     >
                         Contact Me
                     </button>
                 </div>
 
-                {/* Desktop Navigation Links - Centered in remaining space */}
+                {/* Desktop Navigation Links */}
                 {!isMobileView && (
-                    <div className="flex-1 flex items-center justify-center">
+                    <div className="mt-8 w-full flex justify-center">
                         <NavigationLinks
                             sectionIds={sectionIds}
                             activeSection={activeSection}
@@ -131,25 +206,36 @@ export default function Hero({ isMobileView, onContactClick }: HeroPropsExtended
                 )}
 
                 {/* Social Icons */}
-                <div className="w-full flex justify-center gap-6 py-4 bg-transparent mt-auto">
-                    <a href="https://github.com/justnsmith" target="_blank" className="bg-transparent group">
-                        <FontAwesomeIcon
-                            icon={faGithub}
-                            className="w-8 h-8 text-gray-500 transition-all duration-300 transform group-hover:text-white group-hover:scale-125"
-                        />
-                    </a>
-                    <a href="https://linkedin.com/in/justnsmith" target="_blank" className="bg-transparent group">
-                        <FontAwesomeIcon
-                            icon={faLinkedin}
-                            className="w-8 h-8 text-gray-500 transition-all duration-300 transform group-hover:text-white group-hover:scale-125"
-                        />
-                    </a>
-                    <a href="mailto:justnwsmith@gmail.com" className="bg-transparent group">
-                        <FontAwesomeIcon
-                            icon={faGoogle}
-                            className="w-8 h-8 text-gray-500 transition-all duration-300 transform group-hover:text-white group-hover:scale-125"
-                        />
-                    </a>
+                <div className="w-full flex justify-center gap-5 py-4 mt-6">
+                    {[
+                        { href: "https://github.com/justnsmith", icon: faGithub, label: "GitHub" },
+                        { href: "https://linkedin.com/in/justnsmith", icon: faLinkedin, label: "LinkedIn" },
+                        { href: "mailto:justnwsmith@gmail.com", icon: faGoogle, label: "Email" },
+                    ].map(({ href, icon, label }) => (
+                        <a
+                            key={label}
+                            href={href}
+                            target={href.startsWith('http') ? "_blank" : undefined}
+                            aria-label={label}
+                            className="group flex items-center justify-center w-9 h-9 rounded-lg transition-all duration-200"
+                            style={{
+                                border: '1px solid var(--border)',
+                                color: 'var(--text-muted)'
+                            }}
+                            onMouseEnter={e => {
+                                (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-accent)';
+                                (e.currentTarget as HTMLElement).style.color = 'var(--accent)';
+                                (e.currentTarget as HTMLElement).style.background = 'var(--accent-soft)';
+                            }}
+                            onMouseLeave={e => {
+                                (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)';
+                                (e.currentTarget as HTMLElement).style.color = 'var(--text-muted)';
+                                (e.currentTarget as HTMLElement).style.background = 'transparent';
+                            }}
+                        >
+                            <FontAwesomeIcon icon={icon} className="w-4 h-4" />
+                        </a>
+                    ))}
                 </div>
             </section>
         </>

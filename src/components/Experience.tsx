@@ -1,115 +1,265 @@
+const experiences = [
+    {
+        title: "Software Engineering Intern",
+        subtitle: "U.S. Indo-Pacific Command (USINDOPACOM), J667",
+        note: "Secret Clearance",
+        location: "Honolulu, HI",
+        date: "Feb 2026 – Present",
+        active: true,
+        tags: ["SharePoint", "Power Platform", "Data Modeling"],
+        description: "Building internal tooling for a defense organization under active Secret Clearance.",
+        bullets: [
+            "Built mockups, data workflows, and schema for an internal Gift Inventory Application using SharePoint and Power Platform alongside stakeholder communication.",
+        ],
+    },
+    {
+        title: "Open Source Collaborator",
+        subtitle: "nimblebrain.ai",
+        location: "Remote",
+        date: "Jan 2026 – Present",
+        active: true,
+        tags: ["Python", "MCP", "LLM Agents", "Alpha Vantage API"],
+        description: "Building open-source financial tooling powered by LLM-agent workflows.",
+        bullets: [
+            "Building an MCP server in Python powering intent-based financial data tools via the Alpha Vantage API.",
+            "Designing query-to-tool-call abstractions; implementing routing, validation, and error handling for LLM-agent workflows.",
+        ],
+    },
+    {
+        title: "Undergraduate Research Assistant",
+        subtitle: "University of Hawaiʻi at Mānoa",
+        location: "Honolulu, HI",
+        date: "Mar 2025 – Present",
+        active: true,
+        tags: ["C++", "Python", "CUDA", "SQL", "cuVS", "Faiss"],
+        description: "Contributing to two research tracks under faculty guidance — GPU-accelerated LLM inference and natural language database querying.",
+        subprojects: [
+            {
+                name: "GPU-Accelerated LLM Inference",
+                tech: "Python, C++, CUDA, cuVS, Faiss",
+                bullets: [
+                    "Collaborating with Carnegie Mellon University on GPU-accelerated KV cache systems for LLM inference.",
+                    "Migrating CPU-based Faiss to GPU-accelerated cuVS to reduce nearest-neighbor search bottlenecks via CUDA.",
+                    "Validated ANN-based KV cache retrieval achieving 92.3% F1 vs full attention.",
+                ],
+            },
+            {
+                name: "SQLPlus",
+                tech: "C++, Python, SQL",
+                bullets: [
+                    "Building a custom PostgreSQL extension adding SQL operators for natural language condition matching.",
+                    "Prototyped BM25, pre-filtering, embeddings, and LLM calls to reduce runtime and API calls.",
+                    "Achieved 98.4% accuracy across 1,000 queries with total runtime 92.45s.",
+                ],
+            },
+        ],
+    },
+];
+
 export default function Experience() {
     return (
         <section
             id="experience"
-            className="px-6 sm:px-12 md:px-16 lg:px-24 xl:px-32 pt-20 pb-40 scroll-mt-28"
+            className="px-8 sm:px-12 md:px-14 lg:px-16 pt-20 pb-32 scroll-mt-28"
         >
-            <div className="max-w-5xl mx-auto">
-                <div className="flex items-center mb-16">
-                    <div className="h-px bg-gradient-to-r from-transparent via-indigo-500 to-transparent flex-grow"></div>
-                    <h2 className="text-2xl font-bold text-white mx-4 flex items-center">
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-500">
-                            Experience
-                        </span>
+            <div className="max-w-2xl">
+                {/* Section heading */}
+                <div className="flex items-center gap-3 mb-10">
+                    <span
+                        className="text-xs tracking-[0.2em] uppercase"
+                        style={{ fontFamily: 'var(--font-mono)', color: 'var(--accent)', opacity: 0.6 }}
+                    >
+                        03
+                    </span>
+                    <div className="h-px w-6" style={{ background: 'var(--border-accent)' }} />
+                    <h2
+                        className="text-xl font-semibold"
+                        style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)', letterSpacing: '-0.01em' }}
+                    >
+                        Experience
                     </h2>
-                    <div className="h-px bg-gradient-to-r from-transparent via-indigo-500 to-transparent flex-grow"></div>
                 </div>
 
-                {/* Timeline Container */}
-                <div className="relative max-w-4xl mx-auto">
+                {/* Timeline */}
+                <div className="relative">
                     {/* Vertical line */}
-                    <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-gradient-to-b from-indigo-500 via-cyan-500 to-transparent"></div>
+                    <div
+                        className="absolute left-0 top-0 bottom-0 w-px"
+                        style={{ background: 'linear-gradient(to bottom, var(--accent-indigo), var(--accent), transparent)' }}
+                    />
 
-                    {/* Experience Item */}
-                    <div className="relative mb-16 pl-8 md:pl-12">
-                        {/* Timeline dot */}
-                        <div className="absolute left-0 w-4 h-4 transform -translate-x-2 mt-1.5">
-                            <div className="w-4 h-4 rounded-full bg-indigo-500 border-4 border-gray-950 shadow-lg shadow-indigo-500/50"></div>
-                            <div className="absolute inset-0 w-4 h-4 rounded-full bg-indigo-500 animate-ping opacity-40"></div>
-                        </div>
-
-                        {/* Content */}
-                        <div className="w-full">
-                            {/* Date */}
-                            <div className="inline-block mb-4">
-                                <div className="px-4 py-1.5 rounded-full bg-gradient-to-r from-cyan-500/20 to-indigo-500/20 border border-cyan-500/30">
-                                    <time className="text-sm font-semibold text-cyan-400">
-                                        Mar 2025 – Present
-                                    </time>
+                    <div className="space-y-10 pl-8">
+                        {experiences.map((exp, i) => (
+                            <div key={i} className="relative">
+                                {/* Timeline dot */}
+                                <div className="absolute -left-8 top-1 -translate-x-1/2">
+                                    {exp.active ? (
+                                        <>
+                                            <div
+                                                className="w-3 h-3 rounded-full"
+                                                style={{
+                                                    background: 'var(--accent)',
+                                                    boxShadow: '0 0 0 3px rgba(34, 211, 238, 0.15), 0 0 10px rgba(34, 211, 238, 0.3)'
+                                                }}
+                                            />
+                                            <div
+                                                className="absolute inset-0 w-3 h-3 rounded-full animate-ping"
+                                                style={{ background: 'var(--accent)', opacity: 0.25 }}
+                                            />
+                                        </>
+                                    ) : (
+                                        <div
+                                            className="w-2.5 h-2.5 rounded-full"
+                                            style={{ background: 'var(--text-muted)', border: '2px solid var(--bg-base)' }}
+                                        />
+                                    )}
                                 </div>
-                            </div>
 
-                            {/* Card */}
-                            <div className="group relative p-6 rounded-xl bg-gradient-to-br from-gray-900/90 to-gray-900/50 border border-gray-800 transition-all duration-300 hover:border-indigo-500/50 hover:shadow-2xl hover:shadow-indigo-500/10 hover:-translate-y-1">
-                                <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-indigo-500/0 to-cyan-500/0 group-hover:from-indigo-500/5 group-hover:to-cyan-500/5 transition-all duration-300"></div>
+                                {/* Date pill */}
+                                <div className="mb-3">
+                                    <span
+                                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs"
+                                        style={{
+                                            fontFamily: 'var(--font-mono)',
+                                            background: 'rgba(34, 211, 238, 0.07)',
+                                            border: '1px solid rgba(34, 211, 238, 0.18)',
+                                            color: 'var(--accent)'
+                                        }}
+                                    >
+                                        {exp.active && (
+                                            <span
+                                                className="w-1.5 h-1.5 rounded-full bg-emerald-400"
+                                                style={{ boxShadow: '0 0 4px rgba(52, 211, 153, 0.6)' }}
+                                            />
+                                        )}
+                                        {exp.date}
+                                    </span>
+                                </div>
 
-                                <div className="relative z-10">
-                                    <h3 className="text-xl font-bold text-white mb-1">
-                                        Undergraduate Research Assistant
-                                    </h3>
-                                    <h4 className="text-md font-medium text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400 mb-3">
-                                        SQLPlus Research – University of Hawaiʻi
-                                    </h4>
-                                    <p className="text-gray-300 mb-4 leading-relaxed">
-                                        Main contributor under faculty guidance, building a custom PostgreSQL
-                                        extension that adds SQL operators for natural language condition matching.
-                                        Focused on improving query accuracy while minimizing runtime and API costs.
+                                {/* Card */}
+                                <div
+                                    className="rounded-xl p-5 transition-all duration-300"
+                                    style={{
+                                        background: 'rgba(255,255,255,0.025)',
+                                        border: '1px solid var(--border)',
+                                    }}
+                                    onMouseEnter={e => {
+                                        (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-accent)';
+                                        (e.currentTarget as HTMLElement).style.background = 'rgba(34, 211, 238, 0.03)';
+                                        (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)';
+                                    }}
+                                    onMouseLeave={e => {
+                                        (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)';
+                                        (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.025)';
+                                        (e.currentTarget as HTMLElement).style.transform = 'none';
+                                    }}
+                                >
+                                    {/* Header */}
+                                    <div className="flex flex-wrap items-start justify-between gap-2 mb-1">
+                                        <h3
+                                            className="text-base font-semibold"
+                                            style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}
+                                        >
+                                            {exp.title}
+                                        </h3>
+                                        {exp.note && (
+                                            <span
+                                                className="px-2 py-0.5 rounded text-xs"
+                                                style={{
+                                                    fontFamily: 'var(--font-mono)',
+                                                    background: 'rgba(251, 191, 36, 0.08)',
+                                                    border: '1px solid rgba(251, 191, 36, 0.2)',
+                                                    color: '#fbbf24'
+                                                }}
+                                            >
+                                                {exp.note}
+                                            </span>
+                                        )}
+                                    </div>
+                                    <p
+                                        className="text-sm mb-1"
+                                        style={{ fontFamily: 'var(--font-mono)', color: 'var(--accent)', opacity: 0.75 }}
+                                    >
+                                        {exp.subtitle}
+                                    </p>
+                                    <p
+                                        className="text-xs mb-4"
+                                        style={{ color: 'var(--text-muted)' }}
+                                    >
+                                        {exp.location}
                                     </p>
 
-                                    <ul className="space-y-2 mb-4">
-                                        <li className="flex items-start gap-2 text-sm text-gray-400">
-                                            <span className="text-indigo-400 mt-1">▸</span>
-                                            <span>
-                                                Designing and evaluating BM25, pre-filtering, embedding-based
-                                                retrieval, and LLM pipelines to reduce latency and external API usage
-                                            </span>
-                                        </li>
-                                        <li className="flex items-start gap-2 text-sm text-gray-400">
-                                            <span className="text-indigo-400 mt-1">▸</span>
-                                            <span>
-                                                Achieved 98.4% accuracy across 1,000 natural-language SQL queries
-                                                with total runtime of 92.45s
-                                            </span>
-                                        </li>
-                                        <li className="flex items-start gap-2 text-sm text-gray-400">
-                                            <span className="text-indigo-400 mt-1">▸</span>
-                                            <span>
-                                                Implementing data retrieval and validation pipelines to verify
-                                                operator correctness before porting to C++
-                                            </span>
-                                        </li>
-                                    </ul>
+                                    {/* Sub-projects (research assistant style) */}
+                                    {exp.subprojects ? (
+                                        <div className="space-y-4">
+                                            {exp.subprojects.map((sub, si) => (
+                                                <div key={si}>
+                                                    <div className="flex flex-wrap items-center gap-2 mb-2">
+                                                        <span
+                                                            className="text-xs font-medium"
+                                                            style={{ color: 'var(--text-primary)' }}
+                                                        >
+                                                            {sub.name}
+                                                        </span>
+                                                        <span
+                                                            className="text-xs"
+                                                            style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}
+                                                        >
+                                                            — {sub.tech}
+                                                        </span>
+                                                    </div>
+                                                    <ul className="space-y-1.5">
+                                                        {sub.bullets.map((b, bi) => (
+                                                            <li key={bi} className="flex items-start gap-2">
+                                                                <span
+                                                                    className="mt-1.5 shrink-0 w-1 h-1 rounded-full"
+                                                                    style={{ background: 'var(--accent)', opacity: 0.6 }}
+                                                                />
+                                                                <span style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                                                                    {b}
+                                                                </span>
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <ul className="space-y-1.5 mb-4">
+                                            {exp.bullets.map((b, bi) => (
+                                                <li key={bi} className="flex items-start gap-2">
+                                                    <span
+                                                        className="mt-1.5 shrink-0 w-1 h-1 rounded-full"
+                                                        style={{ background: 'var(--accent)', opacity: 0.6 }}
+                                                    />
+                                                    <span style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                                                        {b}
+                                                    </span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
 
-                                    <div className="flex flex-wrap gap-2">
-                                        <span className="px-3 py-1 bg-cyan-500/10 text-cyan-300 rounded-full text-xs font-medium border border-cyan-500/20">
-                                            Database Systems
-                                        </span>
-                                        <span className="px-3 py-1 bg-indigo-500/10 text-indigo-300 rounded-full text-xs font-medium border border-indigo-500/20">
-                                            Query Optimization
-                                        </span>
-                                        <span className="px-3 py-1 bg-indigo-500/10 text-indigo-300 rounded-full text-xs font-medium border border-indigo-500/20">
-                                            Systems Programming
-                                        </span>
+                                    {/* Tags */}
+                                    <div className="flex flex-wrap gap-1.5 mt-4 pt-3" style={{ borderTop: '1px solid var(--border)' }}>
+                                        {exp.tags.map(tag => (
+                                            <span
+                                                key={tag}
+                                                className="px-2.5 py-0.5 rounded-full text-xs"
+                                                style={{
+                                                    fontFamily: 'var(--font-mono)',
+                                                    background: 'rgba(99, 102, 241, 0.08)',
+                                                    border: '1px solid rgba(99, 102, 241, 0.2)',
+                                                    color: '#a5b4fc'
+                                                }}
+                                            >
+                                                {tag}
+                                            </span>
+                                        ))}
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    {/* End indicator */}
-                    <div className="relative pl-8 md:pl-12">
-                        <div className="absolute left-0 w-3 h-3 transform -translate-x-1.5 -mt-8">
-                            <div className="w-3 h-3 rounded-full bg-gradient-to-br from-cyan-500 to-indigo-500 border-2 border-gray-950 animate-pulse"></div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Footer */}
-                <div className="mt-16 text-center">
-                    <div className="inline-block px-6 py-3 rounded-lg bg-gray-900/50 border border-gray-800">
-                        <p className="text-sm text-gray-400">
-                            <span className="text-indigo-400">●</span> Additional experiences coming soon...
-                        </p>
+                        ))}
                     </div>
                 </div>
             </div>

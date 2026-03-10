@@ -13,26 +13,21 @@ import {
     SiNodedotjs,
     SiDocker,
 } from "react-icons/si";
+import { DiJava } from "react-icons/di";
 
 const tech = [
-    { name: "C", icon: SiC, color: "#A8B9CC", category: "Languages" },
-    { name: "C++", icon: SiCplusplus, color: "#00599C", category: "Languages" },
-    { name: "Go", icon: SiGo, color: "#00ADD8", category: "Languages" },
-    { name: "Python", icon: SiPython, color: "#3776ab", category: "Languages" },
-    {
-        name: "Java",
-        icon: "java-logo",
-        image: "/java-logo.svg",
-        color: "#f80000",
-        category: "Languages"
-    },
-    { name: "TypeScript", icon: SiTypescript, color: "#3178c6", category: "Languages" },
-    { name: "React", icon: SiReact, color: "#61dafb", category: "Frontend" },
-    { name: "Tailwind CSS", icon: SiTailwindcss, color: "#38bdf8", category: "Frontend" },
-    { name: "Node.js", icon: SiNodedotjs, color: "#83cd29", category: "Backend" },
-    { name: "PostgreSQL", icon: SiPostgresql, color: "#336791", category: "Backend" },
-    { name: "Git", icon: SiGit, color: "#f1502f", category: "Tools" },
-    { name: "Docker", icon: SiDocker, color: "#2496ED", category: "Tools" },
+    { name: "C",           icon: SiC,           color: "#A8B9CC", category: "Languages" },
+    { name: "C++",         icon: SiCplusplus,   color: "#00599C", category: "Languages" },
+    { name: "Go",          icon: SiGo,           color: "#00ADD8", category: "Languages" },
+    { name: "Python",      icon: SiPython,       color: "#3776ab", category: "Languages" },
+    { name: "Java",        icon: DiJava,         color: "#f80000", category: "Languages" },
+    { name: "TypeScript",  icon: SiTypescript,   color: "#3178c6", category: "Languages" },
+    { name: "React",       icon: SiReact,        color: "#61dafb", category: "Frontend" },
+    { name: "Tailwind",    icon: SiTailwindcss,  color: "#38bdf8", category: "Frontend" },
+    { name: "Node.js",     icon: SiNodedotjs,    color: "#83cd29", category: "Backend" },
+    { name: "PostgreSQL",  icon: SiPostgresql,   color: "#336791", category: "Backend" },
+    { name: "Git",         icon: SiGit,          color: "#f1502f", category: "Tools" },
+    { name: "Docker",      icon: SiDocker,       color: "#2496ED", category: "Tools" },
 ];
 
 export default function TechStack() {
@@ -41,128 +36,85 @@ export default function TechStack() {
 
     useEffect(() => {
         const observer = new IntersectionObserver(
-            (entries) => {
-                if (entries[0].isIntersecting) {
-                    setIsInView(true);
-                }
-            },
-            { threshold: 0.3 }
+            (entries) => { if (entries[0].isIntersecting) setIsInView(true); },
+            { threshold: 0.2 }
         );
-
         const section = document.getElementById("tech");
-        if (section) {
-            observer.observe(section);
-        }
-
-        return () => {
-            if (section) {
-                observer.unobserve(section);
-            }
-        };
+        if (section) observer.observe(section);
+        return () => { if (section) observer.unobserve(section); };
     }, []);
 
     return (
-        <section
-            id="tech"
-            className="px-6 sm:px-12 md:px-16 lg:px-20 xl:px-24 pt-20 pb-40 scroll-mt-28"
-        >
-            <div className="max-w-6xl mx-auto">
-                <div className="flex items-center mb-16">
-                    <div className="h-px bg-gradient-to-r from-transparent via-indigo-500 to-transparent flex-grow"></div>
-                    <h2 className="text-2xl font-bold text-white mx-4 flex items-center">
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-500">
-                            Tech Stack
-                        </span>
+        <section id="tech" className="px-8 sm:px-12 md:px-14 lg:px-16 pt-20 pb-32 scroll-mt-28">
+            <div className="max-w-2xl">
+                {/* Section heading */}
+                <div className="flex items-center gap-3 mb-10">
+                    <span
+                        className="text-xs tracking-[0.2em] uppercase"
+                        style={{ fontFamily: 'var(--font-mono)', color: 'var(--accent)', opacity: 0.6 }}
+                    >
+                        02
+                    </span>
+                    <div className="h-px w-6" style={{ background: 'var(--border-accent)' }} />
+                    <h2
+                        className="text-xl font-semibold"
+                        style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)', letterSpacing: '-0.01em' }}
+                    >
+                        Tech Stack
                     </h2>
-                    <div className="h-px bg-gradient-to-r from-transparent via-indigo-500 to-transparent flex-grow"></div>
                 </div>
 
-                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-6 sm:gap-8">
-                    {tech.map(({ name, icon: Icon, color, image }, index) => {
+                <div className="grid grid-cols-4 sm:grid-cols-6 gap-4">
+                    {tech.map(({ name, icon: Icon, color }, index) => {
                         const isHovered = hoveredTech === name;
 
                         return (
                             <div
                                 key={name}
-                                className={`group flex flex-col items-center space-y-3 transform transition-all duration-500 ${
-                                    isInView
-                                        ? "opacity-100 translate-y-0"
-                                        : "opacity-0 translate-y-8"
+                                className={`group flex flex-col items-center gap-2.5 transition-all duration-500 ${
+                                    isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
                                 }`}
-                                style={{
-                                    transitionDelay: `${index * 80}ms`,
-                                }}
+                                style={{ transitionDelay: `${index * 60}ms` }}
                                 onMouseEnter={() => setHoveredTech(name)}
                                 onMouseLeave={() => setHoveredTech(null)}
                             >
                                 <div
-                                    className={`relative w-20 h-20 rounded-xl flex items-center justify-center transition-all duration-300 cursor-pointer overflow-hidden ${
-                                        isHovered
-                                            ? "bg-gray-800 scale-110 shadow-xl"
-                                            : "bg-gray-900/80 hover:bg-gray-800/90"
-                                    }`}
+                                    className="relative w-14 h-14 rounded-xl flex items-center justify-center cursor-pointer transition-all duration-250"
                                     style={{
-                                        boxShadow: isHovered
-                                            ? `0 0 30px ${color}40, 0 0 15px ${color}20`
-                                            : "",
+                                        background: isHovered
+                                            ? `${color}14`
+                                            : 'rgba(255,255,255,0.03)',
+                                        border: isHovered
+                                            ? `1px solid ${color}40`
+                                            : '1px solid var(--border)',
+                                        transform: isHovered ? 'translateY(-2px)' : 'none',
+                                        boxShadow: isHovered ? `0 8px 24px ${color}20` : 'none',
                                     }}
                                 >
-                                    {/* Animated gradient border */}
-                                    <div
-                                        className={`absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
+                                    <Icon
                                         style={{
-                                            background: `linear-gradient(135deg, ${color}20, transparent)`,
+                                            color: isHovered ? color : 'var(--text-muted)',
+                                            fontSize: '1.75rem',
+                                            transition: 'color 250ms ease'
                                         }}
-                                    ></div>
-
-                                    {/* Subtle grid pattern */}
-                                    <div className="absolute inset-0 opacity-5 bg-grid-pattern"></div>
-
-                                    {/* Icon */}
-                                    <div
-                                        className={`relative z-10 transition-all duration-300 ${
-                                            isHovered ? "scale-110" : ""
-                                        }`}
-                                    >
-                                        {image ? (
-                                            <img
-                                                src={image}
-                                                alt={name}
-                                                className="w-12 h-12 object-contain transition-all duration-300"
-                                                style={{
-                                                    filter: isHovered ? "none" : "grayscale(20%)",
-                                                }}
-                                            />
-                                        ) : (
-                                            <Icon
-                                                style={{ color: color }}
-                                                className={`text-4xl transition-all duration-300 ${
-                                                    isHovered ? "drop-shadow-lg" : "opacity-90"
-                                                }`}
-                                            />
-                                        )}
-                                    </div>
-
-
+                                    />
                                 </div>
 
-                                {/* Tech name */}
-                                <div className="text-center">
-                                    <span className="text-sm font-medium text-gray-300 group-hover:text-white transition-colors duration-300">
-                                        {name}
-                                    </span>
-                                </div>
+                                <span
+                                    className="text-center transition-colors duration-250"
+                                    style={{
+                                        fontFamily: 'var(--font-mono)',
+                                        fontSize: '0.68rem',
+                                        color: isHovered ? 'var(--text-primary)' : 'var(--text-muted)',
+                                        letterSpacing: '0.02em'
+                                    }}
+                                >
+                                    {name}
+                                </span>
                             </div>
                         );
                     })}
                 </div>
-
-                <style>{`
-                    .bg-grid-pattern {
-                        background-image: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-                        background-size: 10px 10px;
-                    }
-                `}</style>
             </div>
         </section>
     );

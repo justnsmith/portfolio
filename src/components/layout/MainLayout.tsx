@@ -37,14 +37,23 @@ export default function MainLayout() {
 
     return (
         <>
-            <div className="relative min-h-screen text-white bg-gray-900">
-                {/* Mouse gradient effect */}
+            <div className="relative min-h-screen text-white" style={{ backgroundColor: 'var(--bg-base)' }}>
+                {/* Ambient mouse glow */}
                 <div
-                    className="pointer-events-none fixed inset-0 z-0 transition-all duration-200"
+                    className="pointer-events-none fixed inset-0 z-0 transition-all duration-300"
                     style={{
-                        background: `radial-gradient(200px at ${mousePos.x}px ${mousePos.y}px, rgba(99, 102, 241, 0.1), transparent 80%)`,
+                        background: `radial-gradient(350px at ${mousePos.x}px ${mousePos.y}px, rgba(34, 211, 238, 0.055), transparent 70%)`,
                     }}
                 />
+
+                {/* Subtle vignette at edges */}
+                <div
+                    className="pointer-events-none fixed inset-0 z-0"
+                    style={{
+                        background: 'radial-gradient(ellipse 80% 80% at 50% 50%, transparent 40%, rgba(0,0,0,0.4) 100%)',
+                    }}
+                />
+
                 {isLargeScreen ? (
                     <div className="flex flex-row h-screen">
                         <div ref={leftRef} className="w-1/2 h-screen overflow-hidden z-10">
@@ -52,7 +61,7 @@ export default function MainLayout() {
                         </div>
                         <div
                             ref={rightScrollRef}
-                            className="w-1/2 h-screen overflow-y-auto z-10 space-y-16 pb-24"
+                            className="w-1/2 h-screen overflow-y-auto z-10 pb-24"
                         >
                             <About />
                             <TechStack />
@@ -61,7 +70,7 @@ export default function MainLayout() {
                         </div>
                     </div>
                 ) : (
-                    <div className="flex flex-col min-h-screen bg-gray-900 z-10 space-y-16 pb-24">
+                    <div className="flex flex-col min-h-screen z-10 pb-24" style={{ backgroundColor: 'var(--bg-base)' }}>
                         <Hero isMobileView={true} onContactClick={() => setIsContactModalOpen(true)} />
                         <About />
                         <TechStack />
@@ -71,7 +80,6 @@ export default function MainLayout() {
                 )}
             </div>
 
-            {/* Contact Modal at top level */}
             <ContactModal
                 isOpen={isContactModalOpen}
                 onClose={() => setIsContactModalOpen(false)}

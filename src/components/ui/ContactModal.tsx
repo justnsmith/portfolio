@@ -16,7 +16,6 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
         resetForm
     } = useContactForm();
 
-    // Prevent body scroll when modal is open
     useEffect(() => {
         if (isOpen) {
             const scrollY = window.scrollY;
@@ -32,7 +31,6 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
             document.body.style.overflow = '';
             window.scrollTo(0, parseInt(scrollY || '0') * -1);
         }
-
         return () => {
             document.body.style.position = '';
             document.body.style.top = '';
@@ -41,33 +39,22 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
         };
     }, [isOpen]);
 
-    // Handle ESC key to close modal
     useEffect(() => {
         const handleEsc = (e: KeyboardEvent) => {
-            if (e.key === 'Escape' && isOpen) {
-                onClose();
-            }
+            if (e.key === 'Escape' && isOpen) onClose();
         };
-
         window.addEventListener('keydown', handleEsc);
         return () => window.removeEventListener('keydown', handleEsc);
     }, [isOpen, onClose]);
 
-    // Close modal and reset form on success
     useEffect(() => {
         if (formStatus.success) {
-            setTimeout(() => {
-                onClose();
-                resetForm();
-            }, 3000);
+            setTimeout(() => { onClose(); resetForm(); }, 3000);
         }
     }, [formStatus.success, onClose, resetForm]);
 
-    // Handle backdrop click
     const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (e.target === e.currentTarget) {
-            onClose();
-        }
+        if (e.target === e.currentTarget) onClose();
     };
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -76,136 +63,190 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
     if (!isOpen) return null;
 
+    const inputStyle = {
+        width: '100%',
+        background: 'rgba(255,255,255,0.04)',
+        border: '1px solid var(--border)',
+        borderRadius: '8px',
+        padding: '10px 14px',
+        color: 'var(--text-primary)',
+        fontFamily: 'var(--font-body)',
+        fontSize: '0.875rem',
+        outline: 'none',
+        transition: 'border-color 200ms ease',
+    };
+
     return (
         <>
             <div
                 id="contact-modal-backdrop"
-                className="fixed inset-0 bg-gray-900 flex items-center justify-center px-4"
-                style={{
-                    zIndex: 9999,
-                    backgroundColor: 'rgb(17, 24, 39)'
-                }}
+                className="fixed inset-0 flex items-center justify-center px-4"
+                style={{ zIndex: 9999, backgroundColor: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }}
                 onClick={handleBackdropClick}
             >
                 <div
-                    className="bg-gray-800 border border-indigo-500 rounded-xl w-full max-w-md overflow-hidden transform transition-all duration-500 ease-out"
+                    className="w-full max-w-md overflow-hidden"
                     style={{
-                        boxShadow: "0 0 40px rgba(99, 102, 241, 0.4)",
-                        animation: "modalEntrance 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards"
+                        background: 'var(--bg-elevated)',
+                        border: '1px solid var(--border)',
+                        borderRadius: '16px',
+                        boxShadow: '0 0 0 1px rgba(34,211,238,0.1), 0 24px 64px rgba(0,0,0,0.6)',
+                        animation: 'modalEntrance 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards'
                     }}
                 >
-                    {/* Modal Header */}
-                    <div className="relative p-6 pb-4 border-b border-gray-700">
-                        <h2 className="text-2xl font-bold text-white text-center">Contact Me</h2>
+                    {/* Header */}
+                    <div
+                        className="flex items-center justify-between px-6 py-4"
+                        style={{ borderBottom: '1px solid var(--border)' }}
+                    >
+                        <h2
+                            className="text-base font-semibold"
+                            style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}
+                        >
+                            Get in Touch
+                        </h2>
                         <button
                             onClick={onClose}
-                            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors bg-gray-700 hover:bg-gray-600 rounded-full w-9 h-9 flex items-center justify-center"
+                            className="flex items-center justify-center w-8 h-8 rounded-lg transition-all duration-200"
+                            style={{
+                                background: 'rgba(255,255,255,0.05)',
+                                border: '1px solid var(--border)',
+                                color: 'var(--text-muted)'
+                            }}
                             aria-label="Close modal"
+                            onMouseEnter={e => {
+                                (e.currentTarget as HTMLElement).style.color = 'var(--text-primary)';
+                                (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-accent)';
+                            }}
+                            onMouseLeave={e => {
+                                (e.currentTarget as HTMLElement).style.color = 'var(--text-muted)';
+                                (e.currentTarget as HTMLElement).style.borderColor = 'var(--border)';
+                            }}
                         >
-                            <FontAwesomeIcon icon={faTimes} className="w-4 h-4" />
+                            <FontAwesomeIcon icon={faTimes} className="w-3.5 h-3.5" />
                         </button>
                     </div>
 
-                    <div className="p-6 pt-8">
+                    <div className="p-6">
                         {formStatus.success ? (
-                            <div className="flex flex-col items-center justify-center py-8 animate-fadeIn">
-                                <div className="w-20 h-20 bg-green-500 bg-opacity-20 rounded-full flex items-center justify-center mb-4 animate-scaleIn">
-                                    <FontAwesomeIcon icon={faCheck} className="text-green-400 w-10 h-10" />
+                            <div className="flex flex-col items-center justify-center py-10" style={{ animation: 'fadeIn 0.4s ease forwards' }}>
+                                <div
+                                    className="w-16 h-16 rounded-full flex items-center justify-center mb-4"
+                                    style={{
+                                        background: 'rgba(52, 211, 153, 0.1)',
+                                        border: '1px solid rgba(52, 211, 153, 0.3)',
+                                        animation: 'scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards'
+                                    }}
+                                >
+                                    <FontAwesomeIcon icon={faCheck} style={{ color: '#34d399', fontSize: '1.5rem' }} />
                                 </div>
-                                <h3 className="text-2xl font-semibold text-white mb-3">Thank You!</h3>
-                                <p className="text-green-300 text-center text-lg">{formStatus.message}</p>
+                                <h3 className="text-lg font-semibold mb-2" style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>
+                                    Message Sent
+                                </h3>
+                                <p className="text-sm text-center" style={{ color: 'var(--text-secondary)' }}>
+                                    {formStatus.message}
+                                </p>
                             </div>
                         ) : (
-                            <form onSubmit={onSubmit} className="space-y-6">
-                                <div className="relative">
-                                    <label
-                                        htmlFor="name"
-                                        className={`absolute left-3 transition-all duration-200 pointer-events-none ${focusedField === 'name' || formData.name
-                                                ? '-top-2.5 text-xs text-indigo-400 bg-gray-800 px-2'
-                                                : 'top-3 text-gray-400 text-base'
-                                            }`}
-                                    >
-                                        Name
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="name"
-                                        name="name"
-                                        value={formData.name}
-                                        onChange={handleInputChange}
-                                        onFocus={() => handleFieldFocus('name')}
-                                        onBlur={handleFieldBlur}
-                                        className="w-full bg-gray-700 border border-gray-600 rounded-lg py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
-                                        required
-                                    />
-                                </div>
-
-                                <div className="relative">
-                                    <label
-                                        htmlFor="email"
-                                        className={`absolute left-3 transition-all duration-200 pointer-events-none ${focusedField === 'email' || formData.email
-                                                ? '-top-2.5 text-xs text-indigo-400 bg-gray-800 px-2'
-                                                : 'top-3 text-gray-400 text-base'
-                                            }`}
-                                    >
-                                        Email
-                                    </label>
-                                    <input
-                                        type="email"
-                                        id="email"
-                                        name="email"
-                                        value={formData.email}
-                                        onChange={handleInputChange}
-                                        onFocus={() => handleFieldFocus('email')}
-                                        onBlur={handleFieldBlur}
-                                        className="w-full bg-gray-700 border border-gray-600 rounded-lg py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
-                                        required
-                                    />
-                                </div>
-
-                                <div className="relative">
-                                    <label
-                                        htmlFor="message"
-                                        className={`absolute left-3 transition-all duration-200 pointer-events-none ${focusedField === 'message' || formData.message
-                                                ? '-top-2.5 text-xs text-indigo-400 bg-gray-800 px-2'
-                                                : 'top-3 text-gray-400 text-base'
-                                            }`}
-                                    >
-                                        Message
-                                    </label>
-                                    <textarea
-                                        id="message"
-                                        name="message"
-                                        value={formData.message}
-                                        onChange={handleInputChange}
-                                        onFocus={() => handleFieldFocus('message')}
-                                        onBlur={handleFieldBlur}
-                                        rows={5}
-                                        className="w-full bg-gray-700 border border-gray-600 rounded-lg py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all resize-none"
-                                        required
-                                    ></textarea>
-                                </div>
+                            <form onSubmit={onSubmit} className="space-y-4">
+                                {(['name', 'email', 'message'] as const).map((field) => {
+                                    const isActive = focusedField === field || !!formData[field];
+                                    return (
+                                        <div key={field} className="relative">
+                                            <label
+                                                htmlFor={field}
+                                                className="absolute transition-all duration-200 pointer-events-none"
+                                                style={{
+                                                    fontFamily: 'var(--font-body)',
+                                                    fontSize: isActive ? '0.7rem' : '0.875rem',
+                                                    color: isActive ? 'var(--accent)' : 'var(--text-muted)',
+                                                    top: isActive ? '-8px' : field === 'message' ? '12px' : '10px',
+                                                    left: '12px',
+                                                    background: isActive ? 'var(--bg-elevated)' : 'transparent',
+                                                    padding: isActive ? '0 4px' : '0',
+                                                    zIndex: 1
+                                                }}
+                                            >
+                                                {field.charAt(0).toUpperCase() + field.slice(1)}
+                                            </label>
+                                            {field === 'message' ? (
+                                                <textarea
+                                                    id={field}
+                                                    name={field}
+                                                    value={formData[field]}
+                                                    onChange={handleInputChange}
+                                                    onFocus={() => handleFieldFocus(field)}
+                                                    onBlur={handleFieldBlur}
+                                                    rows={5}
+                                                    style={{ ...inputStyle, resize: 'none' }}
+                                                    required
+                                                    onFocusCapture={e => (e.currentTarget.style.borderColor = 'var(--border-accent)')}
+                                                    onBlurCapture={e => (e.currentTarget.style.borderColor = 'var(--border)')}
+                                                />
+                                            ) : (
+                                                <input
+                                                    type={field === 'email' ? 'email' : 'text'}
+                                                    id={field}
+                                                    name={field}
+                                                    value={formData[field]}
+                                                    onChange={handleInputChange}
+                                                    onFocus={() => handleFieldFocus(field)}
+                                                    onBlur={handleFieldBlur}
+                                                    style={inputStyle}
+                                                    required
+                                                    onFocusCapture={e => (e.currentTarget.style.borderColor = 'var(--border-accent)')}
+                                                    onBlurCapture={e => (e.currentTarget.style.borderColor = 'var(--border)')}
+                                                />
+                                            )}
+                                        </div>
+                                    );
+                                })}
 
                                 {formStatus.error && (
-                                    <div className="bg-red-500 bg-opacity-10 border border-red-500 rounded-lg p-4 animate-fadeIn">
-                                        <p className="text-red-400 text-sm text-center">{formStatus.message}</p>
+                                    <div
+                                        className="p-3 rounded-lg text-sm text-center"
+                                        style={{
+                                            background: 'rgba(239, 68, 68, 0.08)',
+                                            border: '1px solid rgba(239, 68, 68, 0.2)',
+                                            color: '#fca5a5'
+                                        }}
+                                    >
+                                        {formStatus.message}
                                     </div>
                                 )}
 
                                 <button
                                     type="submit"
                                     disabled={formStatus.submitting}
-                                    className={`w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3.5 px-6 rounded-lg transition-all duration-300 flex items-center justify-center shadow-lg hover:shadow-indigo-500/50 ${formStatus.submitting ? "opacity-80 cursor-not-allowed" : "hover:transform hover:-translate-y-0.5"
-                                        }`}
+                                    className="w-full flex items-center justify-center gap-2 py-3 rounded-lg text-sm font-semibold transition-all duration-200"
+                                    style={{
+                                        background: 'var(--accent)',
+                                        color: '#0d1117',
+                                        fontFamily: 'var(--font-body)',
+                                        fontWeight: 600,
+                                        opacity: formStatus.submitting ? 0.7 : 1,
+                                        cursor: formStatus.submitting ? 'not-allowed' : 'pointer',
+                                        boxShadow: '0 0 20px rgba(34, 211, 238, 0.15)'
+                                    }}
+                                    onMouseEnter={e => {
+                                        if (!formStatus.submitting) {
+                                            (e.currentTarget as HTMLElement).style.boxShadow = '0 0 28px rgba(34, 211, 238, 0.3)';
+                                            (e.currentTarget as HTMLElement).style.transform = 'translateY(-1px)';
+                                        }
+                                    }}
+                                    onMouseLeave={e => {
+                                        (e.currentTarget as HTMLElement).style.boxShadow = '0 0 20px rgba(34, 211, 238, 0.15)';
+                                        (e.currentTarget as HTMLElement).style.transform = 'none';
+                                    }}
                                 >
                                     {formStatus.submitting ? (
                                         <>
-                                            <FontAwesomeIcon icon={faSpinner} className="w-5 h-5 mr-2 animate-spin" />
+                                            <FontAwesomeIcon icon={faSpinner} className="w-4 h-4 animate-spin" />
                                             Sending...
                                         </>
                                     ) : (
                                         <>
-                                            <FontAwesomeIcon icon={faPaperPlane} className="w-5 h-5 mr-2" />
+                                            <FontAwesomeIcon icon={faPaperPlane} className="w-4 h-4" />
                                             Send Message
                                         </>
                                     )}
@@ -218,36 +259,16 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
             <style>{`
                 @keyframes modalEntrance {
-                    from {
-                        opacity: 0;
-                        transform: scale(0.9) translateY(20px);
-                    }
-                    to {
-                        opacity: 1;
-                        transform: scale(1) translateY(0);
-                    }
+                    from { opacity: 0; transform: scale(0.95) translateY(12px); }
+                    to   { opacity: 1; transform: scale(1) translateY(0); }
                 }
-
                 @keyframes fadeIn {
                     from { opacity: 0; }
-                    to { opacity: 1; }
+                    to   { opacity: 1; }
                 }
-
                 @keyframes scaleIn {
-                    from {
-                        transform: scale(0);
-                    }
-                    to {
-                        transform: scale(1);
-                    }
-                }
-
-                .animate-fadeIn {
-                    animation: fadeIn 0.4s ease-in forwards;
-                }
-
-                .animate-scaleIn {
-                    animation: scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+                    from { transform: scale(0); }
+                    to   { transform: scale(1); }
                 }
             `}</style>
         </>

@@ -7,32 +7,29 @@ export default function PageLayout({ children, maxWidth = "max-w-5xl" }: PageLay
     const mousePos = useMousePosition();
 
     return (
-        <div className="relative min-h-screen text-white bg-gray-900">
-            {/* Mouse follow effect */}
+        <div className="relative min-h-screen" style={{ backgroundColor: 'var(--bg-base)', color: 'var(--text-primary)' }}>
+            {/* Ambient mouse glow */}
             <div
-                className="pointer-events-none fixed inset-0 z-0 transition-all duration-200"
+                className="pointer-events-none fixed inset-0 z-0 transition-all duration-300"
                 style={{
-                    background: `radial-gradient(200px at ${mousePos.x}px ${mousePos.y}px, rgba(99, 102, 241, 0.1), transparent 80%)`,
+                    background: `radial-gradient(350px at ${mousePos.x}px ${mousePos.y}px, rgba(34, 211, 238, 0.05), transparent 70%)`,
                 }}
             />
 
             <div className={`${maxWidth} mx-auto p-6 sm:p-8 md:p-12 relative z-10`}>
                 {/* Back button */}
-                <div className="mb-6">
+                <div className="mb-8">
                     <button
                         onClick={() => navigate('/')}
-                        className="flex items-center text-indigo-400 hover:text-indigo-300 transition-colors"
+                        className="flex items-center gap-2 text-sm transition-all duration-200"
+                        style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}
+                        onMouseEnter={e => (e.currentTarget.style.color = 'var(--accent)')}
+                        onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-muted)')}
                     >
-                        <svg
-                            className="w-5 h-5 mr-2 transition-transform"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                         </svg>
-                        <span className="font-medium">Justin Smith</span>
+                        <span>Justin Smith</span>
                     </button>
                 </div>
 
