@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getFeaturedProjects } from '@data/projects';
+import SectionHeading from '@components/ui/SectionHeading';
 
 export default function Projects() {
     const navigate = useNavigate();
@@ -41,22 +42,7 @@ export default function Projects() {
             className="px-8 sm:px-12 md:px-14 lg:px-16 pt-20 pb-32 scroll-mt-28"
         >
             <div className="max-w-2xl">
-                {/* Section heading */}
-                <div className="flex items-center gap-3 mb-10">
-                    <span
-                        className="text-xs tracking-[0.2em] uppercase"
-                        style={{ fontFamily: 'var(--font-mono)', color: 'var(--accent)', opacity: 0.6 }}
-                    >
-                        04
-                    </span>
-                    <div className="h-px w-6" style={{ background: 'var(--border-accent)' }} />
-                    <h2
-                        className="text-xl font-semibold"
-                        style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)', letterSpacing: '-0.01em' }}
-                    >
-                        Projects
-                    </h2>
-                </div>
+                <SectionHeading title="Projects" />
 
                 <div className="space-y-4">
                     {projects.map((project, index) => {
@@ -172,24 +158,6 @@ export default function Projects() {
                                         ))}
                                     </div>
 
-                                    {/* External link hint */}
-                                    {isHovered && (
-                                        <div className="flex items-center gap-1.5 mt-4 pt-3" style={{ borderTop: '1px solid var(--border)' }}>
-                                            <svg className="w-3 h-3" style={{ color: 'var(--accent)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                                            </svg>
-                                            <span
-                                                style={{
-                                                    fontFamily: 'var(--font-mono)',
-                                                    fontSize: '0.7rem',
-                                                    color: 'var(--accent)',
-                                                    letterSpacing: '0.05em'
-                                                }}
-                                            >
-                                                {project.internalUrl ? 'View details' : project.url ? 'Open project' : 'View on GitHub'}
-                                            </span>
-                                        </div>
-                                    )}
                                 </div>
                             </div>
                         );

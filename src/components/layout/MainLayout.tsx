@@ -6,6 +6,7 @@ import TechStack from "@components/TechStack";
 import Experience from "@components/Experience";
 import Projects from "@components/Projects";
 import ContactModal from "@components/ui/ContactModal";
+import CustomScrollbar from "@components/ui/CustomScrollbar";
 
 export default function MainLayout() {
     const leftRef = useRef<HTMLDivElement>(null);
@@ -59,14 +60,17 @@ export default function MainLayout() {
                         <div ref={leftRef} className="w-1/2 h-screen overflow-hidden z-10">
                             <Hero isMobileView={false} onContactClick={() => setIsContactModalOpen(true)} />
                         </div>
-                        <div
-                            ref={rightScrollRef}
-                            className="w-1/2 h-screen overflow-y-auto z-10 pb-24"
-                        >
-                            <About />
-                            <TechStack />
-                            <Experience />
-                            <Projects />
+                        <div className="relative w-1/2 h-screen z-10">
+                            <div
+                                ref={rightScrollRef}
+                                className="h-full overflow-y-auto pb-24"
+                            >
+                                <About />
+                                <TechStack />
+                                <Experience />
+                                <Projects />
+                            </div>
+                            <CustomScrollbar scrollRef={rightScrollRef} />
                         </div>
                     </div>
                 ) : (

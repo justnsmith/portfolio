@@ -25,11 +25,10 @@ html {
     font-size: 16px;
 }
 
-::-webkit-scrollbar { display: none; }
-html { scrollbar-width: none; }
+* { scrollbar-width: none; }
+*::-webkit-scrollbar { display: none; }
 
 body {
-    -ms-overflow-style: none;
     font-family: var(--font-body);
     margin: 0;
     padding: 0;

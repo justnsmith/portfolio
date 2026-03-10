@@ -1,3 +1,5 @@
+import SectionHeading from '@components/ui/SectionHeading';
+
 export default function About() {
     return (
         <section
@@ -5,22 +7,7 @@ export default function About() {
             className="px-8 sm:px-12 md:px-14 lg:px-16 pt-20 pb-32 scroll-mt-28"
         >
             <div className="max-w-2xl">
-                {/* Section heading */}
-                <div className="flex items-center gap-3 mb-10">
-                    <span
-                        className="text-xs tracking-[0.2em] uppercase"
-                        style={{ fontFamily: 'var(--font-mono)', color: 'var(--accent)', opacity: 0.6 }}
-                    >
-                        01
-                    </span>
-                    <div className="h-px w-6" style={{ background: 'var(--border-accent)' }} />
-                    <h2
-                        className="text-xl font-semibold"
-                        style={{ fontFamily: 'var(--font-display)', color: 'var(--text-primary)', letterSpacing: '-0.01em' }}
-                    >
-                        About Me
-                    </h2>
-                </div>
+                <SectionHeading title="About Me" />
 
                 <div
                     className="space-y-5"
