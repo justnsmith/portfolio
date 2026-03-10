@@ -50,15 +50,16 @@ export default function Projects() {
                         return (
                             <div
                                 key={project.id}
-                                className={`group rounded-xl overflow-hidden cursor-pointer transition-all duration-300 ${
+                                className={`rounded-xl overflow-hidden cursor-pointer ${
                                     isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                                 }`}
                                 style={{
-                                    transitionDelay: `${index * 80}ms`,
+                                    transition: 'opacity 0.5s ease, transform 0.3s ease, border-color 0.2s ease, background 0.2s ease',
+                                    transitionDelay: isInView ? `${index * 80}ms` : '0ms',
                                     background: isHovered ? 'rgba(34, 211, 238, 0.03)' : 'rgba(255,255,255,0.025)',
-                                    border: isHovered ? '1px solid var(--border-accent)' : '1px solid var(--border)',
+                                    border: '1px solid',
+                                    borderColor: isHovered ? 'var(--border-accent)' : 'var(--border)',
                                     transform: isHovered ? 'translateY(-1px)' : 'none',
-                                    boxShadow: isHovered ? '0 8px 32px rgba(34, 211, 238, 0.06)' : 'none',
                                 }}
                                 onMouseEnter={() => setHoveredProject(project.id)}
                                 onMouseLeave={() => setHoveredProject(null)}
@@ -70,15 +71,19 @@ export default function Projects() {
                                         <img
                                             src={project.image}
                                             alt={project.title}
-                                            className="w-full h-full object-cover object-top transition-transform duration-500"
-                                            style={{ transform: isHovered ? 'scale(1.04)' : 'scale(1)' }}
+                                            className="w-full h-full object-cover object-top"
+                                            style={{
+                                                transform: isHovered ? 'scale(1.03)' : 'scale(1)',
+                                                transition: 'transform 0.5s ease',
+                                            }}
                                             onError={e => { e.currentTarget.style.display = 'none'; }}
                                         />
                                         <div
                                             className="absolute inset-0"
                                             style={{
-                                                background: 'linear-gradient(to top, var(--bg-base) 0%, transparent 50%)',
-                                                opacity: 0.9
+                                                background: 'linear-gradient(to top, var(--bg-base) 0%, transparent 55%)',
+                                                opacity: isHovered ? 0.7 : 0.92,
+                                                transition: 'opacity 0.35s ease',
                                             }}
                                         />
                                     </div>
@@ -92,7 +97,7 @@ export default function Projects() {
                                             style={{
                                                 fontFamily: 'var(--font-display)',
                                                 color: 'var(--text-primary)',
-                                                letterSpacing: '-0.01em'
+                                                letterSpacing: '-0.01em',
                                             }}
                                         >
                                             {project.title}
@@ -102,7 +107,7 @@ export default function Projects() {
                                             style={{
                                                 fontFamily: 'var(--font-mono)',
                                                 color: 'var(--accent)',
-                                                opacity: 0.7
+                                                opacity: 0.7,
                                             }}
                                         >
                                             {project.date}
@@ -114,13 +119,12 @@ export default function Projects() {
                                         {project.tech.map((t, ti) => (
                                             <span
                                                 key={ti}
-                                                className="px-2 py-0.5 rounded text-xs transition-all duration-200"
+                                                className="px-2 py-0.5 rounded text-xs"
                                                 style={{
                                                     fontFamily: 'var(--font-mono)',
-                                                    background: isHovered ? 'rgba(99, 102, 241, 0.1)' : 'rgba(255,255,255,0.04)',
-                                                    border: '1px solid',
-                                                    borderColor: isHovered ? 'rgba(99, 102, 241, 0.25)' : 'var(--border)',
-                                                    color: isHovered ? '#a5b4fc' : 'var(--text-muted)'
+                                                    background: 'rgba(255,255,255,0.04)',
+                                                    border: '1px solid var(--border)',
+                                                    color: 'var(--text-muted)',
                                                 }}
                                             >
                                                 {t}
@@ -142,14 +146,19 @@ export default function Projects() {
                                             <div key={bi} className="flex items-start gap-2">
                                                 <span
                                                     className="mt-1.5 shrink-0 w-1 h-1 rounded-full"
-                                                    style={{ background: 'var(--accent)', opacity: isHovered ? 0.8 : 0.4 }}
+                                                    style={{
+                                                        background: 'var(--accent)',
+                                                        opacity: isHovered ? 0.8 : 0.35,
+                                                        transition: 'opacity 0.25s ease',
+                                                    }}
                                                 />
                                                 <p
                                                     style={{
                                                         fontSize: '0.75rem',
                                                         color: 'var(--text-muted)',
                                                         lineHeight: '1.55',
-                                                        opacity: isHovered ? 1 : 0.8
+                                                        opacity: isHovered ? 1 : 0.75,
+                                                        transition: 'opacity 0.25s ease',
                                                     }}
                                                 >
                                                     {bullet}
@@ -157,7 +166,6 @@ export default function Projects() {
                                             </div>
                                         ))}
                                     </div>
-
                                 </div>
                             </div>
                         );
