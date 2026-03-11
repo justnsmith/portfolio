@@ -69,7 +69,8 @@ export default function Hero({ isMobileView, onContactClick }: HeroPropsExtended
                     transform: `scale(${scaleFactor})`,
                     transformOrigin: 'top center',
                     marginBottom: scaleFactor < 1 ? `${(1 - scaleFactor) * -100}vh` : '0',
-                    paddingTop: isMobileView ? '64px' : '0',
+                    paddingTop: isMobileView ? '64px' : '2.5rem',
+                    paddingBottom: isMobileView ? '0' : '2.5rem',
                     justifyContent: isMobileView ? 'flex-start' : 'center',
                 }}
             >
