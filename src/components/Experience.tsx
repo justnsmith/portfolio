@@ -18,6 +18,7 @@ const experiences = [
         location: "Remote",
         date: "Jan 2026 – Present",
         active: true,
+        githubUrl: "https://github.com/justnsmith/mcp-alpha-vantage",
         tags: ["Python", "MCP", "LLM Agents", "Alpha Vantage API"],
         description: "Building open-source financial tooling powered by LLM-agent workflows.",
         bullets: [
@@ -57,6 +58,7 @@ const experiences = [
 ];
 
 import SectionHeading from '@components/ui/SectionHeading';
+import { SiGithub } from 'react-icons/si';
 
 export default function Experience() {
     return (
@@ -149,19 +151,34 @@ export default function Experience() {
                                         >
                                             {exp.title}
                                         </h3>
-                                        {exp.note && (
-                                            <span
-                                                className="px-2 py-0.5 rounded text-xs"
-                                                style={{
-                                                    fontFamily: 'var(--font-mono)',
-                                                    background: 'rgba(251, 191, 36, 0.08)',
-                                                    border: '1px solid rgba(251, 191, 36, 0.2)',
-                                                    color: '#fbbf24'
-                                                }}
-                                            >
-                                                {exp.note}
-                                            </span>
-                                        )}
+                                        <div className="flex items-center gap-2 shrink-0">
+                                            {exp.githubUrl && (
+                                                <a
+                                                    href={exp.githubUrl}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    style={{ color: 'var(--text-muted)', transition: 'color 0.2s ease' }}
+                                                    onMouseEnter={e => (e.currentTarget.style.color = 'var(--text-primary)')}
+                                                    onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-muted)')}
+                                                    aria-label="View on GitHub"
+                                                >
+                                                    <SiGithub size={15} />
+                                                </a>
+                                            )}
+                                            {exp.note && (
+                                                <span
+                                                    className="px-2 py-0.5 rounded text-xs"
+                                                    style={{
+                                                        fontFamily: 'var(--font-mono)',
+                                                        background: 'rgba(251, 191, 36, 0.08)',
+                                                        border: '1px solid rgba(251, 191, 36, 0.2)',
+                                                        color: '#fbbf24'
+                                                    }}
+                                                >
+                                                    {exp.note}
+                                                </span>
+                                            )}
+                                        </div>
                                     </div>
                                     <p
                                         className="text-sm mb-1"
