@@ -16,6 +16,65 @@ export interface Project {
 
 export const projects: Project[] = [
     {
+        id: "island-elevate",
+        year: 2026,
+        title: "Island Elevate",
+        date: "March 2026",
+        tech: ["React", "TypeScript", "Vite", "Tailwind CSS", "Vercel", "Cloudflare", "Supabase", "NeonDB"],
+        description: "Co-founded a web services business building professional websites for small local businesses in Hawaii — handling design, domains, email, and hosting end-to-end.",
+        bullets: [
+            "Co-founded and built the technical platform powering a web services business serving local Hawaii businesses",
+            "Designed and developed custom, mobile-first websites for local clients including restaurants, auto shops, and landscaping companies",
+            "Engineered the full hosting and deployment pipeline using Vercel, Cloudflare DNS, and custom domain configuration",
+            "Set up professional business email provisioning and DNS management for each client",
+            "Building a client dashboard with Supabase and NeonDB where customers can log in to view their site analytics and data",
+            "Handled cloud infrastructure, database architecture, and backend API development for the central platform"
+        ],
+        url: "https://islandelevate.com",
+        madeFor: "Personal",
+        featured: false,
+        image: "/projects/island-elevate.png"
+    },
+    {
+        id: "caldera-ot-dnp3-simulator",
+        year: 2026,
+        title: "Caldera OT DNP3 Simulator",
+        date: "March 2026",
+        tech: ["Python", "DNP3", "asyncio", "pytest", "GitHub Actions"],
+        description: "A DNP3 outstation simulator for MITRE Caldera's OT plugin, providing virtual ICS infrastructure with a real-time grid process simulation for cybersecurity adversary emulation testing.",
+        bullets: [
+            "Built a DNP3 outstation server using dnp3py that accepts TCP connections, processes SCADA requests, and maintains stateful device memory for binary/analog I/O points",
+            "Developed a simplified electrical grid process simulation modeling bus voltage and load with breaker and generator controls, updating sensor values on a 0.5s tick cycle",
+            "Implemented a live terminal monitor displaying real-time point values with change highlighting for active device state visualization",
+            "Created a YAML-based configuration system with typed dataclass validation for server settings and initial point values",
+            "Built a test master client for smoke-testing with integrity polls, class polls, delay measurement, and direct operate commands",
+            "Set up CI/CD with GitHub Actions running black, ruff, mypy, and pytest with coverage across Python 3.11–3.14"
+        ],
+        githubUrl: "https://github.com/justnsmith/caldera-ot-dnp3-simulator",
+        madeFor: "College",
+        featured: false,
+        image: "/projects/caldera-ot-dnp3.png"
+    },
+    {
+        id: "mcp-alpha-vantage",
+        year: 2026,
+        title: "MCP Alpha Vantage Server",
+        date: "March 2026",
+        tech: ["Python", "MCP", "Alpha Vantage API", "asyncio", "pytest"],
+        description: "An open-source MCP server that exposes Alpha Vantage market data to LLM clients — enabling stock quotes, technical indicators, portfolio tracking, news sentiment, and more directly within AI conversations.",
+        bullets: [
+            "Built 12 MCP tools covering stock quotes, daily prices, company fundamentals, technical indicators (RSI, MACD, BBANDS), earnings history, and news sentiment analysis",
+            "Implemented composite tools for portfolio snapshots with real-time P&L, stock screening with AND-filtered criteria, and multi-symbol comparison with standout detection",
+            "Designed an in-memory TTL caching layer with per-endpoint expiration to minimize API quota usage on Alpha Vantage's free tier",
+            "Supports both stdio (Claude Desktop) and HTTP transport modes for flexible client integration",
+            "Set up CI with GitHub Actions running black, ruff, mypy, and pytest across Python 3.10–3.12"
+        ],
+        githubUrl: "https://github.com/justnsmith/mcp-alpha-vantage",
+        madeFor: "Personal",
+        featured: false,
+        image: "/projects/mcp-alpha-vantage.png"
+    },
+    {
         id: "key-value-store",
         year: 2026,
         title: "Distributed Key-Value Storage",
