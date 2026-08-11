@@ -114,13 +114,21 @@ body {
     }
 }
 
-/* ═══ Masthead ═════════════════════════════════════════════════ */
+/* ═══ Masthead ═════════════════════════════════════════════════
+   Three layouts off one DOM: stacked (tablet), a full-screen centred
+   landing with links pinned to the bottom (phones), and portrait in
+   the margin column (desktop).                                      */
 .hdr {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    gap: 1.25rem;
+    grid-template-areas: "portrait" "identity" "links" "nav";
     padding: 3rem 0 1.75rem;
 }
+
+.hdr__portrait { grid-area: portrait; margin-bottom: 1.25rem; }
+.hdr__identity { grid-area: identity; }
+.hdr__nav      { grid-area: nav; margin-top: 1.5rem; }
+.hdr__burger   { display: none; }
 
 .hdr__portrait img {
     display: block;
@@ -131,12 +139,159 @@ body {
     filter: grayscale(0.35);
 }
 
+.hdr__credential { margin: 0.5rem 0 0; font-size: 0.95rem; }
+.hdr__role       { margin: 0.1rem 0 0; font-size: 0.95rem; }
+
+.hdr__links {
+    grid-area: links;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.15rem;
+    margin-top: 0.9rem;
+    font-size: 0.95rem;
+}
+
+/* ── Phones: full-screen landing ──────────────────────────────── */
+@media (max-width: 639px) {
+    .hdr {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        min-height: 100vh;
+        min-height: 100svh;   /* never taller than the visible viewport */
+        padding: 3.25rem 0 calc(1.5rem + env(safe-area-inset-bottom, 0px));
+    }
+    /* Two auto margins share the free space, centring the stack while
+       the links stay on the bottom edge. */
+    .hdr__portrait { margin: auto 0 1.5rem; }
+    .hdr__portrait img { width: 112px; height: 112px; }
+    .hdr__links {
+        margin-top: auto;
+        justify-content: center;
+        padding-top: 2.5rem;
+        gap: 1.35rem;
+    }
+    .hdr__burger {
+        display: block;
+        position: absolute;
+        top: 0.6rem;
+        right: -0.5rem;
+    }
+    .t-name { font-size: 2.1rem; }
+}
+
+/* ── Desktop: portrait hangs in the margin column ─────────────── */
 @media (min-width: 900px) {
     .hdr {
         grid-template-columns: var(--margin-col) minmax(0, 1fr);
-        gap: 0 var(--gutter);
+        grid-template-areas:
+            "portrait identity"
+            "portrait links"
+            "portrait nav";
+        column-gap: var(--gutter);
     }
-    .hdr__portrait { justify-self: end; padding-top: 0.3rem; }
+    .hdr__portrait {
+        justify-self: end;
+        align-self: start;
+        padding-top: 0.3rem;
+        margin-bottom: 0;
+    }
+}
+
+/* ═══ Burger + menu sheet ══════════════════════════════════════ */
+.burger { display: none; }
+.nav-inline { display: block; }
+
+@media (max-width: 639px) {
+    .burger {
+        display: flex;
+        flex: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        background: none;
+        border: 0;
+        cursor: pointer;
+    }
+    .burger span {
+        display: block;
+        width: 21px;
+        height: 1.5px;
+        background: var(--ink);
+    }
+    .nav-inline { display: none; }
+}
+
+.sheet:focus { outline: none; }
+
+.sheet {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    background: var(--paper);
+    animation: sheet-in 180ms ease both;
+}
+
+@keyframes sheet-in {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: none; }
+}
+
+.sheet__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    height: var(--bar-h);
+    flex: none;
+}
+
+.sheet__nav {
+    flex: 1;
+    overflow-y: auto;
+    padding-top: 0.5rem;
+}
+.sheet__nav ul { list-style: none; margin: 0; padding: 0; }
+.sheet__nav li + li { border-top: 1px solid var(--rule); }
+.sheet__nav a {
+    display: block;
+    padding: 1.05rem 0;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--ink);
+    text-decoration: none;
+}
+.sheet__nav a[aria-current] { color: var(--accent); }
+
+.sheet__links {
+    flex: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 1.15rem;
+    padding-top: 1.1rem;
+    padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid var(--rule);
+    font-size: 0.95rem;
+}
+.sheet__links a,
+.sheet__links button {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-thickness: 0.055em;
+    text-underline-offset: 0.18em;
+    text-decoration-color: var(--accent-soft);
 }
 
 /* ═══ Sticky bar ═══════════════════════════════════════════════ */
