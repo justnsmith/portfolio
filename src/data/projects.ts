@@ -36,24 +36,21 @@ export const projects: Project[] = [
         image: "/projects/island-elevate.png"
     },
     {
-        id: "caldera-ot-dnp3-simulator",
+        id: "grid-watch",
         year: 2026,
-        title: "Caldera OT DNP3 Simulator",
-        date: "March 2026",
-        tech: ["Python", "DNP3", "asyncio", "pytest", "GitHub Actions"],
-        description: "A DNP3 outstation simulator for MITRE Caldera's OT plugin, providing virtual ICS infrastructure with a real-time grid process simulation for cybersecurity adversary emulation testing.",
+        title: "Grid Watch: DNP3 Grid Sandbox for MITRE Caldera",
+        date: "May 2026",
+        tech: ["Python", "DNP3", "asyncio", "MITRE Caldera for OT"],
+        description: "A DNP3 electrical-grid outstation simulator that acts as a realistic attack target for MITRE Caldera for OT, letting a red-team framework run adversary techniques against a safe stand-in for substation hardware. Built with a team of four students and MITRE collaborators.",
         bullets: [
-            "Built a DNP3 outstation server using dnp3py that accepts TCP connections, processes SCADA requests, and maintains stateful device memory for binary/analog I/O points",
-            "Developed a simplified electrical grid process simulation modeling bus voltage and load with breaker and generator controls, updating sensor values on a 0.5s tick cycle",
-            "Implemented a live terminal monitor displaying real-time point values with change highlighting for active device state visualization",
-            "Created a YAML-based configuration system with typed dataclass validation for server settings and initial point values",
-            "Built a test master client for smoke-testing with integrity polls, class polls, delay measurement, and direct operate commands",
-            "Set up CI/CD with GitHub Actions running black, ruff, mypy, and pytest with coverage across Python 3.11–3.14"
+            "Wrote the low-level protocol layer from the DNP3 spec: a link layer with table-driven CRC-16, fixed-block framing, multi-frame reassembly, and partial-read tolerance",
+            "Wrote a custom application-layer response parser after the library's own decoder turned out to return empty results",
+            "Single-process asyncio throughout, with strict type checking and a test suite gated at 100% coverage",
+            "Ships a virtual DNP3 outstation, an HMI, adversary scenarios, and example Caldera for OT profiles"
         ],
-        githubUrl: "https://github.com/justnsmith/caldera-ot-dnp3-simulator",
+        githubUrl: "https://github.com/mitre/grid-watch",
         madeFor: "College",
-        featured: false,
-        image: "/projects/caldera-ot-dnp3.png"
+        featured: true
     },
     {
         id: "mcp-alpha-vantage",
@@ -75,26 +72,56 @@ export const projects: Project[] = [
         image: "/projects/mcp-alpha-vantage.png"
     },
     {
-        id: "key-value-store",
+        id: "fluxmq",
         year: 2026,
-        title: "Distributed Key-Value Storage",
-        date: "January 2026",
-        tech: ["C++", "Go", "Docker", "AWS", "Terraform"],
-        description: "A high-performance distributed key-value store featuring an LSM-tree storage engine, crash-safe durability, and multi-node cloud deployment.",
+        title: "FluxMQ: Distributed Message Queue",
+        date: "March 2026",
+        tech: ["C++20", "epoll", "kqueue", "Replication"],
+        description: "A Kafka-style distributed message queue written from scratch in C++20, with zero third-party runtime dependencies.",
         bullets: [
-            "Built a high-concurrency LSM-tree storage engine with Write-Ahead Logging for durability and crash recovery",
-            "Implemented SSTables with Bloom filters for fast point lookups and efficient range scans",
-            "Designed an LRU cache and multi-threaded background compaction to sustain high write throughput",
-            "Developed a concurrent TCP server using a custom binary protocol for CRUD and scan operations",
-            "Built a Go CLI client for remote interaction with the server",
-            "Wrote a benchmarking suite achieving 1.1M ops/sec on 100B values while maintaining thread safety and integrity",
-            "Containerized the full system with Docker and deployed a multi-node cluster to AWS EC2 using Terraform",
-            "Automated cluster setup, configuration, and orchestration with shell scripts and docker-compose"
+            "A single-threaded reactor over epoll and kqueue handles all I/O behind one interface",
+            "Messages persist to a segmented log with a sparse index and append-only writes",
+            "Brokers replicate pull-based with in-sync-replica tracking and a high watermark, so consumers never see uncommitted records, and leader election fences stale leaders by epoch",
+            "A length-prefixed wire protocol with correlation-ID pipelining and real v0/v1 versioning",
+            "Tested with fault injection, including a failover test that SIGKILLs the leader mid-workload and asserts zero message loss"
         ],
-        githubUrl: "https://github.com/justnsmith/kv-store",
+        githubUrl: "https://github.com/justnsmith/FluxMQ",
+        madeFor: "Personal",
+        featured: true
+    },
+    {
+        id: "distributed-kv-store",
+        year: 2026,
+        title: "Distributed Key-Value Store (Raft + LSM)",
+        date: "February 2026",
+        tech: ["C++20", "Raft", "LSM-tree", "Bloom filters", "WAL"],
+        description: "A replicated key-value store written from scratch in C++20 — two systems in one: a log-structured storage engine, and a Raft consensus layer that keeps three nodes in agreement through failures.",
+        bullets: [
+            "Built a full LSM tree: memtable and write-ahead log flushed to Bloom-filtered SSTables and compacted in levels in the background, with a single batched writer thread and fully parallel reads",
+            "Implemented Raft from the extended paper — leader election, log replication, the §5.4 safety rules, conflict-term fast log backup, and snapshotting",
+            "Tested in three tiers, including a chaos harness that kills leaders and destroys quorum mid-write"
+        ],
+        githubUrl: "https://github.com/justnsmith/KVRaft",
+        madeFor: "Personal",
+        featured: true
+    },
+    {
+        id: "image-processing-service",
+        year: 2026,
+        title: "Async Image Processing Service (REST + gRPC)",
+        date: "February 2026",
+        tech: ["Go", "gRPC", "AWS S3", "Redis", "PostgreSQL"],
+        description: "An async image-processing backend in Go. Uploads return in milliseconds; the resize, crop, and tint work runs off the request path in a background worker pool.",
+        bullets: [
+            "Serves the same core logic over both REST and gRPC as thin adapters over one transport-agnostic package, including a client-streaming upload and a server-streaming status watch that replaces polling",
+            "Raised throughput 7.7× (37.5 to 287 images/sec) via a worker pool sized to available cores and a pixel-loop rewrite cutting 4.1M allocations per image to 2",
+            "S3 for storage, Redis for the queue, and Postgres tracking job state",
+            "Secured with JWT and bcrypt; tested under Go's race detector"
+        ],
+        githubUrl: "https://github.com/justnsmith/image-processing-service",
         madeFor: "Personal",
         featured: true,
-        image: "/projects/kv-store.png"
+        image: "/projects/image-processing-service.png"
     },
     {
         id: "pantry-pals",
@@ -114,7 +141,7 @@ export const projects: Project[] = [
         url: "https://pantry-pals.vercel.app",
         githubUrl: "https://github.com/pantry-pals",
         madeFor: "College",
-        featured: true,
+        featured: false,
         image: "/projects/pantry-pals.png"
     },
     {
@@ -155,26 +182,6 @@ export const projects: Project[] = [
         madeFor: "Personal",
         featured: true,
         image: "/projects/memory-allocator.png"
-    },
-    {
-        id: "image-processing-service",
-        year: 2025,
-        title: "Image Processing Service",
-        date: "April 2025",
-        tech: ["AWS S3", "Docker", "Go", "PostgreSQL", "Redis", "Typescript", "TailwindCSS"],
-        description: "A full-stack image processing application with advanced backend services for secure storage, efficient processing, and dependable data management.",
-        bullets: [
-            "Implemented secure user authentication with JWT token-based authentication, email verification, and password reset functionality",
-            "Designed scalable storage solution using S3 bucket integration, Redis caching, and PostgreSQL metadata management",
-            "Built backend image processing capabilities including resize, crop, and filter application using Go imaging libraries",
-            "Created a responsive React frontend with TypeScript and Tailwind CSS for a user-friendly interface",
-            "Developed complete API endpoints for user and image management with proper authentication and authorization"
-        ],
-        url: "https://image-processing-service-nk16.onrender.com",
-        githubUrl: "https://github.com/justnsmith/image-processing-service",
-        madeFor: "Personal",
-        featured: true,
-        image: "/projects/image-processing-service.png"
     },
     {
         id: "portfolio-website",

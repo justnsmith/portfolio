@@ -1,40 +1,51 @@
-import { useNavigate } from "react-router-dom";
-import { useMousePosition } from "@hooks";
-import { PageLayoutProps } from "@types";
+import { Link } from "react-router-dom";
+import type { ReactNode } from "react";
+import SiteFooter from "@components/SiteFooter";
+import { profile } from "@data/nav";
 
-export default function PageLayout({ children, maxWidth = "max-w-5xl" }: PageLayoutProps) {
-    const navigate = useNavigate();
-    const mousePos = useMousePosition();
+interface PageLayoutProps {
+    children: ReactNode;
+    /** Widen the measure for pages that hold tables or the visualizer. */
+    wide?: boolean;
+}
+
+export default function PageLayout({ children, wide }: PageLayoutProps) {
+    const wrap = `pg-wrap${wide ? " pg-wrap--wide" : ""}`;
 
     return (
-        <div className="relative min-h-screen" style={{ backgroundColor: 'var(--bg-base)', color: 'var(--text-primary)' }}>
-            {/* Ambient mouse glow */}
-            <div
-                className="pointer-events-none fixed inset-0 z-0 transition-all duration-300"
-                style={{
-                    background: `radial-gradient(350px at ${mousePos.x}px ${mousePos.y}px, rgba(34, 211, 238, 0.05), transparent 70%)`,
-                }}
-            />
-
-            <div className={`${maxWidth} mx-auto p-6 sm:p-8 md:p-12 relative z-10`}>
-                {/* Back button */}
-                <div className="mb-8">
-                    <button
-                        onClick={() => navigate('/')}
-                        className="flex items-center gap-2 text-sm transition-all duration-200"
-                        style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-muted)' }}
-                        onMouseEnter={e => (e.currentTarget.style.color = 'var(--accent)')}
-                        onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-muted)')}
+        <>
+            <div className={wrap}>
+                <div
+                    className="flex flex-wrap items-baseline no-print"
+                    style={{ gap: "1rem", justifyContent: "space-between", padding: "2rem 0 1.25rem" }}
+                >
+                    <Link
+                        to="/"
+                        className="lnk-q"
+                        style={{ fontFamily: "var(--font-display)", fontSize: "1rem", fontWeight: 500 }}
                     >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                        </svg>
-                        <span>Justin Smith</span>
-                    </button>
+                        ← {profile.name}
+                    </Link>
+                    <span className="flex flex-wrap items-baseline" style={{ gap: "1.15rem", fontSize: "0.95rem" }}>
+                        <a className="lnk" href={profile.github} target="_blank" rel="noopener noreferrer">
+                            GitHub
+                        </a>
+                        <a className="lnk" href={profile.resume} target="_blank" rel="noopener noreferrer">
+                            Résumé
+                        </a>
+                    </span>
                 </div>
-
-                {children}
             </div>
-        </div>
+
+            <hr className="rule" />
+
+            <main className={wrap} style={{ paddingTop: "2.5rem" }}>
+                {children}
+            </main>
+
+            <div className={wrap}>
+                <SiteFooter bare />
+            </div>
+        </>
     );
 }

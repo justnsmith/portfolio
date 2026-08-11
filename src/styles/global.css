@@ -1,65 +1,475 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..600;1,8..60,400..500&display=swap');
 
-/* ─── CSS Variables ─────────────────────────────── */
+/* Static assets aren't source. Without this, Tailwind scans favicon.svg and
+   mints utility classes out of the glyph path data. */
+@source not "../../public";
+
+/* ═══ Tokens ═══════════════════════════════════════════════════
+   A printed-page palette: near-white stock, black ink, a single
+   Prussian-blue accent reserved for links and marginalia.        */
 :root {
-    --accent:         #22d3ee;   /* cyan-400  */
-    --accent-soft:    rgba(34, 211, 238, 0.12);
-    --accent-indigo:  #6366f1;   /* indigo-500 */
-    --bg-base:        #0d1117;
-    --bg-surface:     #111827;
-    --bg-elevated:    #1a2030;
-    --text-primary:   #f0f4f8;
-    --text-secondary: #8b9ab0;
-    --text-muted:     #4a5568;
-    --border:         rgba(255, 255, 255, 0.06);
-    --border-accent:  rgba(34, 211, 238, 0.2);
-    --font-display:   'Outfit', -apple-system, sans-serif;
-    --font-body:      'DM Sans', -apple-system, sans-serif;
-    --font-mono:      'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+    --paper:        #fcfcfa;
+    --paper-tint:   #f4f3ee;
+    --ink:          #15171b;
+    --ink-mid:      #4b515a;
+    --ink-soft:     #6f757e;   /* 4.5:1 on paper — metadata stays readable */
+    --rule:         #e4e3dd;
+    --rule-strong:  #cbcac3;
+    --accent:       #1b3a5c;
+    --accent-soft:  rgba(27, 58, 92, 0.32);
+    --accent-wash:  rgba(27, 58, 92, 0.06);
+
+    --font-display: 'Newsreader', Georgia, 'Times New Roman', serif;
+    --font-body:    'Source Serif 4', Georgia, 'Times New Roman', serif;
+    --font-mono:    'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+    --measure:      38rem;   /* prose column */
+    --margin-col:   7rem;    /* marginalia column */
+    --gutter:       2.5rem;
+    --bar-h:        3.25rem; /* sticky bar height */
 }
 
-/* ─── Base ──────────────────────────────────────── */
+/* ═══ Base ═════════════════════════════════════════════════════ */
+/* No `scroll-behavior: smooth` on purpose — nav scrolling is animated in JS
+   (useSectionScroller), and a CSS smooth scroll fights that rAF loop. */
 html {
-    scroll-behavior: smooth;
-    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
 }
-
-* { scrollbar-width: none; }
-*::-webkit-scrollbar { display: none; }
 
 body {
-    font-family: var(--font-body);
     margin: 0;
-    padding: 0;
-    background-color: var(--bg-base);
-    color: var(--text-primary);
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    font-synthesis-weight: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
 }
 
-/* ─── Selection ─────────────────────────────────── */
-::selection {
-    background-color: rgba(34, 211, 238, 0.2);
-    color: white;
-}
-::-moz-selection {
-    background-color: rgba(34, 211, 238, 0.2);
-    color: white;
+::selection { background: var(--accent-wash); color: var(--ink); }
+
+:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 1px;
 }
 
-/* ─── Typography helpers ────────────────────────── */
-.font-display { font-family: var(--font-display); }
-.font-mono    { font-family: var(--font-mono); }
+/* ═══ Shell ════════════════════════════════════════════════════ */
+.pg-wrap {
+    width: 100%;
+    max-width: calc(var(--margin-col) + var(--gutter) + var(--measure));
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
 
-/* ─── Subtle noise overlay (applied via pseudo-element on body) */
-body::before {
-    content: '';
+.pg-wrap--wide {
+    max-width: 68rem;
+}
+
+/* ═══ Marginalia section grid ══════════════════════════════════
+   Label hangs in the left margin at wide widths; stacks above the
+   prose below 900px.                                             */
+.sec {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.75rem;
+    padding: 2.75rem 0;
+    border-top: 1px solid var(--rule);
+    scroll-margin-top: calc(var(--bar-h) + 1rem);
+}
+
+.sec--plain { border-top: 0; }
+
+/* Single-column variant for pages that aren't set on the marginalia grid.
+   Doubled class so it outranks the wide-screen .sec rule below. */
+.sec.sec--bare { grid-template-columns: minmax(0, 1fr); }
+
+.sec-label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    opacity: 0.75;
+}
+
+.sec-body > * + * { margin-top: 1.5rem; }
+
+@media (min-width: 900px) {
+    .sec {
+        grid-template-columns: var(--margin-col) minmax(0, 1fr);
+        gap: 0 var(--gutter);
+    }
+    .sec-label {
+        text-align: right;
+        padding-top: 0.5rem;
+        position: sticky;
+        top: calc(var(--bar-h) + 1.25rem);
+        align-self: start;
+    }
+}
+
+/* ═══ Masthead ═════════════════════════════════════════════════ */
+.hdr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.25rem;
+    padding: 3rem 0 1.75rem;
+}
+
+.hdr__portrait img {
+    display: block;
+    width: 104px;
+    height: 104px;
+    border-radius: 50%;
+    object-fit: cover;
+    filter: grayscale(0.35);
+}
+
+@media (min-width: 900px) {
+    .hdr {
+        grid-template-columns: var(--margin-col) minmax(0, 1fr);
+        gap: 0 var(--gutter);
+    }
+    .hdr__portrait { justify-self: end; padding-top: 0.3rem; }
+}
+
+/* ═══ Sticky bar ═══════════════════════════════════════════════ */
+.bar {
     position: fixed;
-    inset: 0;
+    inset: 0 0 auto 0;
+    z-index: 50;
+    height: var(--bar-h);
+    display: flex;
+    align-items: center;
+    /* Solid, not a backdrop-filter: a blurred fixed layer has to re-composite
+       the region behind it every frame, which is the classic cause of choppy
+       scrolling on macOS. Opaque paper reads truer to the design anyway. */
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
+    opacity: 0;
+    transform: translateY(-100%);
     pointer-events: none;
-    z-index: 0;
-    opacity: 0.025;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-    background-size: 256px 256px;
+    transition: opacity 220ms ease, transform 220ms ease;
+}
+.bar[data-shown='true'] {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+}
+.bar__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    width: 100%;
+}
+.bar__name {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--ink);
+    white-space: nowrap;
+}
+.bar__nav { overflow-x: auto; scrollbar-width: none; }
+.bar__nav::-webkit-scrollbar { display: none; }
+
+/* ═══ Typography ═══════════════════════════════════════════════ */
+.t-name {
+    font-family: var(--font-display);
+    font-size: clamp(1.9rem, 1.4rem + 1.8vw, 2.5rem);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    margin: 0;
+}
+
+.t-h2 {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    margin: 0;
+}
+
+.t-h3 {
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.35;
+    margin: 0;
+}
+
+.t-prose p { margin: 0; }
+.t-prose p + p { margin-top: 1.15rem; }
+
+.t-meta {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+}
+
+.t-mono {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+}
+
+.t-dim  { color: var(--ink-mid); }
+.t-soft { color: var(--ink-soft); }
+
+/* ═══ Links ════════════════════════════════════════════════════ */
+.lnk {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-thickness: 0.055em;
+    text-underline-offset: 0.18em;
+    text-decoration-color: var(--accent-soft);
+    transition: text-decoration-color 150ms ease, color 150ms ease;
+}
+.lnk:hover { text-decoration-color: var(--accent); }
+
+/* Quiet link: underline only on hover — for dense lists */
+.lnk-q {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-thickness: 0.055em;
+    text-underline-offset: 0.18em;
+    text-decoration-color: transparent;
+    transition: text-decoration-color 150ms ease, color 150ms ease;
+}
+.lnk-q:hover { color: var(--accent); text-decoration-color: var(--accent-soft); }
+
+/* ═══ Rules & lists ════════════════════════════════════════════ */
+.rule { height: 1px; background: var(--rule); border: 0; margin: 0; }
+
+.stack-list > * + * {
+    margin-top: 1.6rem;
+    padding-top: 1.6rem;
+    border-top: 1px solid var(--rule);
+}
+
+.bullets {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.bullets li {
+    position: relative;
+    padding-left: 1.1rem;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--ink-mid);
+}
+.bullets li + li { margin-top: 0.45rem; }
+.bullets li::before {
+    content: '';
+    position: absolute;
+    left: 0.1rem;
+    top: 0.72em;
+    width: 4px;
+    height: 1px;
+    background: var(--rule-strong);
+}
+
+/* Definition rows — "Now" and "Skills" */
+.deflist { display: grid; gap: 0.9rem; }
+.defrow {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.15rem;
+}
+@media (min-width: 640px) {
+    .defrow {
+        grid-template-columns: 11rem minmax(0, 1fr);
+        gap: 0 1.5rem;
+    }
+}
+
+/* ═══ Archive table ════════════════════════════════════════════
+   Grid rows that read as a typeset table on desktop and stack on
+   small screens — no horizontal scrolling.                       */
+.arch-head,
+.arch-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.4rem;
+}
+
+.arch-head {
+    display: none;
+    padding-bottom: 0.55rem;
+    border-bottom: 1.5px solid var(--ink);
+}
+
+.arch-row {
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--rule);
+}
+
+.arch-year {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 2rem 0 0.5rem;
+}
+.arch-year::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+}
+
+@media (min-width: 760px) {
+    .arch-head { display: grid; }
+    .arch-head,
+    .arch-row {
+        grid-template-columns: 17rem minmax(0, 1fr);
+        gap: 0 2rem;
+    }
+}
+
+/* ═══ Buttons ══════════════════════════════════════════════════ */
+.btn-plain {
+    background: none;
+    border: 0;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+}
+
+.btn-solid {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: var(--ink);
+    color: var(--paper);
+    border: 1px solid var(--ink);
+    border-radius: 2px;
+    padding: 0.55rem 1.1rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: background 150ms ease, color 150ms ease;
+}
+.btn-solid:hover:not(:disabled) { background: var(--accent); border-color: var(--accent); }
+.btn-solid:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-quiet {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: transparent;
+    color: var(--ink-mid);
+    border: 1px solid var(--rule-strong);
+    border-radius: 2px;
+    padding: 0.4rem 0.85rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: border-color 150ms ease, color 150ms ease, background 150ms ease;
+}
+.btn-quiet:hover:not(:disabled) { color: var(--ink); border-color: var(--ink); }
+.btn-quiet[aria-pressed='true'] {
+    color: var(--paper);
+    background: var(--ink);
+    border-color: var(--ink);
+}
+
+/* ═══ Allocator visualizer ═════════════════════════════════════ */
+.viz-panel {
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 1.15rem 1.25rem;
+}
+
+.viz-stat {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid var(--rule);
+}
+.viz-stat:last-child { border-bottom: 0; }
+.viz-stat__v {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+}
+
+.viz-range {
+    flex: 1;
+    accent-color: var(--accent);
+    height: 1.25rem;
+}
+
+.viz-cell {
+    border: 1px solid;
+    height: 6rem;
+    padding: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    line-height: 1.5;
+    color: var(--ink);
+    transition: background 300ms ease, border-color 300ms ease;
+}
+
+.viz-scroll { overflow-x: auto; padding-bottom: 0.75rem; }
+.viz-scroll::-webkit-scrollbar { height: 8px; }
+.viz-scroll::-webkit-scrollbar-thumb { background: var(--rule-strong); border-radius: 4px; }
+
+/* ═══ Form fields ══════════════════════════════════════════════ */
+.field {
+    width: 100%;
+    background: var(--paper);
+    border: 1px solid var(--rule-strong);
+    border-radius: 2px;
+    padding: 0.55rem 0.7rem;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 150ms ease;
+}
+.field:focus { border-color: var(--accent); }
+.field::placeholder { color: var(--ink-soft); }
+
+/* ═══ Motion ═══════════════════════════════════════════════════ */
+@keyframes rise {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: none; }
+}
+.rise { animation: rise 550ms cubic-bezier(0.22, 0.68, 0.24, 1) both; }
+
+@keyframes panel-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: none; }
+}
+.panel-in { animation: panel-in 260ms cubic-bezier(0.22, 0.68, 0.24, 1) both; }
+
+/* Motion here is deliberately kept even under `prefers-reduced-motion`, at the
+   site owner's request: the only movement is an 8px fade-in and the nav scroll
+   — no parallax, autoplay, or large-travel effects. */
+
+/* ═══ Print ════════════════════════════════════════════════════ */
+@media print {
+    .no-print { display: none !important; }
+    body { background: #fff; color: #000; font-size: 11pt; }
+    .sec { break-inside: avoid; }
+    .lnk, .lnk-q { color: #000; text-decoration: underline; }
 }

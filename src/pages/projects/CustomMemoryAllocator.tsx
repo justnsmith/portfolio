@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { ArrowRight, Trash2, RotateCcw, Plus, Github } from "lucide-react";
+import { ArrowRight, Trash2, RotateCcw, Plus } from "lucide-react";
 import PageLayout from "@components/layout/PageLayout";
 
 export default function EnhancedMemoryAllocator() {
@@ -467,247 +467,286 @@ export default function EnhancedMemoryAllocator() {
         setAllocSizeInput(constrainedValue.toString());
     };
 
-    return (
-        <PageLayout maxWidth="max-w-7xl">
-            <h1 className="text-3xl font-bold mb-6 text-center">Memory Allocation Visualizer</h1>
+    const usedMemory = blocks.reduce((sum, b) => (b.free ? sum : sum + b.totalSize), 0);
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div className="bg-gray-800 p-4 rounded-lg shadow-lg">
-                    <h2 className="text-xl font-bold mb-3 text-blue-400">Allocate Memory</h2>
-                    <div className="flex flex-col space-y-4">
-                        <div className="flex items-center space-x-2">
-                            <label htmlFor="allocSize" className="font-medium whitespace-nowrap">Size:</label>
+    const blockTone = (block: { free: boolean; coalescing?: boolean; splitting?: boolean }, active: boolean) => {
+        if (block.splitting) return { bg: "#efeaf6", br: "#c0aed6" };
+        if (block.coalescing) return { bg: "#f7f0e2", br: "#dcc596" };
+        if (block.free) return active ? { bg: "#e4eee7", br: "#9dbfa8" } : { bg: "#eef3ef", br: "#bfd2c6" };
+        return { bg: "#f6ebe8", br: "#d6ada3" };
+    };
+
+    return (
+        <PageLayout wide>
+            <div className="rise">
+                <h1 className="t-name">Memory allocation visualizer</h1>
+                <p className="t-dim" style={{ margin: "0.55rem 0 0", fontSize: "0.95rem", maxWidth: "38rem" }}>
+                    A browser model of the explicit free-list allocator I wrote in C. Request a block
+                    and watch the heap split, mark, and coalesce &mdash; the same bookkeeping the C
+                    version does with 24-byte headers.
+                </p>
+                <p style={{ margin: "0.9rem 0 0", fontSize: "0.95rem" }}>
+                    <a
+                        className="lnk"
+                        href="https://github.com/justnsmith/custom-allocator-c"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Read the C source
+                    </a>
+                </p>
+
+                <div className="grid gap-6 md:grid-cols-2" style={{ margin: "2.5rem 0 0" }}>
+                    {/* ── Controls ─────────────────────────────── */}
+                    <section className="viz-panel">
+                        <h2 className="t-meta" style={{ margin: 0 }}>Allocate</h2>
+
+                        <div className="flex items-center" style={{ gap: "0.75rem", marginTop: "1rem" }}>
+                            <label className="t-mono" htmlFor="allocSize" style={{ whiteSpace: "nowrap" }}>
+                                Size
+                            </label>
                             <input
                                 id="allocSize"
                                 type="range"
+                                className="viz-range"
                                 min={MIN_ALLOC_SIZE}
                                 max={MAX_ALLOC_SIZE}
                                 value={allocSize}
                                 onChange={handleSliderChange}
-                                className="flex-1"
                                 disabled={blockOperationsDisabled}
                             />
-                            <div className="w-20 bg-gray-700 rounded flex overflow-hidden">
+                            <span className="flex items-center" style={{ gap: "0.35rem" }}>
                                 <input
                                     type="text"
+                                    inputMode="numeric"
+                                    aria-label="Allocation size in bytes"
                                     value={allocSizeInput}
                                     onChange={handleAllocSizeInput}
                                     onBlur={handleInputBlur}
-                                    className="w-full bg-gray-700 px-2 py-1 text-center font-mono focus:outline-none focus:ring-1 focus:ring-blue-500"
                                     disabled={blockOperationsDisabled}
-                                    placeholder={MIN_ALLOC_SIZE.toString()}
+                                    className="field"
+                                    style={{
+                                        width: "4.5rem",
+                                        textAlign: "right",
+                                        fontFamily: "var(--font-mono)",
+                                        fontSize: "0.85rem",
+                                        padding: "0.3rem 0.45rem",
+                                    }}
                                 />
-                                <span className="bg-gray-600 px-1 flex items-center">B</span>
-                            </div>
+                                <span className="t-mono">B</span>
+                            </span>
                         </div>
-                        <div className="flex items-center space-x-2 mb-2">
-                            <label className="font-medium whitespace-nowrap">Strategy:</label>
-                            <div className="flex-1 grid grid-cols-3 gap-2">
+
+                        <p className="t-meta" style={{ margin: "1.25rem 0 0.5rem" }}>Fit strategy</p>
+                        <div className="flex flex-wrap" style={{ gap: "0.5rem" }}>
+                            {(["first-fit", "best-fit", "worst-fit"] as const).map(strategy => (
                                 <button
-                                    className={`px-2 py-1 rounded transition-colors text-sm ${allocStrategy === 'first-fit' ? 'bg-blue-600 text-white' : 'bg-gray-700 hover:bg-gray-600'}`}
-                                    onClick={() => setAllocStrategy('first-fit')}
+                                    key={strategy}
+                                    className="btn-quiet"
+                                    aria-pressed={allocStrategy === strategy}
+                                    onClick={() => setAllocStrategy(strategy)}
                                     disabled={blockOperationsDisabled}
                                 >
-                                    First Fit
+                                    {strategy.replace("-", " ")}
                                 </button>
-                                <button
-                                    className={`px-2 py-1 rounded transition-colors text-sm ${allocStrategy === 'best-fit' ? 'bg-blue-600 text-white' : 'bg-gray-700 hover:bg-gray-600'}`}
-                                    onClick={() => setAllocStrategy('best-fit')}
-                                    disabled={blockOperationsDisabled}
-                                >
-                                    Best Fit
-                                </button>
-                                <button
-                                    className={`px-2 py-1 rounded transition-colors text-sm ${allocStrategy === 'worst-fit' ? 'bg-blue-600 text-white' : 'bg-gray-700 hover:bg-gray-600'}`}
-                                    onClick={() => setAllocStrategy('worst-fit')}
-                                    disabled={blockOperationsDisabled}
-                                >
-                                    Worst Fit
-                                </button>
-                            </div>
+                            ))}
                         </div>
-                        <div className="flex gap-2">
+
+                        <div className="flex flex-wrap" style={{ gap: "0.5rem", marginTop: "1.5rem" }}>
                             <button
+                                className="btn-solid"
                                 onClick={handleAllocate}
                                 disabled={blockOperationsDisabled}
-                                className={`flex-1 bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white font-bold py-3 px-4 rounded-lg transition-all flex items-center justify-center gap-2 ${blockOperationsDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
                             >
-                                <Plus size={18} />
-                                Allocate Memory
+                                <Plus size={14} />
+                                Allocate block
                             </button>
                             <button
+                                className="btn-quiet"
                                 onClick={resetMemory}
                                 disabled={blockOperationsDisabled}
-                                className={`bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-4 rounded-lg transition-all ${blockOperationsDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                title="Reset Memory"
                             >
-                                <RotateCcw size={18} />
+                                <RotateCcw size={14} />
+                                Reset heap
                             </button>
                         </div>
+                    </section>
+
+                    {/* ── Statistics ───────────────────────────── */}
+                    <section className="viz-panel">
+                        <h2 className="t-meta" style={{ margin: 0 }}>Heap</h2>
+                        <div style={{ marginTop: "0.5rem" }}>
+                            <div className="viz-stat">
+                                <span className="t-dim">Used memory</span>
+                                <span className="viz-stat__v">{usedMemory.toLocaleString()} B</span>
+                            </div>
+                            <div className="viz-stat">
+                                <span className="t-dim">Free memory</span>
+                                <span className="viz-stat__v">{calculateFreeMemory().toLocaleString()} B</span>
+                            </div>
+                            <div className="viz-stat">
+                                <span className="t-dim">Free blocks</span>
+                                <span className="viz-stat__v">{calculateFreeBlocks()}</span>
+                            </div>
+                            <div className="viz-stat">
+                                <span className="t-dim">Used blocks</span>
+                                <span className="viz-stat__v">{calculateUsedBlocks()}</span>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <div
+                    className="t-mono"
+                    role="status"
+                    aria-live="polite"
+                    style={{ minHeight: "1.5rem", marginTop: "1rem" }}
+                >
+                    {statusMessage}
+                </div>
+
+                {/* ── Blocks ───────────────────────────────────── */}
+                <div style={{ marginTop: "1.5rem" }}>
+                    <div
+                        className="flex flex-wrap items-baseline"
+                        style={{ justifyContent: "space-between", gap: "0.5rem 1.5rem" }}
+                    >
+                        <h2 className="t-meta" style={{ margin: 0 }}>Blocks</h2>
+                        <span className="flex flex-wrap items-center t-mono" style={{ gap: "1rem" }}>
+                            <Legend swatch="#eef3ef" border="#bfd2c6" label="free" />
+                            <Legend swatch="#f6ebe8" border="#d6ada3" label="allocated" />
+                            <Legend swatch="#efeaf6" border="#c0aed6" label="splitting" />
+                            <Legend swatch="#f7f0e2" border="#dcc596" label="coalescing" />
+                        </span>
                     </div>
-                </div>
 
-                <div className="bg-gray-800 p-4 rounded-lg shadow-lg">
-                    <h2 className="text-xl font-bold mb-3 text-blue-400">Memory Statistics</h2>
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="bg-gray-700 p-3 rounded-lg">
-                            <div className="text-2xl font-bold text-red-400">
-                                {blocks.reduce((sum, block) => block.free ? sum : sum + block.totalSize, 0).toLocaleString()}
-                            </div>
-                            <div className="text-sm text-gray-300">Used Memory (bytes)</div>
-                        </div>
-                        <div className="bg-gray-700 p-3 rounded-lg">
-                            <div className="text-2xl font-bold text-green-400">
-                                {calculateFreeMemory().toLocaleString()}
-                            </div>
-                            <div className="text-sm text-gray-300">Free Memory (bytes)</div>
-                        </div>
-                        <div className="bg-gray-700 p-3 rounded-lg">
-                            <div className="text-2xl font-bold text-yellow-400">
-                                {calculateFreeBlocks()}
-                            </div>
-                            <div className="text-sm text-gray-300">Free Blocks</div>
-                        </div>
-                        <div className="bg-gray-700 p-3 rounded-lg">
-                            <div className="text-2xl font-bold text-purple-400">
-                                {calculateUsedBlocks()}
-                            </div>
-                            <div className="text-sm text-gray-300">Used Blocks</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                    <hr className="rule" style={{ margin: "0.5rem 0 1.5rem" }} />
 
-            {statusMessage && (
-                <div className={`${isCoalescing ? 'bg-orange-700' : 'bg-blue-700'} p-3 rounded-lg mb-6 text-center animate-pulse`}>
-                    <p className="font-bold">{statusMessage}</p>
-                </div>
-            )}
+                    <div className="viz-scroll">
+                        <div className="flex items-start" style={{ minWidth: "max-content", gap: "0.75rem" }}>
+                            {blocks.map((block, idx) => {
+                                if (block.markedForRemoval) return null;
 
-            <div className="bg-gray-800 p-4 rounded-lg shadow-lg overflow-x-auto">
-                <h2 className="text-xl font-bold mb-4 text-blue-400">Memory Blocks</h2>
+                                const sizeRatio = block.totalSize / INITIAL_HEAP_SIZE;
+                                const logScale = Math.log(sizeRatio * 100 + 1) / Math.log(1.15);
+                                const headerWidth = 150;
+                                const dataWidth = Math.max(80, Math.min(300, logScale * 200));
 
-                <div className="overflow-x-auto pb-6">
-                    <div className="flex items-center pt-6 pb-10 px-4 min-w-max space-x-6">
-                        {blocks.map((block, idx) => {
-                            if (block.markedForRemoval) return null;
-                            const minWidth = 80;
-                            const maxWidth = 300;
-                            const sizeRatio = block.totalSize / INITIAL_HEAP_SIZE;
-                            const logBase = 1.15;
-                            const logScale = Math.log(sizeRatio * 100 + 1) / Math.log(logBase);
+                                const isAnimating = animatingBlocks.includes(block.id);
+                                const tone = blockTone(block, isAnimating);
 
-                            const headerWidth = 140;
-                            const dataWidth = Math.max(minWidth, Math.min(maxWidth, logScale * 200));
+                                return (
+                                    <div key={block.id} className="flex items-start" style={{ gap: "0.75rem" }}>
+                                        <div>
+                                            <div className="t-mono" style={{ marginBottom: "0.35rem" }}>
+                                                0x{block.address.toString(16)}
+                                            </div>
 
-                            const isAnimating = animatingBlocks.includes(block.id);
-
-                            let headerColor, dataColor;
-
-                            if (block.splitting) {
-                                headerColor = "bg-purple-500 border-purple-400";
-                                dataColor = "bg-purple-600 border-purple-500";
-                            } else if (block.coalescing) {
-                                headerColor = "bg-orange-500 border-orange-400";
-                                dataColor = "bg-orange-600 border-orange-500";
-                            } else if (block.free) {
-                                headerColor = isAnimating
-                                    ? "bg-green-500 border-green-300"
-                                    : "bg-green-700 border-green-500";
-                                dataColor = isAnimating
-                                    ? "bg-green-600 border-green-400"
-                                    : "bg-green-800 border-green-600";
-                            } else {
-                                headerColor = "bg-red-700 border-red-500";
-                                dataColor = "bg-red-800 border-red-600";
-                            }
-
-                            const animationClass = isAnimating || block.coalescing || block.splitting
-                                ? "transform transition-all duration-500 scale-105 shadow-lg"
-                                : "transform transition-all duration-300";
-
-                            return (
-                                <div key={block.id} className="flex items-center">
-                                    <div className={`flex flex-col items-center ${animationClass}`}>
-                                        <div className="text-blue-300 font-mono mb-1">0x{block.address.toString(16)}</div>
-
-                                        <div className="flex">
-                                            <div
-                                                className={`p-2 rounded-l border h-24 flex flex-col justify-between ${headerColor} transition-colors duration-300`}
-                                                style={{ width: `${headerWidth}px` }}
-                                            >
-                                                <div className="text-center border-b pb-1 mb-1 text-xs font-bold">HEADER</div>
-                                                <div className="text-xs font-mono flex-1 flex flex-col justify-between">
-                                                    <div className="flex justify-between">
-                                                        <span className="whitespace-nowrap">Size:</span>
+                                            <div className="flex">
+                                                <div
+                                                    className="viz-cell"
+                                                    style={{
+                                                        width: headerWidth,
+                                                        background: tone.bg,
+                                                        borderColor: tone.br,
+                                                    }}
+                                                >
+                                                    <div
+                                                        className="t-meta"
+                                                        style={{
+                                                            borderBottom: `1px solid ${tone.br}`,
+                                                            paddingBottom: "0.25rem",
+                                                            marginBottom: "0.3rem",
+                                                            color: "var(--ink-mid)",
+                                                        }}
+                                                    >
+                                                        Header
+                                                    </div>
+                                                    <div className="flex" style={{ justifyContent: "space-between" }}>
+                                                        <span>size</span>
                                                         <span>{block.totalSize.toLocaleString()}B</span>
                                                     </div>
-                                                    <div className="flex justify-between">
-                                                        <span className="whitespace-nowrap">Free:</span>
+                                                    <div className="flex" style={{ justifyContent: "space-between" }}>
+                                                        <span>free</span>
                                                         <span>{block.free ? "true" : "false"}</span>
                                                     </div>
-                                                    <div className="flex justify-between">
-                                                        <span className="whitespace-nowrap">Next:</span>
+                                                    <div className="flex" style={{ justifyContent: "space-between" }}>
+                                                        <span>next</span>
                                                         <span>{block.next ? `0x${block.next.toString(16)}` : "NULL"}</span>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div
-                                                className={`p-2 rounded-r border h-24 flex items-center justify-center ${dataColor} transition-colors duration-300`}
-                                                style={{ width: `${dataWidth}px` }}
-                                            >
-                                                <div className="text-center">
-                                                    <div className="text-xs font-bold mb-1">DATA</div>
-                                                    <div className="text-sm font-mono">{block.dataSize.toLocaleString()}B</div>
+
+                                                <div
+                                                    className="viz-cell flex items-center justify-center"
+                                                    style={{
+                                                        width: dataWidth,
+                                                        background: tone.bg,
+                                                        borderColor: tone.br,
+                                                        borderLeft: "none",
+                                                        textAlign: "center",
+                                                    }}
+                                                >
+                                                    <div>
+                                                        <div className="t-meta" style={{ color: "var(--ink-mid)" }}>
+                                                            Data
+                                                        </div>
+                                                        <div style={{ marginTop: "0.2rem" }}>
+                                                            {block.dataSize.toLocaleString()}B
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
+
+                                            <div
+                                                className="flex items-center"
+                                                style={{ gap: "0.75rem", marginTop: "0.5rem" }}
+                                            >
+                                                <span className="t-mono">block {idx + 1}</span>
+                                                {!block.free && (
+                                                    <button
+                                                        className="btn-quiet"
+                                                        onClick={() => handleFreeBlock(block.id)}
+                                                        disabled={blockOperationsDisabled}
+                                                        style={{ padding: "0.15rem 0.5rem", fontSize: "0.68rem" }}
+                                                    >
+                                                        <Trash2 size={11} />
+                                                        Free
+                                                    </button>
+                                                )}
+                                            </div>
                                         </div>
 
-                                        <div className="bg-gray-700 mt-2 px-3 py-1 rounded-full text-xs">
-                                            Block #{idx + 1} - {block.totalSize.toLocaleString()}B total
-                                        </div>
-
-                                        <div className="mt-2 flex items-center justify-center">
-                                            {!block.free && (
-                                                <button
-                                                    onClick={() => handleFreeBlock(block.id)}
-                                                    className={`flex items-center gap-1 bg-red-700 hover:bg-red-600 px-3 py-1 rounded-full text-xs transition-colors ${blockOperationsDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                                    disabled={blockOperationsDisabled}
-                                                >
-                                                    <Trash2 size={12} />
-                                                    Free
-                                                </button>
-                                            )}
-                                            {block.free && (
-                                                <span className="flex items-center gap-1 bg-green-700 px-3 py-1 rounded-full text-xs">
-                                                    <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                                                    Available
-                                                </span>
-                                            )}
-                                        </div>
+                                        {block.next && (
+                                            <ArrowRight
+                                                size={16}
+                                                style={{ color: "var(--ink-soft)", marginTop: "3.25rem" }}
+                                            />
+                                        )}
                                     </div>
-
-                                    {block.next && (
-                                        <ArrowRight size={28} className="text-blue-400 mx-3" />
-                                    )}
-                                </div>
-                            );
-                        })}
+                                );
+                            })}
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <div className="mt-8 text-center">
-                <a
-                    href="https://github.com/justnsmith/custom-allocator-c"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors"
-                >
-                    <Github size={18} />
-                    <span>View on GitHub</span>
-                </a>
-            </div>
         </PageLayout>
+    );
+}
+
+function Legend({ swatch, border, label }: { swatch: string; border: string; label: string }) {
+    return (
+        <span className="flex items-center" style={{ gap: "0.35rem" }}>
+            <span
+                aria-hidden="true"
+                style={{
+                    display: "inline-block",
+                    width: 10,
+                    height: 10,
+                    background: swatch,
+                    border: `1px solid ${border}`,
+                }}
+            />
+            {label}
+        </span>
     );
 }
