@@ -21,7 +21,7 @@ export const projects: Project[] = [
         title: "Island Elevate",
         date: "March 2026",
         tech: ["React", "TypeScript", "Vite", "Tailwind CSS", "Vercel", "Cloudflare", "Supabase", "NeonDB"],
-        description: "Co-founded a web services business building professional websites for small local businesses in Hawaii — handling design, domains, email, and hosting end-to-end.",
+        description: "Co-founded a web services business building professional websites for small local businesses in Hawaii, handling design, domains, email, and hosting end-to-end.",
         bullets: [
             "Co-founded and built the technical platform powering a web services business serving local Hawaii businesses",
             "Designed and developed custom, mobile-first websites for local clients including restaurants, auto shops, and landscaping companies",
@@ -57,19 +57,19 @@ export const projects: Project[] = [
         year: 2026,
         title: "MCP Alpha Vantage Server",
         date: "March 2026",
-        tech: ["Python", "MCP", "Alpha Vantage API", "asyncio", "pytest"],
-        description: "An open-source MCP server that exposes Alpha Vantage market data to LLM clients — enabling stock quotes, technical indicators, portfolio tracking, news sentiment, and more directly within AI conversations.",
+        tech: ["Python", "MCP", "asyncio", "Pydantic", "Alpha Vantage API"],
+        description: "An MCP server built for nimblebrain.ai that gives an LLM client structured access to live market data. Instead of letting a model generate a plausible-looking stock price, it calls typed tools that hit Alpha Vantage and return validated JSON.",
         bullets: [
-            "Built 12 MCP tools covering stock quotes, daily prices, company fundamentals, technical indicators (RSI, MACD, BBANDS), earnings history, and news sentiment analysis",
-            "Implemented composite tools for portfolio snapshots with real-time P&L, stock screening with AND-filtered criteria, and multi-symbol comparison with standout detection",
-            "Designed an in-memory TTL caching layer with per-endpoint expiration to minimize API quota usage on Alpha Vantage's free tier",
-            "Supports both stdio (Claude Desktop) and HTTP transport modes for flexible client integration",
-            "Set up CI with GitHub Actions running black, ruff, mypy, and pytest across Python 3.10–3.12"
+            "12 MCP tools across four modules: a tool layer, an async HTTP client, 25 Pydantic models as the typed contract, and env-driven config validated at boot",
+            "Seven thin passthroughs (quotes, daily prices, symbol search, fundamentals, RSI/MACD/BBANDS, news sentiment, earnings) plus five composed analytics that fan out to N symbols concurrently and derive what Alpha Vantage doesn't return",
+            "The composed tools cover market breadth with advance/decline ratio, gainer–loser–volume comparison with derived intraday volatility, ANDed screening that reports the criteria it applied, and portfolio snapshots with per-position and total daily P&L",
+            "Seven per-endpoint TTL caches tuned to data volatility (60s quotes, 1h bars, 24h fundamentals) keep it usable under a 25-request/day quota, at a 93.3% hit rate on a Zipf-distributed agent workload, 0.010 ms p50 against 284 ms live",
+            "asyncio.gather with return_exceptions, so one bad ticker degrades a batch instead of failing it; every error returns as structured JSON rather than a traceback the model can't recover from",
+            "black, ruff, mypy, 56 fully mocked tests, CI across Python 3.10–3.12, packaged as an .mcpb bundle with a release workflow"
         ],
         githubUrl: "https://github.com/justnsmith/mcp-alpha-vantage",
         madeFor: "Personal",
-        featured: false,
-        image: "/projects/mcp-alpha-vantage.png"
+        featured: false
     },
     {
         id: "fluxmq",
@@ -87,7 +87,7 @@ export const projects: Project[] = [
         ],
         githubUrl: "https://github.com/justnsmith/FluxMQ",
         madeFor: "Personal",
-        featured: true
+        featured: false
     },
     {
         id: "distributed-kv-store",
@@ -95,10 +95,10 @@ export const projects: Project[] = [
         title: "Distributed Key-Value Store (Raft + LSM)",
         date: "February 2026",
         tech: ["C++20", "Raft", "LSM-tree", "Bloom filters", "WAL"],
-        description: "A replicated key-value store written from scratch in C++20 — two systems in one: a log-structured storage engine, and a Raft consensus layer that keeps three nodes in agreement through failures.",
+        description: "A replicated key-value store written from scratch in C++20. Two systems in one: a log-structured storage engine, and a Raft consensus layer that keeps three nodes in agreement through failures.",
         bullets: [
             "Built a full LSM tree: memtable and write-ahead log flushed to Bloom-filtered SSTables and compacted in levels in the background, with a single batched writer thread and fully parallel reads",
-            "Implemented Raft from the extended paper — leader election, log replication, the §5.4 safety rules, conflict-term fast log backup, and snapshotting",
+            "Implemented Raft from the extended paper: leader election, log replication, the §5.4 safety rules, conflict-term fast log backup, and snapshotting",
             "Tested in three tiers, including a chaos harness that kills leaders and destroys quorum mid-write"
         ],
         githubUrl: "https://github.com/justnsmith/KVRaft",
@@ -180,7 +180,7 @@ export const projects: Project[] = [
         internalUrl: "/projects/custom-memory-allocator",
         githubUrl: "https://github.com/justnsmith/custom-allocator-c",
         madeFor: "Personal",
-        featured: true,
+        featured: false,
         image: "/projects/memory-allocator.png"
     },
     {

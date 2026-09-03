@@ -13,7 +13,7 @@
     --paper-tint:   #f4f3ee;
     --ink:          #15171b;
     --ink-mid:      #4b515a;
-    --ink-soft:     #6f757e;   /* 4.5:1 on paper — metadata stays readable */
+    --ink-soft:     #6f757e;   /* 4.5:1 on paper, so metadata stays readable */
     --rule:         #e4e3dd;
     --rule-strong:  #cbcac3;
     --accent:       #1b3a5c;
@@ -31,7 +31,7 @@
 }
 
 /* ═══ Base ═════════════════════════════════════════════════════ */
-/* No `scroll-behavior: smooth` on purpose — nav scrolling is animated in JS
+/* No `scroll-behavior: smooth` on purpose: nav scrolling is animated in JS
    (useSectionScroller), and a CSS smooth scroll fights that rAF loop. */
 html {
     -webkit-text-size-adjust: 100%;
@@ -392,7 +392,7 @@ body {
 }
 .lnk:hover { text-decoration-color: var(--accent); }
 
-/* Quiet link: underline only on hover — for dense lists */
+/* Quiet link: underline only on hover, for dense lists */
 .lnk-q {
     color: var(--ink);
     text-decoration: underline;
@@ -435,7 +435,7 @@ body {
     background: var(--rule-strong);
 }
 
-/* Definition rows — "Now" and "Skills" */
+/* Definition rows, used by "Now" and "Skills" */
 .deflist { display: grid; gap: 0.9rem; }
 .defrow {
     display: grid;
@@ -451,7 +451,7 @@ body {
 
 /* ═══ Archive table ════════════════════════════════════════════
    Grid rows that read as a typeset table on desktop and stack on
-   small screens — no horizontal scrolling.                       */
+   small screens, with no horizontal scrolling.                   */
 .arch-head,
 .arch-row {
     display: grid;
@@ -490,6 +490,129 @@ body {
         grid-template-columns: 17rem minmax(0, 1fr);
         gap: 0 2rem;
     }
+}
+
+
+/* ═══ Writeup prose ════════════════════════════════════════════
+   Rendered from Markdown by ui/Markdown.tsx. Vertical rhythm is set
+   here rather than on the elements so the renderer stays presentation-
+   free: it only emits semantic tags plus these class hooks.         */
+/* Reset on the direct children, then re-add the rhythm. Both selectors
+   carry the same specificity, so the adjacent-sibling rule wins by order.
+   A `.prose p { margin: 0 }` here would outrank it and collapse the gaps. */
+.prose > * { margin: 0; }
+.prose > * + * { margin-top: 1.15rem; }
+
+.prose h2 { margin-top: 2.75rem; }
+.prose h3 { margin-top: 2rem; }
+.prose h2 + *,
+.prose h3 + * { margin-top: 0.85rem; }
+
+.prose > hr.rule { margin: 2.5rem 0; }
+
+.prose .bullets,
+.prose .num-list { margin-top: 1rem; }
+
+.num-list {
+    margin: 0;
+    padding-left: 1.35rem;
+    color: var(--ink-mid);
+}
+.num-list li { font-size: 1rem; line-height: 1.6; }
+.num-list li + li { margin-top: 0.45rem; }
+.num-list::marker,
+.num-list li::marker { font-family: var(--font-mono); font-size: 0.8em; color: var(--ink-soft); }
+
+/* Inline code: tinted, not boxed. A border at this size reads as noise. */
+.code-in {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    background: var(--paper-tint);
+    padding: 0.1em 0.32em;
+    border-radius: 2px;
+    color: var(--ink);
+}
+
+.code-block {
+    margin: 0;
+    overflow-x: auto;
+    background: var(--paper-tint);
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    padding: 0.95rem 1.1rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    line-height: 1.65;
+    color: var(--ink);
+    tab-size: 4;
+}
+.code-block code { font: inherit; background: none; padding: 0; }
+.code-block::-webkit-scrollbar { height: 8px; }
+.code-block::-webkit-scrollbar-thumb { background: var(--rule-strong); border-radius: 4px; }
+
+.pull {
+    margin: 0;
+    padding-left: 1.15rem;
+    border-left: 2px solid var(--accent-soft);
+    color: var(--ink-mid);
+    font-size: 1.0625rem;
+}
+
+/* Tables: hairline rules only, headers set as marginal labels. */
+.tbl-scroll { overflow-x: auto; }
+.tbl {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+.tbl th {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    text-align: left;
+    padding: 0 1.25rem 0.5rem 0;
+    border-bottom: 1.5px solid var(--ink);
+    white-space: nowrap;
+}
+.tbl td {
+    padding: 0.6rem 1.25rem 0.6rem 0;
+    border-bottom: 1px solid var(--rule);
+    color: var(--ink-mid);
+    vertical-align: top;
+}
+.tbl tr:last-child td { border-bottom: 0; }
+.tbl th:last-child,
+.tbl td:last-child { padding-right: 0; }
+
+/* Contents list at the head of a long writeup. */
+.toc {
+    margin-bottom: 2.75rem;
+    padding: 1.1rem 1.25rem;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    background: var(--paper-tint);
+}
+.toc ol {
+    margin: 0.7rem 0 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: toc;
+}
+.toc li {
+    counter-increment: toc;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+.toc li + li { margin-top: 0.4rem; }
+.toc li::before {
+    content: counter(toc, decimal-leading-zero);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--ink-soft);
+    margin-right: 0.7rem;
 }
 
 /* ═══ Buttons ══════════════════════════════════════════════════ */
@@ -619,7 +742,7 @@ body {
 
 /* Motion here is deliberately kept even under `prefers-reduced-motion`, at the
    site owner's request: the only movement is an 8px fade-in and the nav scroll
-   — no parallax, autoplay, or large-travel effects. */
+   with no parallax, autoplay, or large-travel effects. */
 
 /* ═══ Print ════════════════════════════════════════════════════ */
 @media print {
@@ -627,4 +750,6 @@ body {
     body { background: #fff; color: #000; font-size: 11pt; }
     .sec { break-inside: avoid; }
     .lnk, .lnk-q { color: #000; text-decoration: underline; }
+    .code-block, .code-in, .toc { background: #fff; }
+    .code-block, .tbl, .toc { break-inside: avoid; }
 }

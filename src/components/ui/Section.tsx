@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 interface SectionProps {
     id: string;
-    /** Marginal label — hangs in the left margin on wide screens. */
+    /** Marginal label. Hangs in the left margin on wide screens. */
     label: string;
     children: ReactNode;
     /** Drop the top hairline (used for the first section under the header). */

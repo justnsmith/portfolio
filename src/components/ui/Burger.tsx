@@ -3,7 +3,7 @@ interface BurgerProps {
     expanded: boolean;
 }
 
-/** Three hairlines — the same rule weight the rest of the page is built from. */
+/** Three hairlines, the same rule weight the rest of the page is built from. */
 export default function Burger({ onClick, expanded }: BurgerProps) {
     return (
         <button

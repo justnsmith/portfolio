@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Section from "@ui/Section";
 import { getFeaturedProjects } from "@data/projects";
+import { getWriteupForProject } from "@data/writeups";
 
 export default function Projects() {
     const projects = getFeaturedProjects();
@@ -11,6 +12,7 @@ export default function Projects() {
                 {projects.map(project => {
                     const primary = project.internalUrl ?? project.url ?? project.githubUrl;
                     const isInternal = Boolean(project.internalUrl);
+                    const writeup = getWriteupForProject(project.id);
 
                     return (
                         <article key={project.id}>
@@ -53,6 +55,27 @@ export default function Projects() {
                             >
                                 <span className="t-mono">{project.tech.join("  ·  ")}</span>
                                 <span className="flex flex-wrap items-baseline" style={{ gap: "1rem" }}>
+                                    {writeup && (
+                                        writeup.url ? (
+                                            <a
+                                                className="lnk"
+                                                href={writeup.url}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                style={{ fontFamily: "var(--font-mono)", fontSize: "0.75rem" }}
+                                            >
+                                                Writeup ↗
+                                            </a>
+                                        ) : (
+                                            <Link
+                                                className="lnk"
+                                                to={`/writeups/${writeup.slug}`}
+                                                style={{ fontFamily: "var(--font-mono)", fontSize: "0.75rem" }}
+                                            >
+                                                Writeup
+                                            </Link>
+                                        )
+                                    )}
                                     {project.internalUrl && (
                                         <Link
                                             className="lnk"

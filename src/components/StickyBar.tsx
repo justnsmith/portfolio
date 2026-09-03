@@ -17,7 +17,7 @@ interface StickyBarProps {
 export default function StickyBar({ activeSection, onNavigate, onMenuOpen, menuOpen }: StickyBarProps) {
     const [shown, setShown] = useState(false);
 
-    // Watch the masthead itself rather than a fixed offset — on phones it is a
+    // Watch the masthead itself rather than a fixed offset. On phones it is a
     // full-screen landing, so any hard-coded trigger height would be wrong.
     useEffect(() => {
         const masthead = document.getElementById("top");

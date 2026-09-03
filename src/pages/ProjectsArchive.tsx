@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import PageLayout from "@components/layout/PageLayout";
 import { projects, type Project } from "@data/projects";
+import { getWriteupForProject } from "@data/writeups";
 
 type Filter = "all" | "Personal" | "College";
 
@@ -33,8 +34,12 @@ export default function ProjectsArchive() {
             <div className="rise">
                 <h1 className="t-name">Projects</h1>
                 <p className="t-dim" style={{ margin: "0.55rem 0 0", fontSize: "0.95rem" }}>
-                    Everything I've built, newest first — coursework, research spin-offs, and things I
-                    wrote to understand how they work.
+                    Everything I've built, newest first: coursework, research spin-offs, and things I
+                    wrote to understand how they work. Some have a{" "}
+                    <Link className="lnk" to="/writeups">
+                        longer writeup
+                    </Link>
+                    .
                 </p>
 
                 <div
@@ -70,6 +75,7 @@ export default function ProjectsArchive() {
                         {items.map(project => {
                             const primary = project.internalUrl ?? project.url ?? project.githubUrl;
                             const isInternal = Boolean(project.internalUrl);
+                            const writeup = getWriteupForProject(project.id);
 
                             return (
                                 <div className="arch-row" key={project.id}>
@@ -111,6 +117,33 @@ export default function ProjectsArchive() {
                                                 className="flex flex-wrap items-baseline"
                                                 style={{ gap: "1rem" }}
                                             >
+                                                {writeup && (
+                                                    writeup.url ? (
+                                                        <a
+                                                            className="lnk"
+                                                            href={writeup.url}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            style={{
+                                                                fontFamily: "var(--font-mono)",
+                                                                fontSize: "0.75rem",
+                                                            }}
+                                                        >
+                                                            Writeup ↗
+                                                        </a>
+                                                    ) : (
+                                                        <Link
+                                                            className="lnk"
+                                                            to={`/writeups/${writeup.slug}`}
+                                                            style={{
+                                                                fontFamily: "var(--font-mono)",
+                                                                fontSize: "0.75rem",
+                                                            }}
+                                                        >
+                                                            Writeup
+                                                        </Link>
+                                                    )
+                                                )}
                                                 {project.internalUrl && (
                                                     <Link
                                                         className="lnk"

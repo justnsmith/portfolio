@@ -26,7 +26,7 @@ export default function MenuSheet({
         };
         const previous = document.body.style.overflow;
         document.body.style.overflow = "hidden";
-        // Focus the dialog itself, not a control — announces the sheet without
+        // Focus the dialog itself, not a control. Announces the sheet without
         // painting a focus ring on the Close button.
         sheetRef.current?.focus({ preventScroll: true });
         window.addEventListener("keydown", onKey);

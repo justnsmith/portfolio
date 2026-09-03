@@ -20,6 +20,9 @@
             "@hooks": [
                 "src/hooks/index.ts"
             ],
+            "@lib/*": [
+                "src/lib/*"
+            ],
             "types/*": [
                 "src/types/*"
             ],

@@ -22,9 +22,11 @@ export default function Education() {
                             {degree.honors && <span className="t-soft">{` · ${degree.honors}`}</span>}
                         </p>
 
-                        <p className="t-mono" style={{ margin: "0.6rem 0 0", lineHeight: 1.7 }}>
-                            {degree.detail}
-                        </p>
+                        {degree.detail && (
+                            <p className="t-mono" style={{ margin: "0.6rem 0 0", lineHeight: 1.7 }}>
+                                {degree.detail}
+                            </p>
+                        )}
                     </article>
                 ))}
             </div>

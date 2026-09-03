@@ -8,7 +8,7 @@ const easeInOutCubic = (t: number) =>
  * which browsers cancel or skip inconsistently. Returns a `scrollTo(id)`.
  *
  * The stop position comes from the target's own `scroll-margin-top`, so the
- * offset under the sticky bar stays defined in one place — the CSS.
+ * offset under the sticky bar stays defined in one place, the CSS.
  */
 export function useSectionScroller() {
     const frame = useRef(0);
@@ -71,7 +71,7 @@ export function useSectionScroller() {
 }
 
 /**
- * Marks the section currently under the reading line — the last one whose
+ * Marks the section currently under the reading line, the last one whose
  * top has passed just below the sticky bar. Sections here vary a lot in
  * height, so a scroll-position test stays steadier than intersection ratios.
  */
@@ -82,7 +82,7 @@ export function useActiveSection(sectionIds: string[]) {
         let frame = 0;
         let offsets: { id: string; top: number }[] = [];
 
-        // Measured up front and on layout changes, never while scrolling —
+        // Measured up front and on layout changes, never while scrolling:
         // reading geometry every frame is what makes a scroll handler stutter.
         const measure = () => {
             const scrollY = window.scrollY;
@@ -107,7 +107,7 @@ export function useActiveSection(sectionIds: string[]) {
                 window.innerHeight + window.scrollY >= document.body.offsetHeight - 2;
             if (atBottom) current = sectionIds[sectionIds.length - 1];
 
-            // Only touch state on a real change — this runs every scroll frame,
+            // Only touch state on a real change, since this runs every scroll frame,
             // and re-rendering the page tree mid-scroll shows up as jank.
             setActiveSection(prev => (prev === current ? prev : current));
         };

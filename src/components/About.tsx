@@ -15,7 +15,7 @@ export default function About() {
                         Georgia Tech
                     </a>
                     , specializing in Computing Systems. I work on distributed systems, storage
-                    engines, and high-performance backend infrastructure — distributed consensus,
+                    engines, and high-performance backend infrastructure: distributed consensus,
                     LSM-based storage, networked services, and GPU-accelerated LLM inference, mostly
                     in C++ and Python.
                 </p>

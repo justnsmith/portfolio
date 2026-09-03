@@ -4,6 +4,7 @@ import StickyBar from "@components/StickyBar";
 import About from "@components/About";
 import Now from "@components/Now";
 import Projects from "@components/Projects";
+import Writeups from "@components/Writeups";
 import Experience from "@components/Experience";
 import Education from "@components/Education";
 import TechStack from "@components/TechStack";
@@ -44,6 +45,7 @@ export default function MainLayout() {
                 <About />
                 <Now />
                 <Projects />
+                <Writeups />
                 <Experience />
                 <Education />
                 <TechStack />
