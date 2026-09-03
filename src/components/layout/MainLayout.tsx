@@ -9,13 +9,11 @@ import Experience from "@components/Experience";
 import Education from "@components/Education";
 import TechStack from "@components/TechStack";
 import SiteFooter from "@components/SiteFooter";
-import ContactModal from "@ui/ContactModal";
 import MenuSheet from "@ui/MenuSheet";
 import { useActiveSection, useSectionScroller } from "@hooks";
 import { sectionIds } from "@data/nav";
 
 export default function MainLayout() {
-    const [isContactOpen, setIsContactOpen] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const activeSection = useActiveSection(sectionIds);
     const handleNavigate = useSectionScroller();
@@ -33,7 +31,6 @@ export default function MainLayout() {
                 <SiteHeader
                     activeSection={activeSection}
                     onNavigate={handleNavigate}
-                    onContactClick={() => setIsContactOpen(true)}
                     onMenuOpen={() => setIsMenuOpen(true)}
                     menuOpen={isMenuOpen}
                 />
@@ -52,7 +49,7 @@ export default function MainLayout() {
             </main>
 
             <div className="pg-wrap">
-                <SiteFooter onContactClick={() => setIsContactOpen(true)} />
+                <SiteFooter />
             </div>
 
             <MenuSheet
@@ -60,10 +57,7 @@ export default function MainLayout() {
                 activeSection={activeSection}
                 onClose={() => setIsMenuOpen(false)}
                 onNavigate={handleNavigate}
-                onContactClick={() => setIsContactOpen(true)}
             />
-
-            <ContactModal isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
         </>
     );
 }

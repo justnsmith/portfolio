@@ -93,13 +93,15 @@ export const projects: Project[] = [
         id: "distributed-kv-store",
         year: 2026,
         title: "Distributed Key-Value Store (Raft + LSM)",
-        date: "February 2026",
-        tech: ["C++20", "Raft", "LSM-tree", "Bloom filters", "WAL"],
+        date: "March 2026",
+        tech: ["C++20", "Go", "Raft", "LSM-tree", "Bloom filters"],
         description: "A replicated key-value store written from scratch in C++20. Two systems in one: a log-structured storage engine, and a Raft consensus layer that keeps three nodes in agreement through failures.",
         bullets: [
-            "Built a full LSM tree: memtable and write-ahead log flushed to Bloom-filtered SSTables and compacted in levels in the background, with a single batched writer thread and fully parallel reads",
-            "Implemented Raft from the extended paper: leader election, log replication, the §5.4 safety rules, conflict-term fast log backup, and snapshotting",
-            "Tested in three tiers, including a chaos harness that kills leaders and destroys quorum mid-write"
+            "Built a full LSM tree: a CRC32-checksummed WAL and an 8 MB memtable flushed to Bloom-filtered SSTables and compacted L0 to L3 in the background, behind a single batched writer thread with fully parallel reads",
+            "Implemented Raft from the extended paper: 150-300 ms randomized elections, majority-quorum commit, the §5.4 safety rules, conflict-term fast log backup, and InstallSnapshot log compaction",
+            "Took reads to ~2.1M ops/sec by removing three serialization points: a global cache mutex (sharded 16 ways), a mutex-guarded ifstream (replaced with lock-free pread), and a flush check that blocked write futures",
+            "194 tests in three tiers: 146 engine unit tests, 36 deterministic Raft handler tests with no threads or sockets, and 12 chaos tests that kill leaders and destroy quorum on real in-process clusters",
+            "Shipped with a hand-written Prometheus metrics layer, a 19-panel Grafana dashboard, a Go CLI, Docker Compose cluster, and Terraform for AWS"
         ],
         githubUrl: "https://github.com/justnsmith/KVRaft",
         madeFor: "Personal",

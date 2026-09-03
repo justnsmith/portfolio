@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { slugify } from "@lib/markdown";
+import { diagrams } from "./diagrams";
 
 /**
  * A small Markdown renderer: enough for the writeups, no dependency.
@@ -8,8 +9,12 @@ import { slugify } from "@lib/markdown";
  * fenced code blocks, blockquotes, thematic breaks, pipe tables, and the
  * inline forms `**bold**`, `*italic*`, `` `code` `` and `[text](href)`.
  *
- * Deliberately not supported: nested lists, HTML passthrough, reference
- * links, footnotes. Everything renders as plain React nodes, so there is no
+ * A ```diagram fence is the one extension: its body names a component in
+ * ./diagrams, which is rendered in place. Figures stay typed React rather than
+ * pasted SVG markup.
+ *
+ * Deliberately not supported: nested lists, HTML passthrough, reference links,
+ * footnotes. Everything renders as plain React nodes, so there is no
  * `dangerouslySetInnerHTML` anywhere and no HTML sanitising to get wrong.
  */
 
@@ -102,6 +107,13 @@ function parse(source: string): ReactNode[] {
             i++;
             while (i < lines.length && !/^```/.test(lines[i])) buf.push(lines[i++]);
             i++; // closing fence
+
+            if (fence[1] === "diagram") {
+                const Diagram = diagrams[buf.join("").trim()];
+                if (Diagram) out.push(<Diagram key={key()} />);
+                continue;
+            }
+
             out.push(
                 <pre className="code-block" key={key()} data-lang={fence[1] || undefined}>
                     <code>{buf.join("\n")}</code>

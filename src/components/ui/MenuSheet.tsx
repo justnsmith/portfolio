@@ -6,7 +6,6 @@ interface MenuSheetProps {
     activeSection: string;
     onClose: () => void;
     onNavigate: (id: string) => void;
-    onContactClick: () => void;
 }
 
 export default function MenuSheet({
@@ -14,7 +13,6 @@ export default function MenuSheet({
     activeSection,
     onClose,
     onNavigate,
-    onContactClick,
 }: MenuSheetProps) {
     const sheetRef = useRef<HTMLDivElement>(null);
 
@@ -92,15 +90,9 @@ export default function MenuSheet({
                 <a href={profile.resume} target="_blank" rel="noopener noreferrer">
                     Résumé
                 </a>
-                <button
-                    className="btn-plain"
-                    onClick={() => {
-                        onClose();
-                        onContactClick();
-                    }}
-                >
+                <a href={`mailto:${profile.email}`} onClick={onClose}>
                     Email
-                </button>
+                </a>
             </div>
         </div>
     );

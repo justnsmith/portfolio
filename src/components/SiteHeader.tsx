@@ -5,7 +5,6 @@ import Burger from "@ui/Burger";
 interface SiteHeaderProps {
     activeSection: string;
     onNavigate: (id: string) => void;
-    onContactClick: () => void;
     onMenuOpen: () => void;
     menuOpen: boolean;
 }
@@ -13,7 +12,6 @@ interface SiteHeaderProps {
 export default function SiteHeader({
     activeSection,
     onNavigate,
-    onContactClick,
     onMenuOpen,
     menuOpen,
 }: SiteHeaderProps) {
@@ -43,9 +41,9 @@ export default function SiteHeader({
                 <a className="lnk" href={profile.resume} target="_blank" rel="noopener noreferrer">
                     Résumé
                 </a>
-                <button className="btn-plain lnk" onClick={onContactClick}>
+                <a className="lnk" href={`mailto:${profile.email}`}>
                     Email
-                </button>
+                </a>
             </div>
 
             <div className="hdr__nav nav-inline no-print">

@@ -1,7 +1,6 @@
 import { profile } from "@data/nav";
 
 interface SiteFooterProps {
-    onContactClick?: () => void;
     /**
      * Drop the marginal label on pages whose content isn't set on the
      * marginalia grid, so the footer lines up with what's above it.
@@ -9,7 +8,7 @@ interface SiteFooterProps {
     bare?: boolean;
 }
 
-export default function SiteFooter({ onContactClick, bare }: SiteFooterProps) {
+export default function SiteFooter({ bare }: SiteFooterProps) {
     return (
         <footer
             className={bare ? "sec sec--bare" : "sec"}
@@ -25,15 +24,9 @@ export default function SiteFooter({ onContactClick, bare }: SiteFooterProps) {
                     className="flex flex-wrap items-baseline"
                     style={{ gap: "1.15rem", fontSize: "0.95rem" }}
                 >
-                    {onContactClick ? (
-                        <button className="btn-plain lnk" onClick={onContactClick}>
-                            Email
-                        </button>
-                    ) : (
-                        <a className="lnk" href={`mailto:${profile.email}`}>
-                            Email
-                        </a>
-                    )}
+                    <a className="lnk" href={`mailto:${profile.email}`}>
+                        Email
+                    </a>
                     <a className="lnk" href={profile.github} target="_blank" rel="noopener noreferrer">
                         GitHub
                     </a>
