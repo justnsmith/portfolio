@@ -24,8 +24,8 @@
     --font-body:    'Source Serif 4', Georgia, 'Times New Roman', serif;
     --font-mono:    'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
-    --measure:      38rem;   /* prose column */
-    --margin-col:   7rem;    /* marginalia column */
+    --measure:      42rem;   /* prose column */
+    --margin-col:   7.5rem;  /* marginalia column */
     --gutter:       2.5rem;
     --bar-h:        3.25rem; /* sticky bar height */
 }
