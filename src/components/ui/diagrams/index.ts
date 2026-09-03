@@ -1,6 +1,9 @@
 import type { ComponentType } from "react";
 import KvWritePath from "./KvWritePath";
 import KvReadPath from "./KvReadPath";
+import SqlplusCascade from "./SqlplusCascade";
+import SqlplusOffline from "./SqlplusOffline";
+import SqlplusEmbeddingFix from "./SqlplusEmbeddingFix";
 
 /**
  * Diagrams a writeup can drop in, by name. In Markdown:
@@ -14,4 +17,7 @@ import KvReadPath from "./KvReadPath";
 export const diagrams: Record<string, ComponentType> = {
     "kv-write-path": KvWritePath,
     "kv-read-path": KvReadPath,
+    "sqlplus-cascade": SqlplusCascade,
+    "sqlplus-offline": SqlplusOffline,
+    "sqlplus-embedding-fix": SqlplusEmbeddingFix,
 };
