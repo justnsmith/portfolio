@@ -17,7 +17,8 @@ export default function About() {
                     , specializing in Computing Systems. I work on distributed systems, storage
                     engines, and high-performance backend infrastructure: distributed consensus,
                     LSM-based storage, networked services, and GPU-accelerated LLM inference, mostly
-                    in C++ and Python.
+                    in C++ and Python. This fall I'm joining MITRE in Honolulu as an AI/ML
+                    intern.
                 </p>
                 <p>
                     Recently I built a Raft-replicated key-value store with its own storage engine,

@@ -39,15 +39,19 @@ export default function Experience() {
                             )}
                         </p>
 
-                        <ul className="bullets" style={{ marginTop: "0.85rem" }}>
-                            {exp.bullets.map(b => (
-                                <li key={b}>{b}</li>
-                            ))}
-                        </ul>
+                        {exp.bullets && (
+                            <ul className="bullets" style={{ marginTop: "0.85rem" }}>
+                                {exp.bullets.map(b => (
+                                    <li key={b}>{b}</li>
+                                ))}
+                            </ul>
+                        )}
 
-                        <p className="t-mono" style={{ margin: "1rem 0 0" }}>
-                            {exp.tags.join("  ·  ")}
-                        </p>
+                        {exp.tags && (
+                            <p className="t-mono" style={{ margin: "1rem 0 0" }}>
+                                {exp.tags.join("  ·  ")}
+                            </p>
+                        )}
                     </article>
                 ))}
             </div>

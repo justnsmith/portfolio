@@ -4,12 +4,21 @@ export interface Experience {
     note?: string;
     location: string;
     date: string;
-    tags: string[];
-    bullets: string[];
+    /** Omitted for a role that hasn't started. */
+    tags?: string[];
+    /** Omitted for a role that hasn't started. */
+    bullets?: string[];
     githubUrl?: string;
 }
 
 export const experiences: Experience[] = [
+    {
+        title: "AI/ML Intern",
+        org: "MITRE",
+        note: "Hybrid · Incoming",
+        location: "Honolulu, HI",
+        date: "Sep 2026 – Dec 2026",
+    },
     {
         title: "Research Assistant",
         org: "iDB Lab, University of Hawaiʻi at Mānoa",
@@ -57,6 +66,11 @@ export interface NowItem {
 }
 
 export const nowItems: NowItem[] = [
+    {
+        label: "MITRE",
+        body: "Joining as an AI/ML intern, based in Honolulu.",
+        meta: "Incoming intern · Sep 2026 – Dec 2026 · Hybrid",
+    },
     {
         label: "Georgia Tech",
         body: "Starting an M.S. in Computer Science, specializing in Computing Systems.",
